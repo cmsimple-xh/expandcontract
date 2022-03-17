@@ -1,0 +1,11 @@
+.expand_link {
+    font-size:90%;
+    margin:.5em 5em;
+}
+.expand_content {
+    border-top:.5em solid #ddd;
+    border-bottom:.5em solid #ddd;
+}
+.expand_button {
+    display:inline-block;
+}

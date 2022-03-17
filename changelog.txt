@@ -1,0 +1,51 @@
+Expandcontract_XH
+by svasti
+
+0.7 June 2016
+    - Inline-block style buttons can be used instead of link style buttons. These buttons stay in line even when a button
+      is clicked and the correspoding field expands. In case of the link style, the expanding field will open directly under 
+      the link and any following link will be moved below the extended field.
+    - Comma separated list is accepted as 1st argument
+    - Improved unikId for calling the same link with different config parameters on same page
+
+0.6.1 July 2015
+    - Short instructions in 'plugin main' as well as 'plugin main' itself added
+
+0.6 Nov 2014
+    - bugfix reported by cmb+mhz
+    - plugin will return void for internal search as search didn't work anyway
+    - added auto close
+
+0.5 Oct 2014
+    - javascript call got different name to avoid name conflicts
+    - javascript will be executed only once even on multiple plugin calls on a page
+
+0.45 June 2014
+    - bug fix
+    - added examples in help files
+
+0.4 March, 2014
+    - changed parameters to be more practical
+    - 1st parameter, if set, links only to 1 page
+    - 2nd p.: linktext, 3rd: headline, 4th: close button, 5th: max height
+    - max height can be set in config
+
+0.3 March, 2014
+    - converted to plugin (suggested by Tata)
+    - changed order of parameters, so that alternative pagename comes first
+    - improved heading deleating regex (code improvement by cmb)
+
+0.2 as add-on
+    - closing button (suggested by Tata) as 3rd parameter
+
+0.1 as add-on
+    - enabled plugincalls in expanded content (suggestion by cmb)
+    - enabled  under the content folder (different for every language)
+      or in userfiles (one folder for all languages) or as before in the plugin.
+    - added configurable clear:both after the teasers
+    - Changed name to Expand-Contract Content (following suggestion by Tata)
+    - call: expand(), 2 optional parameters, bool=with or without heading + string=other page to start from
+
+alpha not released
+    - as add-on on cmsimple-xh.org
+    - call: togglehiddenpages(), no parameters
