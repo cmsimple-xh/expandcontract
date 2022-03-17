@@ -181,7 +181,7 @@ if (area.length) {
 // Deeplink öffnet den Expand-Content
 var hash = window.location.hash;
 hash = hash.replace("#","");
-if (hash.length && document.getElementById(hash) !== null) {
+if (hash.length && hash.substring(0, 5) == "popup" && document.getElementById(hash) !== null) {
     expandcontract(hash);
     //document.getElementById(hash).scrollIntoView({ block: "start",  behavior: "smooth" });
 }
