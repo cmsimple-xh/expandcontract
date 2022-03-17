@@ -47,3 +47,18 @@ if (function_exists('XH_wantsPluginAdministration')
     }
 	$o .= plugin_admin_common($action, $admin, $plugin);
 }
+
+/**
+ * Helper to fill stylesheet selectlist in config.php
+ */
+function expandGetCssFiles() {
+        global $pth;
+        $temp = glob($pth['folder']['plugins'] . 'expandcontract/css/*.css');
+        $files = array();
+        foreach ($temp as $file) {
+            if (basename($file) !== 'stylesheet.css') {
+                $files[] = basename($file);
+            }
+        }
+        return $files;
+}
