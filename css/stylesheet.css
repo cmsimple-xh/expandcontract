@@ -1,11 +1,43 @@
+.expand_linkArea {
+	display: flex;
+	flex-wrap: wrap;
+}
 .expand_link {
-    font-size:90%;
-    margin:.5em 5em;
+}
+.expand_link a {
 }
 .expand_content {
-    border-top:.5em solid #ddd;
-    border-bottom:.5em solid #ddd;
+	box-sizing: border-box;
+	max-height: 0;
+	padding: 0;
+	overflow: hidden;
+	transition: all .5s ease-out;
+	position: relative;
+}
+.expand_content.open {
+	margin: 1em 0;
+}
+.expand_area {
 }
 .expand_button {
-    display:inline-block;
+	cursor: pointer;
+	display: inline-block;
+	overflow: hidden;
+	margin: 0 1px 1px 0;
+}
+form.expand_button input {
+	max-width: 100%;
+	overflow: hidden;
+	text-overflow: ellipsis;
+}
+.ecClose {
+	text-align: right;
+}
+.ecClose button {
+	cursor: pointer;
+}
+.deepLink {
+	text-align: right;
+}
+.deepLink a {
 }

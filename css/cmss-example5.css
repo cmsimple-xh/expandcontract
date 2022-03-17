@@ -1,0 +1,168 @@
+.expand_area {
+  overflow: auto;
+ }
+ p.expand_link {
+	margin: 0 !important;
+	position: relative;
+}
+p.expand_link:nth-of-type(3n + 1) a {
+	margin-top: 1em !important;
+}
+p.expand_link:nth-of-type(3n + 1) a,
+.expand_content:nth-of-type(3n + 1) {
+	background: #d9d9d9 !important;
+	border-left: 8px solid !important;
+	border-left-color: #000000 !important;
+}
+p.expand_link:nth-of-type(3n + 2) a,
+.expand_content:nth-of-type(3n + 2) {
+	background: #fad9d9 !important;
+	border-left: 8px solid !important;
+	border-left-color: #dd0000 !important;
+}
+p.expand_link:nth-of-type(3n + 3) a,
+.expand_content:nth-of-type(3n + 3) {
+	background: #fff8d9 !important;
+	border-left: 8px solid !important;
+	border-left-color: #ffce00 !important;
+}
+.expand_link a::before,
+a.linkBtn::before {
+	content: "+" !important;
+	position: absolute !important;
+	top: 8px !important;
+	left: 1em !important;
+	display: inline-block;
+	font-family: inherit !important;
+	-webkit-font-smoothing: antialiased;
+	-moz-osx-font-smoothing: grayscale;
+	float: none !important;
+	-webkit-transition: -webkit-transform .3s linear;
+	transition: transform .3s linear !important;
+	border: 1px solid;
+	border-radius: 50%;
+	width: 18px;
+	height: 18px;
+	text-align: center;
+	font-size: 18px !important;
+	line-height: 18px !important;
+	font-weight: 700 !important;
+}
+.expand_link a:hover {
+	background: rgba(0,0,0,.1) !important;
+}
+.expand_link a.current::before,
+a.linkBtn.current::before {
+	content: "−" !important;
+	-webkit-transform: rotate(180deg);
+	transform: rotate(180deg);
+}
+.expand_link a::after,
+a.linkBtn::after {
+	content: "" !important;
+}
+.expand_link a.current::after,
+a.linkBtn.current::after {
+	content: "" !important;
+}
+a.linkBtn {
+	color: #333 !important;
+	display: block;
+	margin-bottom: 0 !important;
+	transition: all .3s;
+	font: inherit !important;
+	overflow: auto;
+	padding-left: 3em !important;
+}
+a.linkBtn:hover {
+	color: #333 !important;
+	background:  rgba(0,0,0,.1) !important;
+}
+.expand_content {
+	transition: all .75s ease-out;
+	color: #333;
+	margin: 0 !important;
+	position: relative;
+	padding: 0 1em !important;
+	border-left: 4px solid;
+}
+.expand_content.open {
+}
+.expand_linkArea {
+	display: flex;
+	flex-wrap: wrap;
+	justify-content: center;
+}
+div.ecClose  button {
+	display: inline-block;
+	color: #333;
+	margin: .25em;
+	padding: .1em .2em;
+	position: absolute;
+	right: 0;
+	bottom: 0;
+	border: 1px solid #aaa;
+	background: #eee;
+	font: inherit !important;
+	font-size: .9em !important;
+	border-radius: 3px;
+	cursor: pointer;
+}
+div.ecClose button:hover {
+	background: #fff !important;
+	color: #333 !important;
+}
+.deepLink a {
+	border: 0 !important;
+	text-decoration: none;
+}
+form.expand_button:nth-child(3n+1),
+.expand_linkArea ~ .expand_content:nth-of-type(3n + 2) {
+	color: #333 !important;
+	background: #d9d9d9 !important;
+	border-left: 8px solid !important;
+	border-left-color: #000000 !important;
+}
+form.expand_button:nth-child(3n+2),
+.expand_linkArea ~ .expand_content:nth-of-type(3n + 3) {
+	color: #333 !important;
+	background: #fad9d9 !important;
+	border-left: 8px solid !important;
+	border-left-color: #dd0000 !important;
+}
+form.expand_button:nth-child(3n+3),
+.expand_linkArea ~ .expand_content:nth-of-type(3n + 4) {
+	color: #333 !important;
+	background: #fff8d9 !important;
+	border-left: 8px solid !important;
+	border-left-color: #ffce00 !important;
+}
+form.expand_button {
+	margin: 0;
+	cursor: pointer;
+	display: block;
+	padding: .5em !important;
+	border-bottom: 1px dotted transparent !important;
+	color: rgba(255,255,255,1) !important;
+	transition: all .3s;
+	font: inherit !important;
+	overflow: hidden;
+}
+form.expand_button:hover {
+	border-bottom: 1px dotted #333 !important;
+}
+form.expand_button.current {
+	border-bottom: 1px solid #333 !important;
+}
+form.expand_button input {
+	cursor: pointer;
+	padding: 0;
+	font: inherit;
+	color: #333 !important;
+	background: transparent;
+	border: 0;
+	border-radius: 0;
+	text-overflow: ellipsis;
+	overflow: hidden;
+	max-width: 100%;
+}

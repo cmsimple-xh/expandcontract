@@ -3,9 +3,10 @@
 /**
  * Front-end of Expandcontract_XH.
  *
- * @category  CMSimple_XH
+ * @category  CMSimple_XH Plugin
  * @author    svasti <svasti@svasti.de>
- * @copyright 2014-16 by svasti <http://svasti.de>
+ * @copyright 2014-16 by svasti < http://svasti.de >
+ * @copyright 2022 The CMSimple_XH Community < https://www.cmsimple-xh.org/ >
  */
 
 /**
@@ -17,7 +18,7 @@ if (!defined('CMSIMPLE_XH_VERSION')) {
 }
 
 
-function expand($link='',$linktext='',$withheading='',$closebutton='',$limitheight='',$usebuttons='')
+function expand($link='',$linktext='',$closebutton='',$limitheight='',$usebuttons='',$firstopen='')
 {
     global $s, $cl, $l, $cf, $h, $c, $u, $plugin_cf, $plugin_tx, $bjs;
 
@@ -26,16 +27,16 @@ function expand($link='',$linktext='',$withheading='',$closebutton='',$limitheig
     $o = $t = '';
     $pageNrArray = array();
 
-    $withheading = $withheading!==''? $withheading : $plugin_cf['expandcontract']['show_headings'];
-    $closebutton = $closebutton!==''? $closebutton : $plugin_cf['expandcontract']['show_close_button'];
-    $limitheight = $limitheight!==''? $limitheight : $plugin_cf['expandcontract']['max_height'];
+    $closebutton = $closebutton!==''? $closebutton : $plugin_cf['expandcontract']['expand-content_show_close_button'];
+    $limitheight = $limitheight!==''? $limitheight : $plugin_cf['expandcontract']['expand-content_max-height'];
     $usebuttons  = $usebuttons!==''?  $usebuttons  : $plugin_cf['expandcontract']['use_inline_buttons'];
+    $firstopen   = $firstopen!==''?   $firstopen   : $plugin_cf['expandcontract']['expand-content_first_open'];
 
     // $unikId only to demonstrate different settings on the same page
-    $unikId = $withheading . $closebutton . $limitheight . $usebuttons;
+    $unikId = $closebutton . $limitheight . $usebuttons;
 
     if ($link) {
-        if (strpos($link, ',')) { 
+        if (strpos($link, ',')) {
             $linklist = explode(',', $link);
             foreach ($linklist as $singlelink) {
                 $pageNrArray[] = array_search($singlelink, $h);
@@ -62,68 +63,136 @@ function expand($link='',$linktext='',$withheading='',$closebutton='',$limitheig
     }
 
 
-    if (!$link) $o .= "\n\n<!-- E X P A N D - C O N T R A C T    S T A R T -->\n"
-                    . '<div class="expand_area">' . "\n";
-
+    if (!$link) $o .= '
+<div class="expand_area">';
+    if ($usebuttons) {
+        $o .= '
+<div class="expand_linkArea">';
+}
     foreach ($pageNrArray as $value) {
 
-        $js = '" onclick="expandcontract(\'popup'.$value.$unikId.'\'); return false;';
+        $js = '" class="linkBtn" id="deeplink'.$value.$unikId.'" onclick="expandcontract(\'popup'.$value.$unikId.'\'); return false;';
 
-        $content = str_replace('#CMSimple hide#', '', $c[$value]);
-        if (!$withheading) {
-            $content = preg_replace("/.*<\/h[1-".$cf['menu']['levels']."]>/isU", "", $content);
-        }
+        $expContent = str_replace('#CMSimple hide#', '', $c[$value]);
 
         if ($usebuttons) {
-            $o .= '<form method="post" class="expand_button" action="?'
-               .  $u[$value] . $js . '"><input type="submit" value="';
+            $o .= '
+<form method="post" class="expand_button" action="?' . $u[$value] . $js . '">
+<input type="submit" value="';
             $o .= $linktext? $linktext : $h[$value];
-            $o .=  '"></form>';
+            $o .=  '">
+</form>';
         } else {
-            if (!$link) $t .= '<p class="expand_link">';
+            if (!$link) $t .= '
+<p class="expand_link" id="' . $value . '">';
             $t .= a($value,$js);
             $t .= $linktext? $linktext : $h[$value];
             $t .= '</a>';
-            if (!$link) $t .= '</p>' . "\n\n";
+            if (!$link) $t .= '</p>';
         }
-
-        $t .= '<div style="display:none;" id="popup'.$value.$unikId.'" class="expand_content">';
-        if ($limitheight) $t .= '<div style="height:'.$limitheight.';overflow-y:scroll;">';
-        $t .= $content . '<div style="clear:both"></div>';
-        if ($limitheight) $t .= '</div>';
+        $t .= '
+<div id="popup'.$value.$unikId.'" class="expand_content" style="max-height: 0px;">';
+        $linkU =  $_SERVER['REQUEST_URI'];
+        $t .= '
+<div class="deepLink"><a href="' . $linkU . '#popup' . $value.$unikId . '" onclick="return false;">&#x1f517;</a></div>';
+        if ($limitheight) $t .= '
+<div style="height:'.$limitheight.';overflow-y:scroll;">';
+        $t .= $expContent;
+        $t .= '<div style="clear:both"></div>';
+        if ($limitheight) $t .= '
+</div>';
         if ($closebutton) {
-            $t .= '<button type="submit" onclick="expandcontract(\'popup'.$value.$unikId.'\');">'
-               .  $plugin_tx['expandcontract']['close'] .'</button>';
+            $t .= '
+<div class="ecClose">
+<button type="button" onclick="expandcontract(\'popup' . $value.$unikId . '\'); return false;">' . $plugin_tx['expandcontract']['close'] . '</button>
+</div>';
         }
-        $t .= '</div>';
+        $t .= '
+</div>';
     }
+    if ($usebuttons) {
+        $o .= '
+</div>';
+    }
+
     if ($s >= 0) $o .= evaluate_scripting($t);
-    if (!$link) $o .= '</div>' . "\n\n<!-- E X P A N D - C O N T R A C T    E N D -->\n\n\n";
+    if (!$link) $o .= '
+</div>';
 
     static $firstExpand = true;
     if ($firstExpand) {
         $firstExpand = false;
 
-        $bjs .= '<script type="text/javascript">
-              // <![CDATA[
-              function expandcontract(page)
-              {
-                  if (document.getElementById(page).style.display == \'block\') {
-                      document.getElementById(page).style.display = \'none\';
-                   } else {';
-        if ($plugin_cf['expandcontract']['auto-close']) {
-            $bjs .= 'var expandlist = document.getElementsByClassName(\'expand_content\');
-                     for (index = 0; index < expandlist.length; ++index) {
-                           expandlist[index].style.display = \'none\';
-                     }';
+    $temp = $plugin_cf['expandcontract']['expand-content_padding'];
+    if ($temp != '') {
+        $expandcontractPadding = $temp;
+    } else {
+        $expandcontractPadding = 0;
+    }
+    $bjs .= '
+<script>
+function expandcontract(expPage) {
+    contentPadding = "' . $expandcontractPadding . '";
+    let el = document.getElementById(expPage);
+    let elMaxHeight = el.scrollHeight;
+    elMaxHeight = parseInt(elMaxHeight) + (parseInt(contentPadding) * 12);
+    if (document.getElementById(expPage).style.getPropertyValue("max-height") != "0px") {
+        document.getElementById(expPage).style.setProperty("max-height", "0px");
+        document.getElementById(expPage).style.setProperty("padding", "0px");
+        document.getElementById(expPage).classList.remove("open");
+        deepL = expPage.replace("popup","deeplink");
+        document.getElementById(deepL).classList.remove("current");
+    } else {';
+    if ($plugin_cf['expandcontract']['expand-content_auto_close'] === 'true') {
+        $bjs .= '
+        var expandlist = document.getElementsByClassName("expand_content");
+        for (index = 0; index < expandlist.length; ++index) {
+            expandlist[index].style.setProperty("max-height", "0px");
+            expandlist[index].style.setProperty("padding", "0px");
+            expandlist[index].classList.remove("open");
         }
-        $bjs .= '    document.getElementById(page).style.display = \'block\';
-                  }
-              }
-              // ]]>
-              </script>';
+        var btnlist = document.getElementsByClassName("current");
+        for (index = 0; index < btnlist.length; ++index) {
+            btnlist[index].classList.remove("current");
+        }';
+    }
+    $bjs .= '
+        document.getElementById(expPage).style.setProperty("max-height", elMaxHeight +"px");
+        document.getElementById(expPage).style.setProperty("padding", contentPadding);
+        document.getElementById(expPage).classList.add("open");
+        deepL = expPage.replace("popup","deeplink");
+        document.getElementById(deepL).classList.add("current");
+        //document.getElementById(expPage).scrollIntoView({block: "center", behavior: "smooth"});
+    }
+}';
+
+    if ($firstopen) {
+        $bjs .= '
+// öffnet den ersten Expand-Content
+area = document.getElementsByClassName("expand_area");
+if (area.length) {
+    list = document.getElementsByClassName("expand_area")[0];
+    first = list.getElementsByClassName("expand_content")[0].id;
+    expandcontract(first);
+}';
+    }
+
+    $bjs .= '
+// Deeplink öffnet den Expand-Content
+var hash = window.location.hash;
+hash = hash.replace("#","");
+if (hash.length && document.getElementById(hash) !== null) {
+    expandcontract(hash);
+    //document.getElementById(hash).scrollIntoView({ block: "start",  behavior: "smooth" });
+}
+</script>';
     }
 
     return $o;
 }
-?>
+
+$expandcontractStyles = $plugin_cf['expandcontract']['use_stylesheet'];
+if ($expandcontractStyles != '') {
+    $hjs .= '<link rel="stylesheet" href="' . $pth['folder']['plugins'] . 'expandcontract/css/' . $expandcontractStyles . '" type="text/css">
+';
+}
