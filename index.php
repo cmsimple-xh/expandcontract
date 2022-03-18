@@ -30,7 +30,7 @@ function expand()
     $tmp_params = array();
     foreach($params as $param) {
         list ($cKey, $cValue) = explode('=', $param, 2);
-        $tmp_params[trim($cKey)] = trim($cValue);
+        $tmp_params[strtolower(trim($cKey))] = trim($cValue);
         /*$tmp_params = array_map(function($value) {
             return str_ireplace(array('on', 'off'), array('1', '0'), $value);
         }, $tmp_params);*/
@@ -46,27 +46,31 @@ function expand()
     } else {
         $linktext = false;
     }
-    if (array_key_exists('close', $tmp_params)) {
-        $closebutton = str_ireplace(array('on', 'off'), array('1', false), $tmp_params['close']);
+    if (array_key_exists('show-close', $tmp_params)) {
+        $closebutton = str_ireplace(array('on', 'off'), array('1', false), $tmp_params['show-close']);
     } else {
         $closebutton = $plugin_cf['expandcontract']['expand-content_show_close_button'];
     }
-    if (array_key_exists('height', $tmp_params)) {
-            if (substr($tmp_params['height'], -2) == 'px'
-            || substr($tmp_params['height'], -2) == 'em'
-            || substr($tmp_params['height'], -1) == '%') {
-                $limitheight = $tmp_params['height'];
-            } elseif ($tmp_params['height'] == 'on'
-            && $plugin_cf['expandcontract']['expand-content_max-height'] != '') {
-                $limitheight = $plugin_cf['expandcontract']['expand-content_max-height'];
-            } else {
-                $limitheight = false;
-            }
+    if (array_key_exists('auto-close', $tmp_params)) {
+        $autoclose = str_ireplace(array('on', 'off'), array('1', false), $tmp_params['auto-close']);
+    } else {
+        $autoclose = $plugin_cf['expandcontract']['expand-content_auto_close'];
+    }
+    if (array_key_exists('max-height', $tmp_params)) {
+        $tmp_params['max-height'] = str_ireplace(array('on', 'off'), array('on', 'off'), $tmp_params['max-height']);
+        if ($tmp_params['max-height'] == 'on'
+        && $plugin_cf['expandcontract']['expand-content_max-height'] != '') {
+            $limitheight = $plugin_cf['expandcontract']['expand-content_max-height'];
+        } elseif ($tmp_params['max-height'] == 'off') {
+            $limitheight = false;
+        } else {
+            $limitheight = $tmp_params['max-height'];
+        }
     } else {
         $limitheight = $plugin_cf['expandcontract']['expand-content_max-height'];
     }
-    if (array_key_exists('vertical', $tmp_params)) {
-        $usebuttons = str_ireplace(array('on', 'off'), array('1', false), $tmp_params['vertical']);
+    if (array_key_exists('show-inline', $tmp_params)) {
+        $usebuttons = str_ireplace(array('on', 'off'), array('1', false), $tmp_params['show-inline']);
     } else {
         $usebuttons = $plugin_cf['expandcontract']['use_inline_buttons'];
     }
@@ -191,7 +195,7 @@ function expandcontract(expPage) {
         deepL = expPage.replace("popup","deeplink");
         document.getElementById(deepL).classList.remove("current");
     } else {';
-    if ($plugin_cf['expandcontract']['expand-content_auto_close'] === 'true') {
+    if ($autoclose) {
         $bjs .= '
         var expandlist = document.getElementsByClassName("expand_content");
         for (index = 0; index < expandlist.length; ++index) {
