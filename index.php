@@ -18,19 +18,70 @@ if (!defined('CMSIMPLE_XH_VERSION')) {
 }
 
 
-function expand($link='',$linktext='',$closebutton='',$limitheight='',$usebuttons='',$firstopen='')
+//function expand($link='',$linktext='',$closebutton='',$limitheight='',$usebuttons='',$firstopen='')
+function expand()
 {
     global $s, $cl, $l, $cf, $h, $c, $u, $plugin_cf, $plugin_tx, $bjs;
 
     if ($s < 0) return;
 
+    $params = func_get_args();
+
+    $tmp_params = array();
+    foreach($params as $param) {
+        list ($cKey, $cValue) = explode('=', $param, 2);
+        $tmp_params[strtolower(trim($cKey))] = trim($cValue);
+        /*$tmp_params = array_map(function($value) {
+            return str_ireplace(array('on', 'off'), array('1', '0'), $value);
+        }, $tmp_params);*/
+    }
+
+    if (array_key_exists('pages', $tmp_params)) {
+        $link = $tmp_params['pages'];
+    } else {
+        $link = false;
+    }
+    if (array_key_exists('headlines', $tmp_params)) {
+        $linktext = $tmp_params['headlines'];
+    } else {
+        $linktext = false;
+    }
+    if (array_key_exists('show-close', $tmp_params)) {
+        $closebutton = str_ireplace(array('on', 'off'), array('1', false), $tmp_params['show-close']);
+    } else {
+        $closebutton = $plugin_cf['expandcontract']['expand-content_show_close_button'];
+    }
+    if (array_key_exists('auto-close', $tmp_params)) {
+        $autoclose = str_ireplace(array('on', 'off'), array('1', false), $tmp_params['auto-close']);
+    } else {
+        $autoclose = $plugin_cf['expandcontract']['expand-content_auto_close'];
+    }
+    if (array_key_exists('max-height', $tmp_params)) {
+        $tmp_params['max-height'] = str_ireplace(array('on', 'off'), array('on', 'off'), $tmp_params['max-height']);
+        if ($tmp_params['max-height'] == 'on'
+        && $plugin_cf['expandcontract']['expand-content_max-height'] != '') {
+            $limitheight = $plugin_cf['expandcontract']['expand-content_max-height'];
+        } elseif ($tmp_params['max-height'] == 'off') {
+            $limitheight = false;
+        } else {
+            $limitheight = $tmp_params['max-height'];
+        }
+    } else {
+        $limitheight = $plugin_cf['expandcontract']['expand-content_max-height'];
+    }
+    if (array_key_exists('show-inline', $tmp_params)) {
+        $usebuttons = str_ireplace(array('on', 'off'), array('1', false), $tmp_params['show-inline']);
+    } else {
+        $usebuttons = $plugin_cf['expandcontract']['use_inline_buttons'];
+    }
+    if (array_key_exists('firstopen', $tmp_params)) {
+        $firstopen = str_ireplace(array('on', 'off'), array('1', false), $tmp_params['firstopen']);
+    } else {
+        $firstopen = $plugin_cf['expandcontract']['expand-content_first_open'];
+    }
+
     $o = $t = '';
     $pageNrArray = array();
-
-    $closebutton = $closebutton!==''? $closebutton : $plugin_cf['expandcontract']['expand-content_show_close_button'];
-    $limitheight = $limitheight!==''? $limitheight : $plugin_cf['expandcontract']['expand-content_max-height'];
-    $usebuttons  = $usebuttons!==''?  $usebuttons  : $plugin_cf['expandcontract']['use_inline_buttons'];
-    $firstopen   = $firstopen!==''?   $firstopen   : $plugin_cf['expandcontract']['expand-content_first_open'];
 
     // $unikId only to demonstrate different settings on the same page
     $unikId = $closebutton . $limitheight . $usebuttons;
@@ -39,6 +90,7 @@ function expand($link='',$linktext='',$closebutton='',$limitheight='',$usebutton
         if (strpos($link, ',')) {
             $linklist = explode(',', $link);
             foreach ($linklist as $singlelink) {
+                $singlelink = trim($singlelink);
                 $pageNrArray[] = array_search($singlelink, $h);
             }
             $link = false;
@@ -143,7 +195,7 @@ function expandcontract(expPage) {
         deepL = expPage.replace("popup","deeplink");
         document.getElementById(deepL).classList.remove("current");
     } else {';
-    if ($plugin_cf['expandcontract']['expand-content_auto_close'] === 'true') {
+    if ($autoclose) {
         $bjs .= '
         var expandlist = document.getElementsByClassName("expand_content");
         for (index = 0; index < expandlist.length; ++index) {
