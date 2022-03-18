@@ -91,7 +91,11 @@ function expand()
             $linklist = explode(',', $link);
             foreach ($linklist as $singlelink) {
                 $singlelink = trim($singlelink);
-                $pageNrArray[] = array_search($singlelink, $h);
+                $pageNr = array_search($singlelink, $h);
+                if ($pageNr === false) {
+                    return XH_message('fail', 'Page "%s" not found!', $singlelink); //i18n
+                }
+                $pageNrArray[] = $pageNr;
             }
             $link = false;
         } else {
