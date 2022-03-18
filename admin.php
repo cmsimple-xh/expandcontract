@@ -54,7 +54,7 @@ if (function_exists('XH_wantsPluginAdministration')
 function expandGetCssFiles() {
         global $pth;
         $temp = glob($pth['folder']['plugins'] . 'expandcontract/css/*.css');
-        $files = array();
+        $files = array('');
         foreach ($temp as $file) {
             if (basename($file) !== 'stylesheet.css') {
                 $files[] = basename($file);
