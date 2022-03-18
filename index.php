@@ -29,8 +29,10 @@ function expand()
 
     $tmp_params = array();
     foreach($params as $param) {
-        list ($cKey, $cValue) = explode('=', $param, 2);
-        $tmp_params[strtolower(trim($cKey))] = trim($cValue);
+        if (strpos($param, '=') !== false) {
+            list ($cKey, $cValue) = explode('=', $param, 2);
+            $tmp_params[strtolower(trim($cKey))] = trim($cValue);
+        }
         /*$tmp_params = array_map(function($value) {
             return str_ireplace(array('on', 'off'), array('1', '0'), $value);
         }, $tmp_params);*/
