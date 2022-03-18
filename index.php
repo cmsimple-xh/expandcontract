@@ -18,19 +18,66 @@ if (!defined('CMSIMPLE_XH_VERSION')) {
 }
 
 
-function expand($link='',$linktext='',$closebutton='',$limitheight='',$usebuttons='',$firstopen='')
+//function expand($link='',$linktext='',$closebutton='',$limitheight='',$usebuttons='',$firstopen='')
+function expand()
 {
     global $s, $cl, $l, $cf, $h, $c, $u, $plugin_cf, $plugin_tx, $bjs;
 
     if ($s < 0) return;
 
+    $params = func_get_args();
+
+    $tmp_params = array();
+    foreach($params as $param) {
+        list ($cKey, $cValue) = explode('=', $param, 2);
+        $tmp_params[trim($cKey)] = trim($cValue);
+        /*$tmp_params = array_map(function($value) {
+            return str_ireplace(array('on', 'off'), array('1', '0'), $value);
+        }, $tmp_params);*/
+    }
+
+    if (array_key_exists('pages', $tmp_params)) {
+        $link = $tmp_params['pages'];
+    } else {
+        $link = false;
+    }
+    if (array_key_exists('headlines', $tmp_params)) {
+        $linktext = $tmp_params['headlines'];
+    } else {
+        $linktext = false;
+    }
+    if (array_key_exists('close', $tmp_params)) {
+        $closebutton = str_ireplace(array('on', 'off'), array('1', false), $tmp_params['close']);
+    } else {
+        $closebutton = $plugin_cf['expandcontract']['expand-content_show_close_button'];
+    }
+    if (array_key_exists('height', $tmp_params)) {
+            if (substr($tmp_params['height'], -2) == 'px'
+            || substr($tmp_params['height'], -2) == 'em'
+            || substr($tmp_params['height'], -1) == '%') {
+                $limitheight = $tmp_params['height'];
+            } elseif ($tmp_params['height'] == 'on'
+            && $plugin_cf['expandcontract']['expand-content_max-height'] != '') {
+                $limitheight = $plugin_cf['expandcontract']['expand-content_max-height'];
+            } else {
+                $limitheight = false;
+            }
+    } else {
+        $limitheight = $plugin_cf['expandcontract']['expand-content_max-height'];
+    }
+    if (array_key_exists('vertical', $tmp_params)) {
+        $usebuttons = str_ireplace(array('on', 'off'), array('1', false), $tmp_params['vertical']);
+    } else {
+        $usebuttons = $plugin_cf['expandcontract']['use_inline_buttons'];
+    }
+    if (array_key_exists('firstopen', $tmp_params)) {
+        $firstopen = str_ireplace(array('on', 'off'), array('1', false), $tmp_params['firstopen']);
+    } else {
+        $firstopen = $plugin_cf['expandcontract']['expand-content_first_open'];
+    }
+
     $o = $t = '';
     $pageNrArray = array();
-
-    $closebutton = $closebutton!==''? $closebutton : $plugin_cf['expandcontract']['expand-content_show_close_button'];
-    $limitheight = $limitheight!==''? $limitheight : $plugin_cf['expandcontract']['expand-content_max-height'];
-    $usebuttons  = $usebuttons!==''?  $usebuttons  : $plugin_cf['expandcontract']['use_inline_buttons'];
-    $firstopen   = $firstopen!==''?   $firstopen   : $plugin_cf['expandcontract']['expand-content_first_open'];
 
     // $unikId only to demonstrate different settings on the same page
     $unikId = $closebutton . $limitheight . $usebuttons;
@@ -39,6 +86,7 @@ function expand($link='',$linktext='',$closebutton='',$limitheight='',$usebutton
         if (strpos($link, ',')) {
             $linklist = explode(',', $link);
             foreach ($linklist as $singlelink) {
+                $singlelink = trim($singlelink);
                 $pageNrArray[] = array_search($singlelink, $h);
             }
             $link = false;
