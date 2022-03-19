@@ -237,3 +237,22 @@ if ($expandcontractStyles != '') {
     $hjs .= '<link rel="stylesheet" href="' . $pth['folder']['plugins'] 
         . 'expandcontract/css/' . $expandcontractStyles . '" type="text/css">';
 }
+
+function expand_validateOnOff($args = array(), $param = '', $default = '') {
+    global $plugin_cf;
+    
+    if (!array_key_exists($param, $args)) {
+        return $plugin_cf['expandcontract'][$default];
+    }
+    
+    switch ($args[$param]) {
+        case 'on': 
+            return true;
+
+        case 'off': 
+            return false;
+        
+        default:
+            return $plugin_cf['expandcontract'][$default];
+    }
+}
