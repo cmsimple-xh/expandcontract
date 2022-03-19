@@ -33,9 +33,6 @@ function expand()
             list ($cKey, $cValue) = explode('=', $param, 2);
             $tmp_params[strtolower(trim($cKey))] = trim($cValue);
         }
-        /*$tmp_params = array_map(function($value) {
-            return str_ireplace(array('on', 'off'), array('1', '0'), $value);
-        }, $tmp_params);*/
     }
 
     if (array_key_exists('pages', $tmp_params)) {
@@ -48,16 +45,7 @@ function expand()
     } else {
         $linktext = false;
     }
-    if (array_key_exists('show-close', $tmp_params)) {
-        $closebutton = str_ireplace(array('on', 'off'), array('1', false), $tmp_params['show-close']);
-    } else {
-        $closebutton = $plugin_cf['expandcontract']['expand-content_show_close_button'];
-    }
-    if (array_key_exists('auto-close', $tmp_params)) {
-        $autoclose = str_ireplace(array('on', 'off'), array('1', false), $tmp_params['auto-close']);
-    } else {
-        $autoclose = $plugin_cf['expandcontract']['expand-content_auto_close'];
-    }
+
     if (array_key_exists('max-height', $tmp_params)) {
         $tmp_params['max-height'] = str_ireplace(array('on', 'off'), array('on', 'off'), $tmp_params['max-height']);
         if ($tmp_params['max-height'] == 'on'
@@ -71,16 +59,11 @@ function expand()
     } else {
         $limitheight = $plugin_cf['expandcontract']['expand-content_max-height'];
     }
-    if (array_key_exists('show-inline', $tmp_params)) {
-        $usebuttons = str_ireplace(array('on', 'off'), array('1', false), $tmp_params['show-inline']);
-    } else {
-        $usebuttons = $plugin_cf['expandcontract']['use_inline_buttons'];
-    }
-    if (array_key_exists('firstopen', $tmp_params)) {
-        $firstopen = str_ireplace(array('on', 'off'), array('1', false), $tmp_params['firstopen']);
-    } else {
-        $firstopen = $plugin_cf['expandcontract']['expand-content_first_open'];
-    }
+    
+    $closebutton = expand_validateOnOff($tmp_params, 'show-close', 'expand-content_show_close_button');
+    $autoclose = expand_validateOnOff($tmp_params, 'auto-close', 'expand-content_auto_close');
+    $usebuttons = expand_validateOnOff($tmp_params, 'show-inline', 'use_inline_buttons');
+    $firstopen = expand_validateOnOff($tmp_params, 'firstopen', 'expand-content_first_open');
 
     $o = $t = '';
     $pageNrArray = array();
@@ -251,6 +234,6 @@ if (hash.length && hash.substring(0, 5) == "popup" && document.getElementById(ha
 
 $expandcontractStyles = $plugin_cf['expandcontract']['use_stylesheet'];
 if ($expandcontractStyles != '') {
-    $hjs .= '<link rel="stylesheet" href="' . $pth['folder']['plugins'] . 'expandcontract/css/' . $expandcontractStyles . '" type="text/css">
-';
+    $hjs .= '<link rel="stylesheet" href="' . $pth['folder']['plugins'] 
+        . 'expandcontract/css/' . $expandcontractStyles . '" type="text/css">';
 }
