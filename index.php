@@ -62,6 +62,7 @@ function expand()
         $limitheight = $plugin_cf['expandcontract']['expand-content_max-height'];
     }
     
+    $contentpadding = 0;
     if (array_key_exists('content-padding', $tmp_params)) {
         $contentpadding = preg_replace('/^\s+|\s+$/u', '', $tmp_params['content-padding']);
         if ($contentpadding == '') {
