@@ -22,6 +22,8 @@ if (!defined('CMSIMPLE_XH_VERSION')) {
 function expand()
 {
     global $s, $cl, $l, $cf, $h, $c, $u, $plugin_cf, $plugin_tx, $bjs;
+    static $count = 1;
+    $uniqueId = '_ec' . $count;
 
     if ($s < 0) return;
 
@@ -77,7 +79,7 @@ function expand()
     $pageNrArray = array();
 
     // $unikId only to demonstrate different settings on the same page
-    $unikId = $closebutton . $limitheight . $usebuttons;
+    //$unikId = $closebutton . $limitheight . $usebuttons;
 
     if ($link) {
         if (strpos($link, ',')) {
@@ -118,9 +120,10 @@ function expand()
         $o .= '
 <div class="expand_linkArea">';
 }
+    $i = 1;
     foreach ($pageNrArray as $value) {
-
-        $js = '" class="linkBtn" id="deeplink'.$value.$unikId.'" onclick="expandcontract(\'popup'.$value.$unikId.'\'); return false;';
+        
+        $js = '" class="linkBtn" id="deeplink'.$i.$uniqueId.'" onclick="expandcontract(\'popup'.$i.$uniqueId.'\'); return false;';
 
         $expContent = str_replace('#CMSimple hide#', '', $c[$value]);
 
@@ -133,17 +136,17 @@ function expand()
 </form>';
         } else {
             if (!$link) $t .= '
-<p class="expand_link" id="' . $value . '">';
+<p class="expand_link" id="ecId' . $i . '">';
             $t .= a($value,$js);
             $t .= $linktext? $linktext : $h[$value];
             $t .= '</a>';
             if (!$link) $t .= '</p>';
         }
         $t .= '
-<div id="popup'.$value.$unikId.'" class="expand_content" style="max-height: 0px;">';
+<div id="popup'.$i.$uniqueId.'" class="expand_content" style="max-height: 0px;">';
         $linkU =  $_SERVER['REQUEST_URI'];
         $t .= '
-<div class="deepLink"><a href="' . $linkU . '#popup' . $value.$unikId . '" onclick="return false;">&#x1f517;</a></div>';
+<div class="deepLink"><a href="' . $linkU . '#popup' . $i.$uniqueId . '" onclick="return false;">&#x1f517;</a></div>';
         if ($limitheight) $t .= '
 <div style="height:'.$limitheight.';overflow-y:scroll;">';
         $t .= $expContent;
@@ -153,11 +156,12 @@ function expand()
         if ($closebutton) {
             $t .= '
 <div class="ecClose">
-<button type="button" onclick="expandcontract(\'popup' . $value.$unikId . '\'); return false;">' . $plugin_tx['expandcontract']['close'] . '</button>
+<button type="button" onclick="expandcontract(\'popup' . $i.$uniqueId . '\'); return false;">' . $plugin_tx['expandcontract']['close'] . '</button>
 </div>';
         }
         $t .= '
 </div>';
+    $i++;
     }
     if ($usebuttons) {
         $o .= '
@@ -239,6 +243,7 @@ if (hash.length && hash.substring(0, 5) == "popup" && document.getElementById(ha
 </script>';
     }
 
+    $count++;
     return $o;
 }
 
