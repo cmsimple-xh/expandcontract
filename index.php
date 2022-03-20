@@ -190,7 +190,19 @@ function expandcontract(expPage) {
     contentPadding = "' . $contentpadding . '";
     let el = document.getElementById(expPage);
     let elMaxHeight = el.scrollHeight;
-    elMaxHeight = parseInt(elMaxHeight) + (parseInt(contentPadding) * 12);
+    target = el.getElementsByClassName("ecCloseButton")[0];
+    if (typeof target !== "undefined") {
+        targetHeight = target.offsetHeight;
+    } else {
+        targetHeight = 0;
+    }
+    depp = el.getElementsByClassName("deepLink")[0];
+    if (typeof depp !== "undefined") {
+        deppHeight = depp.offsetHeight;
+    } else {
+        deppHeight = 0;
+    }
+    elMaxHeight = parseInt(elMaxHeight) + (parseInt(contentPadding) * 2) + targetHeight + deppHeight;
     if (document.getElementById(expPage).style.getPropertyValue("max-height") != "0px") {
         document.getElementById(expPage).style.setProperty("max-height", "0px");
         document.getElementById(expPage).style.setProperty("padding", "0px");
