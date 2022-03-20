@@ -61,9 +61,11 @@ function expand()
     }
     
     if (array_key_exists('content-padding', $tmp_params)) {
-        $contentpadding = $tmp_params['content-padding'];
-    } else {
-        $contentpadding = $plugin_cf['expandcontract']['expand-content_padding'];
+        $contentpadding = preg_replace('/^\s+|\s+$/u', '', $tmp_params['content-padding']);
+        if ($contentpadding == '') {
+            $contentpadding = $plugin_cf['expandcontract']['expand-content_padding'];
+        }
+        $contentpadding == '' ? $contentpadding = 0 : $contentpadding;
     }
     
     $closebutton = expand_validateOnOff($tmp_params, 'show-close', 'expand-content_show_close_button');
