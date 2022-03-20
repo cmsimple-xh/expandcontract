@@ -49,19 +49,20 @@ function expand()
     }
 
     if (array_key_exists('max-height', $tmp_params)) {
-        $tmp_params['max-height'] = str_ireplace(array('on', 'off'), array('on', 'off'), $tmp_params['max-height']);
-        if ($tmp_params['max-height'] == 'on'
-        && $plugin_cf['expandcontract']['expand-content_max-height'] != '') {
-            $limitheight = $plugin_cf['expandcontract']['expand-content_max-height'];
-        } elseif ($tmp_params['max-height'] == 'off') {
-            $limitheight = false;
+        if (preg_match('#^(([0-9]{1,4}(\.[0-9]{1,4})?(px|em|rem|\%|vh))|off|0)$#i', $tmp_params['max-height'])) {
+            if ($tmp_params['max-height'] == 'off'
+            || $tmp_params['max-height'] == '0') {
+                $limitheight = false;
+            } else {
+                $limitheight = $tmp_params['max-height'];
+            }
         } else {
-            $limitheight = $tmp_params['max-height'];
+            $limitheight = $plugin_cf['expandcontract']['expand-content_max-height'];
         }
     } else {
         $limitheight = $plugin_cf['expandcontract']['expand-content_max-height'];
     }
-    
+
     if (array_key_exists('content-padding', $tmp_params)) {
         $contentpadding = preg_replace('/^\s+|\s+$/u', '', $tmp_params['content-padding']);
         if ($contentpadding == '') {
