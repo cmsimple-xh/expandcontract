@@ -60,6 +60,12 @@ function expand()
         $limitheight = $plugin_cf['expandcontract']['expand-content_max-height'];
     }
     
+    if (array_key_exists('content-padding', $tmp_params)) {
+        $contentpadding = $tmp_params['content-padding'];
+    } else {
+        $contentpadding = $plugin_cf['expandcontract']['expand-content_padding'];
+    }
+    
     $closebutton = expand_validateOnOff($tmp_params, 'show-close', 'expand-content_show_close_button');
     $autoclose = expand_validateOnOff($tmp_params, 'auto-close', 'expand-content_auto_close');
     $usebuttons = expand_validateOnOff($tmp_params, 'show-inline', 'use_inline_buttons');
@@ -164,16 +170,18 @@ function expand()
     if ($firstExpand) {
         $firstExpand = false;
 
+    /*
     $temp = $plugin_cf['expandcontract']['expand-content_padding'];
     if ($temp != '') {
         $expandcontractPadding = $temp;
     } else {
         $expandcontractPadding = 0;
     }
+     */
     $bjs .= '
 <script>
 function expandcontract(expPage) {
-    contentPadding = "' . $expandcontractPadding . '";
+    contentPadding = "' . $contentpadding . '";
     let el = document.getElementById(expPage);
     let elMaxHeight = el.scrollHeight;
     elMaxHeight = parseInt(elMaxHeight) + (parseInt(contentPadding) * 12);
