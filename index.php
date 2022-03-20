@@ -62,13 +62,16 @@ function expand()
         $limitheight = $plugin_cf['expandcontract']['expand-content_max-height'];
     }
     
-    $contentpadding = 0;
     if (array_key_exists('content-padding', $tmp_params)) {
         $contentpadding = preg_replace('/^\s+|\s+$/u', '', $tmp_params['content-padding']);
         if ($contentpadding == '') {
             $contentpadding = $plugin_cf['expandcontract']['expand-content_padding'];
         }
         $contentpadding == '' ? $contentpadding = 0 : $contentpadding;
+    } elseif ($plugin_cf['expandcontract']['expand-content_padding'] !== '') {
+        $contentpadding = $plugin_cf['expandcontract']['expand-content_padding'];
+    } else {
+        $contentpadding = 0;
     }
     
     $closebutton = expand_validateOnOff($tmp_params, 'show-close', 'expand-content_show_close_button');
