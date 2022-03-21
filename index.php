@@ -32,8 +32,16 @@ function expand()
     $tmp_params = array();
     foreach($params as $param) {
         if (strpos($param, '=') !== false) {
-            list ($cKey, $cValue) = explode('=', $param, 2);
-            $tmp_params[strtolower(trim($cKey))] = trim($cValue);
+            list ($pKey, $pValue) = explode('=', $param, 2);
+            //$tmp_params[strtolower(trim($cKey))] = trim($cValue);
+            $pKey = ec_cts($pKey);
+            $pValue = ec_cts($pValue);
+            if ($pKey != '' && $pValue != '') {
+                $pValue = str_ireplace(array('on', 'off'),
+                                       array('on', 'off'),
+                                       $pValue);
+                $tmp_params[strtolower($pKey)] = $pValue;
+            }
         }
     }
 
@@ -49,35 +57,31 @@ function expand()
     }
 
     if (array_key_exists('max-height', $tmp_params)) {
-        $tmp_params['max-height'] = str_ireplace(array('on', 'off'), array('on', 'off'), $tmp_params['max-height']);
-        if ($tmp_params['max-height'] == 'on'
-        && $plugin_cf['expandcontract']['expand-content_max-height'] != '') {
-            $limitheight = $plugin_cf['expandcontract']['expand-content_max-height'];
-        } elseif ($tmp_params['max-height'] == 'off') {
-            $limitheight = false;
+        if (preg_match('#^(([0-9]{1,4}(\.[0-9]{1,4})?(px|em|rem|\%|vh))|off|0)$#i', $tmp_params['max-height'])) {
+            if ($tmp_params['max-height'] == 'off'
+            || $tmp_params['max-height'] == '0') {
+                $limitheight = false;
+            } else {
+                $limitheight = $tmp_params['max-height'];
+            }
         } else {
-            $limitheight = $tmp_params['max-height'];
+            $limitheight = $plugin_cf['expandcontract']['expand-content_max-height'];
         }
     } else {
         $limitheight = $plugin_cf['expandcontract']['expand-content_max-height'];
     }
-    
+
+    $contentpadding = 0;
     if (array_key_exists('content-padding', $tmp_params)) {
-        $contentpadding = preg_replace('/^\s+|\s+$/u', '', $tmp_params['content-padding']);
-        if ($contentpadding == '') {
-            $contentpadding = $plugin_cf['expandcontract']['expand-content_padding'];
-        }
-        $contentpadding == '' ? $contentpadding = 0 : $contentpadding;
-    } elseif ($plugin_cf['expandcontract']['expand-content_padding'] !== '') {
+        $contentpadding = $tmp_params['content-padding'];
+    } elseif ($plugin_cf['expandcontract']['expand-content_padding'] != '') {
         $contentpadding = $plugin_cf['expandcontract']['expand-content_padding'];
-    } else {
-        $contentpadding = 0;
     }
-    
-    $closebutton = expand_validateOnOff($tmp_params, 'show-close', 'expand-content_show_close_button');
-    $autoclose = expand_validateOnOff($tmp_params, 'auto-close', 'expand-content_auto_close');
-    $usebuttons = expand_validateOnOff($tmp_params, 'show-inline', 'use_inline_buttons');
-    $firstopen = expand_validateOnOff($tmp_params, 'firstopen', 'expand-content_first_open');
+
+    $closebutton = ec_validateOnOff($tmp_params, 'show-close', 'expand-content_show_close_button');
+    $autoclose = ec_validateOnOff($tmp_params, 'auto-close', 'expand-content_auto_close');
+    $usebuttons = ec_validateOnOff($tmp_params, 'show-inline', 'use_inline_buttons');
+    $firstopen = ec_validateOnOff($tmp_params, 'firstopen', 'expand-content_first_open');
 
     $o = $t = '';
     $pageNrArray = array();
@@ -89,12 +93,15 @@ function expand()
         if (strpos($link, ',')) {
             $linklist = explode(',', $link);
             foreach ($linklist as $singlelink) {
-                $singlelink = trim($singlelink);
-                $pageNr = array_search($singlelink, $h);
-                if ($pageNr === false) {
-                    return XH_message('fail', 'Page "%s" not found!', $singlelink); //i18n
+                //$singlelink = trim($singlelink);
+                $singlelink = ec_cts($singlelink);
+                if ($singlelink != '') {
+                    $pageNr = array_search($singlelink, $h);
+                    if ($pageNr === false) {
+                        return XH_message('fail', 'Page "%s" not found!', $singlelink); //i18n
+                    }
+                    $pageNrArray[] = $pageNr;
                 }
-                $pageNrArray[] = $pageNr;
             }
             $link = false;
         } else {
@@ -117,6 +124,20 @@ function expand()
         }
     }
 
+    $headlineArray = array('headlines');
+    if ($linktext) {
+        if (strpos($linktext, ',')) {
+            $linktextlist = explode(',', $linktext);
+            foreach ($linktextlist as $singlelinktext) {
+                $singlelinktext = ec_cts($singlelinktext);
+                if ($singlelinktext != '') {
+                    $headlineArray[] = $singlelinktext;
+                }
+            }
+        } else {
+            $headlineArray[] = $linktext;
+        }
+    }
 
     if (!$link) $o .= '
 <div class="expand_area">';
@@ -135,14 +156,14 @@ function expand()
             $o .= '
 <form method="post" class="expand_button" action="?' . $u[$value] . $js . '">
 <input type="submit" value="';
-            $o .= $linktext? $linktext : $h[$value];
+            $o .= !empty($headlineArray[$i]) ? $headlineArray[$i] : $h[$value];
             $o .=  '">
 </form>';
         } else {
             if (!$link) $t .= '
 <p class="expand_link" id="ecId' . $i . '">';
             $t .= a($value,$js);
-            $t .= $linktext? $linktext : $h[$value];
+            $t .= !empty($headlineArray[$i]) ? $headlineArray[$i] : $h[$value];
             $t .= '</a>';
             if (!$link) $t .= '</p>';
         }
@@ -269,9 +290,10 @@ if ($expandcontractStyles != '') {
         . 'expandcontract/css/' . $expandcontractStyles . '" type="text/css">';
 }
 
-function expand_validateOnOff($args = array(), $param = '', $default = '') {
+function ec_validateOnOff($args = array(), $param = '', $default = '') {
+
     global $plugin_cf;
-    
+
     if (!array_key_exists($param, $args)) {
         return $plugin_cf['expandcontract'][$default];
     }
@@ -282,8 +304,16 @@ function expand_validateOnOff($args = array(), $param = '', $default = '') {
 
         case 'off': 
             return false;
-        
+
         default:
             return $plugin_cf['expandcontract'][$default];
     }
+}
+
+// clean TinyMCE multible spaces
+// at the beginning and at the end from $data
+// from WYSIWYG-Mode
+function ec_cts($data = '') {
+
+    return $data = preg_replace('/^\s+|\s+$/u', '', $data);
 }
