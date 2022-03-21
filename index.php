@@ -34,9 +34,12 @@ function expand()
         if (strpos($param, '=') !== false) {
             list ($pKey, $pValue) = explode('=', $param, 2);
             //$tmp_params[strtolower(trim($cKey))] = trim($cValue);
-            $pKey = cts($pKey);
-            $pValue = cts($pValue);
+            $pKey = ec_cts($pKey);
+            $pValue = ec_cts($pValue);
             if ($pKey != '' && $pValue != '') {
+                $pValue = str_ireplace(array('on', 'off'),
+                                       array('on', 'off'),
+                                       $pValue);
                 $tmp_params[strtolower($pKey)] = $pValue;
             }
         }
@@ -68,18 +71,17 @@ function expand()
         $limitheight = $plugin_cf['expandcontract']['expand-content_max-height'];
     }
 
+    $contentpadding = 0;
     if (array_key_exists('content-padding', $tmp_params)) {
         $contentpadding = $tmp_params['content-padding'];
     } elseif ($plugin_cf['expandcontract']['expand-content_padding'] != '') {
         $contentpadding = $plugin_cf['expandcontract']['expand-content_padding'];
-    } else {
-        $contentpadding = 0;
     }
-    
-    $closebutton = expand_validateOnOff($tmp_params, 'show-close', 'expand-content_show_close_button');
-    $autoclose = expand_validateOnOff($tmp_params, 'auto-close', 'expand-content_auto_close');
-    $usebuttons = expand_validateOnOff($tmp_params, 'show-inline', 'use_inline_buttons');
-    $firstopen = expand_validateOnOff($tmp_params, 'firstopen', 'expand-content_first_open');
+
+    $closebutton = ec_validateOnOff($tmp_params, 'show-close', 'expand-content_show_close_button');
+    $autoclose = ec_validateOnOff($tmp_params, 'auto-close', 'expand-content_auto_close');
+    $usebuttons = ec_validateOnOff($tmp_params, 'show-inline', 'use_inline_buttons');
+    $firstopen = ec_validateOnOff($tmp_params, 'firstopen', 'expand-content_first_open');
 
     $o = $t = '';
     $pageNrArray = array();
@@ -92,7 +94,7 @@ function expand()
             $linklist = explode(',', $link);
             foreach ($linklist as $singlelink) {
                 //$singlelink = trim($singlelink);
-                $singlelink = cts($singlelink);
+                $singlelink = ec_cts($singlelink);
                 if ($singlelink != '') {
                     $pageNr = array_search($singlelink, $h);
                     if ($pageNr === false) {
@@ -127,7 +129,7 @@ function expand()
         if (strpos($linktext, ',')) {
             $linktextlist = explode(',', $linktext);
             foreach ($linktextlist as $singlelinktext) {
-                $singlelinktext = cts($singlelinktext);
+                $singlelinktext = ec_cts($singlelinktext);
                 if ($singlelinktext != '') {
                     $headlineArray[] = $singlelinktext;
                 }
@@ -288,9 +290,10 @@ if ($expandcontractStyles != '') {
         . 'expandcontract/css/' . $expandcontractStyles . '" type="text/css">';
 }
 
-function expand_validateOnOff($args = array(), $param = '', $default = '') {
+function ec_validateOnOff($args = array(), $param = '', $default = '') {
+
     global $plugin_cf;
-    
+
     if (!array_key_exists($param, $args)) {
         return $plugin_cf['expandcontract'][$default];
     }
@@ -301,7 +304,7 @@ function expand_validateOnOff($args = array(), $param = '', $default = '') {
 
         case 'off': 
             return false;
-        
+
         default:
             return $plugin_cf['expandcontract'][$default];
     }
@@ -310,7 +313,7 @@ function expand_validateOnOff($args = array(), $param = '', $default = '') {
 // clean TinyMCE multible spaces
 // at the beginning and at the end from $data
 // from WYSIWYG-Mode
-function cts($data = '') {
+function ec_cts($data = '') {
 
     return $data = preg_replace('/^\s+|\s+$/u', '', $data);
 }
