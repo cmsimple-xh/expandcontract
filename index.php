@@ -73,7 +73,7 @@ function expand()
     } elseif ($plugin_cf['expandcontract']['expand-content_padding'] != '') {
         $contentpadding = $plugin_cf['expandcontract']['expand-content_padding'];
     } else {
-    $contentpadding = 0;
+        $contentpadding = 0;
     }
     
     $closebutton = expand_validateOnOff($tmp_params, 'show-close', 'expand-content_show_close_button');
@@ -93,11 +93,13 @@ function expand()
             foreach ($linklist as $singlelink) {
                 //$singlelink = trim($singlelink);
                 $singlelink = cts($singlelink);
-                $pageNr = array_search($singlelink, $h);
-                if ($pageNr === false) {
-                    return XH_message('fail', 'Page "%s" not found!', $singlelink); //i18n
+                if ($singlelink != '') {
+                    $pageNr = array_search($singlelink, $h);
+                    if ($pageNr === false) {
+                        return XH_message('fail', 'Page "%s" not found!', $singlelink); //i18n
+                    }
+                    $pageNrArray[] = $pageNr;
                 }
-                $pageNrArray[] = $pageNr;
             }
             $link = false;
         } else {
@@ -120,6 +122,20 @@ function expand()
         }
     }
 
+    $headlineArray = array('headlines');
+    if ($linktext) {
+        if (strpos($linktext, ',')) {
+            $linktextlist = explode(',', $linktext);
+            foreach ($linktextlist as $singlelinktext) {
+                $singlelinktext = cts($singlelinktext);
+                if ($singlelinktext != '') {
+                    $headlineArray[] = $singlelinktext;
+                }
+            }
+        } else {
+            $headlineArray[] = $linktext;
+        }
+    }
 
     if (!$link) $o .= '
 <div class="expand_area">';
@@ -138,14 +154,14 @@ function expand()
             $o .= '
 <form method="post" class="expand_button" action="?' . $u[$value] . $js . '">
 <input type="submit" value="';
-            $o .= $linktext? $linktext : $h[$value];
+            $o .= !empty($headlineArray[$i]) ? $headlineArray[$i] : $h[$value];
             $o .=  '">
 </form>';
         } else {
             if (!$link) $t .= '
 <p class="expand_link" id="ecId' . $i . '">';
             $t .= a($value,$js);
-            $t .= $linktext? $linktext : $h[$value];
+            $t .= !empty($headlineArray[$i]) ? $headlineArray[$i] : $h[$value];
             $t .= '</a>';
             if (!$link) $t .= '</p>';
         }
