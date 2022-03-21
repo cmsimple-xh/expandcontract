@@ -32,8 +32,13 @@ function expand()
     $tmp_params = array();
     foreach($params as $param) {
         if (strpos($param, '=') !== false) {
-            list ($cKey, $cValue) = explode('=', $param, 2);
-            $tmp_params[strtolower(trim($cKey))] = trim($cValue);
+            list ($pKey, $pValue) = explode('=', $param, 2);
+            //$tmp_params[strtolower(trim($cKey))] = trim($cValue);
+            $pKey = cts($pKey);
+            $pValue = cts($pValue);
+            if ($pKey != '' && $pValue != '') {
+                $tmp_params[strtolower($pKey)] = $pValue;
+            }
         }
     }
 
@@ -64,15 +69,11 @@ function expand()
     }
 
     if (array_key_exists('content-padding', $tmp_params)) {
-        $contentpadding = preg_replace('/^\s+|\s+$/u', '', $tmp_params['content-padding']);
-        if ($contentpadding == '') {
-            $contentpadding = $plugin_cf['expandcontract']['expand-content_padding'];
-        }
-        $contentpadding == '' ? $contentpadding = 0 : $contentpadding;
-    } elseif ($plugin_cf['expandcontract']['expand-content_padding'] !== '') {
+        $contentpadding = $tmp_params['content-padding'];
+    } elseif ($plugin_cf['expandcontract']['expand-content_padding'] != '') {
         $contentpadding = $plugin_cf['expandcontract']['expand-content_padding'];
     } else {
-        $contentpadding = 0;
+    $contentpadding = 0;
     }
     
     $closebutton = expand_validateOnOff($tmp_params, 'show-close', 'expand-content_show_close_button');
@@ -90,7 +91,8 @@ function expand()
         if (strpos($link, ',')) {
             $linklist = explode(',', $link);
             foreach ($linklist as $singlelink) {
-                $singlelink = trim($singlelink);
+                //$singlelink = trim($singlelink);
+                $singlelink = cts($singlelink);
                 $pageNr = array_search($singlelink, $h);
                 if ($pageNr === false) {
                     return XH_message('fail', 'Page "%s" not found!', $singlelink); //i18n
@@ -287,4 +289,12 @@ function expand_validateOnOff($args = array(), $param = '', $default = '') {
         default:
             return $plugin_cf['expandcontract'][$default];
     }
+}
+
+// clean TinyMCE multible spaces
+// at the beginning and at the end from $data
+// from WYSIWYG-Mode
+function cts($data = '') {
+
+    return $data = preg_replace('/^\s+|\s+$/u', '', $data);
 }
