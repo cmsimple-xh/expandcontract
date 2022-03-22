@@ -190,7 +190,7 @@ function expand()
         if ($closebutton) {
             $t .= '
 <div class="ecClose">
-<button class="ecCloseButton" type="button" onclick="expandcontract(\'popup' . $i.$uniqueId . '\'); return false;">' . $plugin_tx['expandcontract']['close'] . '</button>
+<button class="ecCloseButton" type="button" onclick=\'expandcontract("popup'. $i . $uniqueId .'", ' . $options . '); return false;\'>' . $plugin_tx['expandcontract']['close'] . '</button>
 </div>';
         }
         $t .= '
