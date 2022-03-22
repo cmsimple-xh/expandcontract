@@ -21,7 +21,7 @@ if (!defined('CMSIMPLE_XH_VERSION')) {
 //function expand($link='',$linktext='',$closebutton='',$limitheight='',$usebuttons='',$firstopen='')
 function expand()
 {
-    global $s, $cl, $l, $cf, $h, $c, $u, $plugin_cf, $plugin_tx, $bjs;
+    global $s, $cl, $l, $cf, $h, $hjs, $c, $u, $plugin_cf, $plugin_tx, $pth, $bjs;
     static $count = 1;
     $uniqueId = '_ec' . $count;
 
@@ -82,6 +82,16 @@ function expand()
     $autoclose = ec_validateOnOff($tmp_params, 'auto-close', 'expand-content_auto_close');
     $usebuttons = ec_validateOnOff($tmp_params, 'show-inline', 'use_inline_buttons');
     $firstopen = ec_validateOnOff($tmp_params, 'firstopen', 'expand-content_first_open');
+    $targetid = 'ecId' . $count;
+    
+    $options = array(
+        'containerId' => $targetid,
+        'contentPadding' => $contentpadding,
+        'autoClose' => (bool) $autoclose,
+        'firstOpen' => (bool) $firstopen
+        );
+    $options = json_encode($options);
+    var_dump($options);
 
     $o = $t = '';
     $pageNrArray = array();
@@ -140,7 +150,7 @@ function expand()
     }
 
     if (!$link) $o .= '
-<div class="expand_area">';
+<div class="expand_area" id="' . $targetid . '">';
     if ($usebuttons) {
         $o .= '
 <div class="expand_linkArea">';
@@ -148,11 +158,11 @@ function expand()
     $i = 1;
     foreach ($pageNrArray as $value) {
         
-        $js = '" class="linkBtn" id="deeplink'.$i.$uniqueId.'" onclick="expandcontract(\'popup'.$i.$uniqueId.'\'); return false;';
-
+        //$js = '" class="linkBtn" id="deeplink'.$i.$uniqueId.'" onclick="expandcontract(\'popup'.$i.$uniqueId.'\'); return false;';
+        $js = '" class="linkBtn" id="deeplink'.$i.$uniqueId.'" onclick=\'expandcontract("popup'. $i . $uniqueId .'", ' . $options . '); return false;\'';
         $expContent = str_replace('#CMSimple hide#', '', $c[$value]);
 
-        if ($usebuttons) {
+        if ($usebuttons) { 
             $o .= '
 <form method="post" class="expand_button" action="?' . $u[$value] . $js . '">
 <input type="submit" value="';
@@ -161,7 +171,7 @@ function expand()
 </form>';
         } else {
             if (!$link) $t .= '
-<p class="expand_link" id="ecId' . $i . '">';
+<p class="expand_link">';
             $t .= a($value,$js);
             $t .= !empty($headlineArray[$i]) ? $headlineArray[$i] : $h[$value];
             $t .= '</a>';
@@ -197,97 +207,20 @@ function expand()
     if (!$link) $o .= '
 </div>';
 
-    static $firstExpand = true;
-    if ($firstExpand) {
-        $firstExpand = false;
-
-    /*
-    $temp = $plugin_cf['expandcontract']['expand-content_padding'];
-    if ($temp != '') {
-        $expandcontractPadding = $temp;
-    } else {
-        $expandcontractPadding = 0;
-    }
-     */
-    $bjs .= '
-<script>
-function expandcontract(expPage) {
-    contentPadding = "' . $contentpadding . '";
-    let el = document.getElementById(expPage);
-    let elMaxHeight = el.scrollHeight;
-    target = el.getElementsByClassName("ecCloseButton")[0];
-    if (typeof target !== "undefined") {
-        targetHeight = target.offsetHeight;
-    } else {
-        targetHeight = 0;
-    }
-    depp = el.getElementsByClassName("deepLink")[0];
-    if (typeof depp !== "undefined") {
-        deppHeight = depp.offsetHeight;
-    } else {
-        deppHeight = 0;
-    }
-    elMaxHeight = parseInt(elMaxHeight) + (parseInt(contentPadding) * 2) + targetHeight + deppHeight;
-    if (document.getElementById(expPage).style.getPropertyValue("max-height") != "0px") {
-        document.getElementById(expPage).style.setProperty("max-height", "0px");
-        document.getElementById(expPage).style.setProperty("padding", "0px");
-        document.getElementById(expPage).classList.remove("open");
-        deepL = expPage.replace("popup","deeplink");
-        document.getElementById(deepL).classList.remove("current");
-    } else {';
-    if ($autoclose) {
-        $bjs .= '
-        var expandlist = document.getElementsByClassName("expand_content");
-        for (index = 0; index < expandlist.length; ++index) {
-            expandlist[index].style.setProperty("max-height", "0px");
-            expandlist[index].style.setProperty("padding", "0px");
-            expandlist[index].classList.remove("open");
+    // JS & CSS nur einmal laden
+    if ($count === 1) {
+        $expandcontractStyles = $plugin_cf['expandcontract']['use_stylesheet'];
+        if ($expandcontractStyles != '') {
+            $hjs .= '<link rel="stylesheet" href="' . $pth['folder']['plugins'] 
+                    . 'expandcontract/css/' 
+                    . $expandcontractStyles . '" type="text/css">';
         }
-        var btnlist = document.getElementsByClassName("current");
-        for (index = 0; index < btnlist.length; ++index) {
-            btnlist[index].classList.remove("current");
-        }';
+        $jsFile = $pth['folder']['plugins'] . 'expandcontract/expandcontract.js';
+        $bjs .= '<script src="' . $jsFile . '"></script>';
+        
     }
-    $bjs .= '
-        document.getElementById(expPage).style.setProperty("max-height", elMaxHeight +"px");
-        document.getElementById(expPage).style.setProperty("padding", contentPadding);
-        document.getElementById(expPage).classList.add("open");
-        deepL = expPage.replace("popup","deeplink");
-        document.getElementById(deepL).classList.add("current");
-        //document.getElementById(expPage).scrollIntoView({block: "center", behavior: "smooth"});
-    }
-}';
-
-    if ($firstopen) {
-        $bjs .= '
-// öffnet den ersten Expand-Content
-area = document.getElementsByClassName("expand_area");
-if (area.length) {
-    list = document.getElementsByClassName("expand_area")[0];
-    first = list.getElementsByClassName("expand_content")[0].id;
-    expandcontract(first);
-}';
-    }
-
-    $bjs .= '
-// Deeplink öffnet den Expand-Content
-var hash = window.location.hash;
-hash = hash.replace("#","");
-if (hash.length && hash.substring(0, 5) == "popup" && document.getElementById(hash) !== null) {
-    expandcontract(hash);
-    //document.getElementById(hash).scrollIntoView({ block: "start",  behavior: "smooth" });
-}
-</script>';
-    }
-
     $count++;
     return $o;
-}
-
-$expandcontractStyles = $plugin_cf['expandcontract']['use_stylesheet'];
-if ($expandcontractStyles != '') {
-    $hjs .= '<link rel="stylesheet" href="' . $pth['folder']['plugins'] 
-        . 'expandcontract/css/' . $expandcontractStyles . '" type="text/css">';
 }
 
 function ec_validateOnOff($args = array(), $param = '', $default = '') {
