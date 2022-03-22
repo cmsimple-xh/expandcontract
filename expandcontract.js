@@ -13,18 +13,7 @@ function expandcontract(expPage, fromHash = false) {
         //Mach nichts, wenn der Container schon offen ist
         return;
     }
-
-    console.log(expPage);
-    console.log(containerId);
-    console.log(container);
-    //console.log(container.dataset.contentpadding);
-    //console.log(container.dataset.autoclose);
-    //console.log(container.dataset.firstopen);
-
-    console.log(contentPadding);
-    console.log(autoClose);
-    console.log(firstOpen);
-
+    
     let elMaxHeight = el.scrollHeight;
     target = el.getElementsByClassName("ecCloseButton")[0];
     if (typeof target !== "undefined") {
