@@ -59,17 +59,21 @@ function expandcontract(expPage, fromHash = false) {
     }
 }
 
-/*
- if ($firstopen) {
- // öffnet den ersten Expand-Content
- area = document.getElementsByClassName("expand_area");
- if (area.length) {
- list = document.getElementsByClassName("expand_area")[0];
- first = list.getElementsByClassName("expand_content")[0].id;
- expandcontract(first);
- }
- }
- */
+// Firstopen 
+function ec_openFirst() {
+    let containers = document.getElementsByClassName("expand_area");
+    for (index = 0; index < containers.length; ++index) {
+        itemId = containers[index].id;
+        if (document.getElementById(itemId).dataset.firstopen) {
+            //console.log(itemId);
+            //console.log(document.getElementById(itemId).dataset.firstopen);
+            first = document.getElementById(itemId).getElementsByClassName("expand_content")[0];
+            if (!first.classList.contains("open")) {
+                expandcontract(first.id);
+            }
+        }
+    }
+}
 
 // Deeplink öffnet den Expand-Content
 function ec_openFromHash() {
@@ -81,4 +85,5 @@ function ec_openFromHash() {
     }
 }
 
+ec_openFirst();
 ec_openFromHash();
