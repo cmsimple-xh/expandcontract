@@ -84,6 +84,11 @@ function expand()
     $firstopen = ec_validateOnOff($tmp_params, 'firstopen', 'expand-content_first_open');
     $targetid = 'ecId' . $count;
     
+    // Fuer CMS-Suche alle Container geschlossen lassen
+    if (isset($_GET['search'])) {
+        $firstopen = $autoclose = false;
+    }
+
     /*
     $options = array(
         'containerId' => $targetid,

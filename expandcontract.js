@@ -59,6 +59,20 @@ function expandcontract(expPage, fromHash = false) {
     }
 }
 
+// CMS-Suche
+function ec_showSearchResults() {
+    let containers = document.getElementsByClassName("expand_content");
+    for (index = 0; index < containers.length; ++index) {
+        //console.log(containers[index].getElementsByClassName("xh_find"));
+        if (containers[index].getElementsByClassName("xh_find").length) {
+            //expandcontract(containers[index].id);
+            if (!containers[index].classList.contains("open")) {
+                expandcontract(containers[index].id);
+            }
+        }
+    }
+}
+
 // Firstopen 
 function ec_openFirst() {
     let containers = document.getElementsByClassName("expand_area");
@@ -85,3 +99,4 @@ function ec_openFromHash() {
 
 ec_openFirst();
 ec_openFromHash();
+ec_showSearchResults();
