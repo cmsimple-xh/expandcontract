@@ -91,7 +91,6 @@ function expand()
         'firstOpen' => (bool) $firstopen
         );
     $options = json_encode($options);
-    var_dump($options);
 
     $o = $t = '';
     $pageNrArray = array();
