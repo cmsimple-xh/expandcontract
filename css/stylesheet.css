@@ -7,15 +7,12 @@
 .expand_link a {
 }
 .expand_content {
-	box-sizing: border-box;
+	box-sizing: content-box;
 	max-height: 0;
-	padding: 0;
 	overflow: hidden;
 	transition: all .5s ease-out;
-	position: relative;
 }
 .expand_content.open {
-	margin: 1em 0;
 }
 .expand_area {
 }
