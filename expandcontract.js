@@ -1,5 +1,5 @@
 
-function expandcontract(expPage) {
+function expandcontract(expPage, fromHash = false) {
 
     const el = document.getElementById(expPage);
     const container = el.closest("div.expand_area");
@@ -8,15 +8,19 @@ function expandcontract(expPage) {
     let contentPadding = container.dataset.contentpadding;
     let autoClose = container.dataset.autoclose;
     let firstOpen = container.dataset.firstopen;
-    
-   
+
+    if (fromHash === true && el.classList.contains("open")) {
+        //Mach nichts, wenn der Container schon offen ist
+        return;
+    }
+
     console.log(expPage);
     console.log(containerId);
     console.log(container);
     //console.log(container.dataset.contentpadding);
     //console.log(container.dataset.autoclose);
     //console.log(container.dataset.firstopen);
-    
+
     console.log(contentPadding);
     console.log(autoClose);
     console.log(firstOpen);
@@ -76,12 +80,16 @@ function expandcontract(expPage) {
  expandcontract(first);
  }
  }
- 
- // Deeplink öffnet den Expand-Content
- var hash = window.location.hash;
- hash = hash.replace("#", "");
- if (hash.length && hash.substring(0, 5) == "popup" && document.getElementById(hash) !== null) {
- expandcontract(hash);
- //document.getElementById(hash).scrollIntoView({ block: "start",  behavior: "smooth" });
- }
  */
+
+// Deeplink öffnet den Expand-Content
+function ec_openFromHash() {
+    var hash = window.location.hash;
+    hash = hash.replace("#", "");
+    if (hash.length && hash.substring(0, 5) === "popup" && document.getElementById(hash) !== null) {
+        expandcontract(hash, true);
+        //document.getElementById(hash).scrollIntoView({ block: "start",  behavior: "smooth" });
+    }
+}
+
+ec_openFromHash();
