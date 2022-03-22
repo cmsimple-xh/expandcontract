@@ -13,7 +13,7 @@ function expandcontract(expPage, options) {
     let contentPadding = options.contentPadding;
     let autoClose = options.autoClose;
     //let firstOpen = options.firstOpen;
-    let el = document.getElementById(expPage);
+    const el = document.getElementById(expPage);
     let elMaxHeight = el.scrollHeight;
     target = el.getElementsByClassName("ecCloseButton")[0];
     if (typeof target !== "undefined") {
@@ -28,10 +28,10 @@ function expandcontract(expPage, options) {
         deppHeight = 0;
     }
     elMaxHeight = parseInt(elMaxHeight) + (parseInt(contentPadding) * 2) + targetHeight + deppHeight;
-    if (document.getElementById(expPage).style.getPropertyValue("max-height") !== "0px") {
-        document.getElementById(expPage).style.setProperty("max-height", "0px");
-        document.getElementById(expPage).style.setProperty("padding", "0px");
-        document.getElementById(expPage).classList.remove("open");
+    if (el.style.getPropertyValue("max-height") !== "0px") {
+        el.style.setProperty("max-height", "0px");
+        el.style.setProperty("padding", "0px");
+        el.classList.remove("open");
         deepL = expPage.replace("popup", "deeplink");
         document.getElementById(deepL).classList.remove("current");
     } else {
@@ -50,12 +50,12 @@ function expandcontract(expPage, options) {
             }
         }
 
-        document.getElementById(expPage).style.setProperty("max-height", elMaxHeight + "px");
-        document.getElementById(expPage).style.setProperty("padding", contentPadding);
-        document.getElementById(expPage).classList.add("open");
+        el.style.setProperty("max-height", elMaxHeight + "px");
+        el.style.setProperty("padding", contentPadding);
+        el.classList.add("open");
         deepL = expPage.replace("popup", "deeplink");
         document.getElementById(deepL).classList.add("current");
-        //document.getElementById(expPage).scrollIntoView({block: "center", behavior: "smooth"});
+        //el.scrollIntoView({block: "center", behavior: "smooth"});
     }
 }
 
