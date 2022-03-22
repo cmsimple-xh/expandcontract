@@ -1,14 +1,13 @@
 :root {
-	--linkBackgroundColor1: #666;
-	--linkBackgroundColor2: #999;
+	--linkBackgroundColor1: rgba(204,0,0,.8);
+	--linkBackgroundColor2: rgba(204,0,0,.5);
 	--linkTextColor1: #fff;
 	--linkTextColor2: #fff;
-	--linkCurrentBackgroundColor: #333;
-	--closeBtnBackgroundColor1: #eee;
-	--closeBtnBackgroundColor2: #fff;
-	--closeBtnTextColor1: #666;
-	--closeBtnTextColor2: #666;
-	--contentBackgroundColor1: rgba(0,0,0,.05);
+	--linkCurrentBackgroundColor: rgba(204,0,0,1);
+	--closeBtnBackgroundColor1: rgba(204,0,0,.8);
+	--closeBtnBackgroundColor2: rgba(204,0,0,.5);
+	--closeBtnTextColor1: #fff;
+	--closeBtnTextColor2: #fff;
 }
 p.expand_link {
 	margin: 0 !important;
@@ -74,12 +73,14 @@ form.expand_button input:focus {
 	color: var(--linkTextColor2) !important;
 }
 .expand_content {
-	background: var(--contentBackgroundColor1) !important;
 }
 .expand_content.open {
 }
 .expand_area {
 	overflow: auto;
+}
+.expand_linkArea ~ .expand_content {
+	box-shadow: inset 0 1px 0 rgba(0,0,0,0.25), inset 0 -1px 0 rgba(0,0,0,0.25) !important;
 }
 div.ecClose button {
 	-webkit-appearance: none;
@@ -90,7 +91,7 @@ div.ecClose button {
 	color: var(--closeBtnTextColor1) !important;
 	margin: 5px 0;
 	padding: 2px 5px;
-	border: 1px solid var(--closeBtnTextColor1) !important;
+	border: 0px solid var(--closeBtnTextColor1) !important;
 	font: inherit !important;
 	font-size: .9em !important;
 	border-radius: 3px !important;
@@ -99,14 +100,17 @@ div.ecClose button {
 div.ecClose button:hover {
 	background: var(--closeBtnBackgroundColor2) !important;
 	color: var(--closeBtnTextColor2) !important;
-	border: 1px solid var(--closeBtnTextColor2) !important;
+	border: 0px solid var(--closeBtnTextColor2) !important;
 }
 .expand_link a::after {
-	content: "+";
+	content: "↓";
 	position: relative;
 	top: 1px;
 	display: inline-block;
-	font: bold 18px/1 monospace;
+	font-family: inherit !important;
+	font-weight: bold;
+	font-size: 1em !important;
+	line-height: 1 !important;
 	-webkit-font-smoothing: antialiased;
 	-moz-osx-font-smoothing: grayscale;
 	float: right;
@@ -114,7 +118,7 @@ div.ecClose button:hover {
 	-webkit-transition: -webkit-transform .3s linear;
 }
 .expand_link a.current::after {
-	content: "-";
+	content: "↓";
 	-webkit-transform: rotate(180deg);
 	transform: rotate(180deg);
 }

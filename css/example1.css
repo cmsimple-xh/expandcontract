@@ -8,7 +8,6 @@
 	--closeBtnBackgroundColor2: #fff;
 	--closeBtnTextColor1: #666;
 	--closeBtnTextColor2: #666;
-	--contentBackgroundColor1: rgba(0,0,0,.05);
 }
 p.expand_link {
 	margin: 0 !important;
@@ -74,7 +73,6 @@ form.expand_button input:focus {
 	color: var(--linkTextColor2) !important;
 }
 .expand_content {
-	background: var(--contentBackgroundColor1) !important;
 }
 .expand_content.open {
 }
