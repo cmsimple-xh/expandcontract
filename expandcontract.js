@@ -65,8 +65,6 @@ function ec_openFirst() {
     for (index = 0; index < containers.length; ++index) {
         itemId = containers[index].id;
         if (document.getElementById(itemId).dataset.firstopen) {
-            //console.log(itemId);
-            //console.log(document.getElementById(itemId).dataset.firstopen);
             first = document.getElementById(itemId).getElementsByClassName("expand_content")[0];
             if (!first.classList.contains("open")) {
                 expandcontract(first.id);
