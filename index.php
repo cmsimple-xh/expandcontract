@@ -84,6 +84,12 @@ function expand()
     $firstopen = ec_validateOnOff($tmp_params, 'firstopen', 'expand-content_first_open');
     $targetid = 'ecId' . $count;
     
+    // Fuer CMS-Suche alle Container geschlossen lassen
+    if (isset($_GET['search'])) {
+        $firstopen = $autoclose = false;
+    }
+
+    /*
     $options = array(
         'containerId' => $targetid,
         'contentPadding' => $contentpadding,
@@ -91,6 +97,13 @@ function expand()
         'firstOpen' => (bool) $firstopen
         );
     $options = json_encode($options);
+    */
+    
+    $options = 
+            'data-contentpadding="' . $contentpadding . '" ' .
+            'data-autoclose="' . $autoclose . '" ' .
+            'data-firstopen="' . $firstopen . '"'
+            ;
 
     $o = $t = '';
     $pageNrArray = array();
@@ -112,7 +125,7 @@ function expand()
                     $pageNrArray[] = $pageNr;
                 }
             }
-            $link = false;
+            //$link = false; // Fix Variante  #17
         } else {
             $pageNrArray[] = array_search($link, $h);
         }
@@ -132,7 +145,11 @@ function expand()
             }
         }
     }
-
+    //Fix "Variante 3" #17
+    if (count($pageNrArray) > 0) {
+        $link = false;
+    }
+    
     $headlineArray = array('headlines');
     if ($linktext) {
         if (strpos($linktext, ',')) {
@@ -149,7 +166,7 @@ function expand()
     }
 
     if (!$link) $o .= '
-<div class="expand_area" id="' . $targetid . '">';
+<div class="expand_area" id="' . $targetid . '" '. $options .'>';
     if ($usebuttons) {
         $o .= '
 <div class="expand_linkArea">';
@@ -157,8 +174,7 @@ function expand()
     $i = 1;
     foreach ($pageNrArray as $value) {
         
-        //$js = '" class="linkBtn" id="deeplink'.$i.$uniqueId.'" onclick="expandcontract(\'popup'.$i.$uniqueId.'\'); return false;';
-        $js = '" class="linkBtn" id="deeplink'.$i.$uniqueId.'" onclick=\'expandcontract("popup'. $i . $uniqueId .'", ' . $options . '); return false;\'';
+        $js = '" class="linkBtn" id="deeplink'.$i.$uniqueId.'" onclick="expandcontract(\'popup'.$i.$uniqueId.'\'); return false;';
         $expContent = str_replace('#CMSimple hide#', '', $c[$value]);
 
         if ($usebuttons) { 
@@ -190,7 +206,7 @@ function expand()
         if ($closebutton) {
             $t .= '
 <div class="ecClose">
-<button class="ecCloseButton" type="button" onclick=\'expandcontract("popup'. $i . $uniqueId .'", ' . $options . '); return false;\'>' . $plugin_tx['expandcontract']['close'] . '</button>
+<button class="ecCloseButton" type="button" onclick="expandcontract(\'popup' . $i.$uniqueId . '\'); return false;">' . $plugin_tx['expandcontract']['close'] . '</button>
 </div>';
         }
         $t .= '

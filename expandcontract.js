@@ -1,19 +1,19 @@
 
-function expandcontract(expPage, options) {
-    
-    /*
-    console.log(expPage);
-    console.log(options.containerId);
-    console.log(options.contentPadding);
-    console.log(options.autoClose);
-    console.log(options.firstOpen);
-    */
+function expandcontract(expPage, fromHash = false) {
 
-    let id = options.containerId;
-    let contentPadding = options.contentPadding;
-    let autoClose = options.autoClose;
-    //let firstOpen = options.firstOpen;
     const el = document.getElementById(expPage);
+    const container = el.closest("div.expand_area");
+    const containerId = container.id;
+
+    let contentPadding = container.dataset.contentpadding;
+    let autoClose = container.dataset.autoclose;
+    let firstOpen = container.dataset.firstopen;
+
+    if (fromHash === true && el.classList.contains("open")) {
+        //Mach nichts, wenn der Container schon offen ist
+        return;
+    }
+    
     let elMaxHeight = el.scrollHeight;
     target = el.getElementsByClassName("ecCloseButton")[0];
     if (typeof target !== "undefined") {
@@ -36,14 +36,14 @@ function expandcontract(expPage, options) {
         document.getElementById(deepL).classList.remove("current");
     } else {
         if (autoClose) {
-            var expandlist = document.getElementById(id).getElementsByClassName("expand_content");
+            var expandlist = document.getElementById(containerId).getElementsByClassName("expand_content");
             //var expandlist = document.getElementsByClassName("expand_content");
             for (index = 0; index < expandlist.length; ++index) {
                 expandlist[index].style.setProperty("max-height", "0px");
                 expandlist[index].style.setProperty("padding", "0px");
                 expandlist[index].classList.remove("open");
             }
-            var btnlist = document.getElementById(id).getElementsByClassName("current");
+            var btnlist = document.getElementById(containerId).getElementsByClassName("current");
             //var btnlist = document.getElementsByClassName("current");
             for (index = 0; index < btnlist.length; ++index) {
                 btnlist[index].classList.remove("current");
@@ -59,22 +59,44 @@ function expandcontract(expPage, options) {
     }
 }
 
-/*
- if ($firstopen) {
- // öffnet den ersten Expand-Content
- area = document.getElementsByClassName("expand_area");
- if (area.length) {
- list = document.getElementsByClassName("expand_area")[0];
- first = list.getElementsByClassName("expand_content")[0].id;
- expandcontract(first);
- }
- }
- 
- // Deeplink öffnet den Expand-Content
- var hash = window.location.hash;
- hash = hash.replace("#", "");
- if (hash.length && hash.substring(0, 5) == "popup" && document.getElementById(hash) !== null) {
- expandcontract(hash);
- //document.getElementById(hash).scrollIntoView({ block: "start",  behavior: "smooth" });
- }
- */
+// CMS-Suche
+function ec_showSearchResults() {
+    let containers = document.getElementsByClassName("expand_content");
+    for (index = 0; index < containers.length; ++index) {
+        //console.log(containers[index].getElementsByClassName("xh_find"));
+        if (containers[index].getElementsByClassName("xh_find").length) {
+            //expandcontract(containers[index].id);
+            if (!containers[index].classList.contains("open")) {
+                expandcontract(containers[index].id);
+            }
+        }
+    }
+}
+
+// Firstopen 
+function ec_openFirst() {
+    let containers = document.getElementsByClassName("expand_area");
+    for (index = 0; index < containers.length; ++index) {
+        itemId = containers[index].id;
+        if (document.getElementById(itemId).dataset.firstopen) {
+            first = document.getElementById(itemId).getElementsByClassName("expand_content")[0];
+            if (!first.classList.contains("open")) {
+                expandcontract(first.id);
+            }
+        }
+    }
+}
+
+// Deeplink öffnet den Expand-Content
+function ec_openFromHash() {
+    var hash = window.location.hash;
+    hash = hash.replace("#", "");
+    if (hash.length && hash.substring(0, 5) === "popup" && document.getElementById(hash) !== null) {
+        expandcontract(hash, true);
+        //document.getElementById(hash).scrollIntoView({ block: "start",  behavior: "smooth" });
+    }
+}
+
+ec_openFirst();
+ec_openFromHash();
+ec_showSearchResults();
