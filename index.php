@@ -125,7 +125,7 @@ function expand()
                     $pageNrArray[] = $pageNr;
                 }
             }
-            $link = false;
+            //$link = false; // Fix Variante  #17
         } else {
             $pageNrArray[] = array_search($link, $h);
         }
@@ -145,7 +145,11 @@ function expand()
             }
         }
     }
-
+    //Fix "Variante 3" #17
+    if (count($pageNrArray) > 0) {
+        $link = false;
+    }
+    
     $headlineArray = array('headlines');
     if ($linktext) {
         if (strpos($linktext, ',')) {
