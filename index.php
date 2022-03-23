@@ -23,9 +23,10 @@ function expand()
 {
     global $s, $cl, $l, $cf, $h, $hjs, $c, $u, $plugin_cf, $plugin_tx, $pth, $bjs;
     static $count = 1;
+    static $nested = false;
     $uniqueId = '_ec' . $count;
 
-    if ($s < 0) return;
+    if ($s < 0 || $nested) return;
 
     $params = func_get_args();
 
@@ -218,7 +219,11 @@ function expand()
 </div>';
     }
 
-    if ($s >= 0) $o .= evaluate_scripting($t);
+    if ($s >= 0) {
+        $nested = true;
+        $o .= evaluate_scripting($t);
+        $nested = false;
+    }
     if (!$link) $o .= '
 </div>';
 
