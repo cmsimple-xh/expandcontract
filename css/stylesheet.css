@@ -14,6 +14,17 @@
 }
 .expand_content.open {
 }
+.expand_content div:nth-of-type(2) {
+	scrollbar-width: thin;
+}
+.expand_content div:nth-of-type(2)::-webkit-scrollbar {
+	width: 5px;
+	height: 8px;
+	background-color: #aaa;
+}
+.expand_content div:nth-of-type(2)::-webkit-scrollbar-thumb {
+	background: #000;
+}
 .expand_area {
 }
 .expand_button {
