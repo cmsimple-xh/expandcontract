@@ -299,7 +299,7 @@ function ec_validateCSS($units = '', $data = '', $dec = '') {
     if ($dec == '') {
         $filter = '([1-9]{1})([\d]{1,3})?';
     } else {
-        $filter = '([\d]{1,4})(\.[\d])?';
+        $filter = '([\d]{1,4})(\.[\d]{1,4})?';
     }
 
     if (preg_match('#(^' . $filter . '(' . $units . ')$|^(off)$|^(0)$)#uim', $data)) {
