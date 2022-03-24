@@ -173,7 +173,7 @@ form.expand_button input {
 	max-width: 100%;
 }
 form.expand_button input:hover,
-form.expand_button input:focus, {
+form.expand_button input:focus {
 }
 .deepLink a {
 	border: 0 !important;
