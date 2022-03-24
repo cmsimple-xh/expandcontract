@@ -150,6 +150,8 @@ function expand()
     //Fix "Variante 3" #17
     if (count($pageNrArray) > 0) {
         $link = false;
+    } else {
+        return XH_message('fail', 'No hidden pages found!');
     }
     
     $headlineArray = array('headlines');
