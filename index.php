@@ -22,6 +22,7 @@ if (!defined('CMSIMPLE_XH_VERSION')) {
 function expand()
 {
     global $s, $cl, $l, $cf, $h, $hjs, $c, $u, $plugin_cf, $plugin_tx, $pth, $bjs;
+    $ec_pcf = $plugin_cf['expandcontract'];
     static $count = 1;
     static $nested = false;
     $uniqueId = '_ec' . $count;
@@ -35,12 +36,11 @@ function expand()
         if (strpos($param, '=') !== false) {
             list ($pKey, $pValue) = explode('=', $param, 2);
             //$tmp_params[strtolower(trim($cKey))] = trim($cValue);
+            $pKey = str_replace('-', '', $pKey);
             $pKey = ec_cts($pKey);
             $pValue = ec_cts($pValue);
             if ($pKey != '' && $pValue != '') {
-                $pValue = str_ireplace(array('on', 'off'),
-                                       array('on', 'off'),
-                                       $pValue);
+                $pValue = ec_lowercase('on|off',$pValue);
                 $tmp_params[strtolower($pKey)] = $pValue;
             }
         }
@@ -57,31 +57,47 @@ function expand()
         $linktext = false;
     }
 
-    if (array_key_exists('max-height', $tmp_params)) {
-        if (preg_match('#^(([0-9]{1,4}(\.[0-9]{1,4})?(px|em|rem|\%|vh))|off|0)$#i', $tmp_params['max-height'])) {
-            if ($tmp_params['max-height'] == 'off'
-            || $tmp_params['max-height'] == '0') {
-                $limitheight = false;
-            } else {
-                $limitheight = $tmp_params['max-height'];
-            }
-        } else {
-            $limitheight = $plugin_cf['expandcontract']['expand-content_max-height'];
+    $limitheight = false;
+    if (array_key_exists('maxheight', $tmp_params)) {
+        $tmp_params['maxheight'] = ec_lowercase('px|em|rem|vh|off', $tmp_params['maxheight']);
+        if (ec_validateCSS('px|em|rem|\%|vh', $tmp_params['maxheight'], 'on')) {
+            $limitheight = $tmp_params['maxheight'];
         }
-    } else {
-        $limitheight = $plugin_cf['expandcontract']['expand-content_max-height'];
+    }
+    if ($ec_pcf['expand-content_max-height'] != ''
+    && $limitheight === false) {
+        $ec_pcf['expand-content_max-height'] = ec_lowercase('px|em|rem|vh|off', $ec_pcf['expand-content_max-height']);
+        if (ec_validateCSS('px|em|rem|\%|vh', $ec_pcf['expand-content_max-height'], 'on')) {
+            $limitheight = $ec_pcf['expand-content_max-height'];
+        }
+    }
+    if ($limitheight == '0'
+    || $limitheight == 'off') {
+        $limitheight = false;
     }
 
     $contentpadding = 0;
-    if (array_key_exists('content-padding', $tmp_params)) {
-        $contentpadding = $tmp_params['content-padding'];
-    } elseif ($plugin_cf['expandcontract']['expand-content_padding'] != '') {
-        $contentpadding = $plugin_cf['expandcontract']['expand-content_padding'];
+    if (array_key_exists('contentpadding', $tmp_params)) {
+        $tmp_params['contentpadding'] = ec_lowercase('px|off', $tmp_params['contentpadding']);
+        if (ec_validateCSS('px', $tmp_params['contentpadding'])) {
+            $contentpadding = $tmp_params['contentpadding'];
+        }
+    }
+    if ($ec_pcf['expand-content_padding'] != ''
+    && $contentpadding === 0) {
+        $ec_pcf['expand-content_padding'] = ec_lowercase('px|off', $ec_pcf['expand-content_padding']);
+        if (ec_validateCSS('px', $ec_pcf['expand-content_padding'])) {
+            $contentpadding = $ec_pcf['expand-content_padding'];
+        }
+    }
+    if ($contentpadding == '0'
+    || strtolower($contentpadding) == 'off') {
+        $contentpadding = 0;
     }
 
-    $closebutton = ec_validateOnOff($tmp_params, 'show-close', 'expand-content_show_close_button');
-    $autoclose = ec_validateOnOff($tmp_params, 'auto-close', 'expand-content_auto_close');
-    $usebuttons = ec_validateOnOff($tmp_params, 'show-inline', 'use_inline_buttons');
+    $closebutton = ec_validateOnOff($tmp_params, 'showclose', 'expand-content_show_close_button');
+    $autoclose = ec_validateOnOff($tmp_params, 'autoclose', 'expand-content_auto_close');
+    $usebuttons = ec_validateOnOff($tmp_params, 'showinline', 'use_inline_buttons');
     $firstopen = ec_validateOnOff($tmp_params, 'firstopen', 'expand-content_first_open');
     $targetid = 'ecId' . $count;
     
@@ -149,6 +165,8 @@ function expand()
     //Fix "Variante 3" #17
     if (count($pageNrArray) > 0) {
         $link = false;
+    } else {
+        return XH_message('fail', 'No hidden pages found!');
     }
     
     $headlineArray = array('headlines');
@@ -229,7 +247,7 @@ function expand()
 
     // JS & CSS nur einmal laden
     if ($count === 1) {
-        $expandcontractStyles = $plugin_cf['expandcontract']['use_stylesheet'];
+        $expandcontractStyles = $ec_pcf['use_stylesheet'];
         if ($expandcontractStyles != '') {
             $hjs .= '<link rel="stylesheet" href="' . $pth['folder']['plugins'] 
                     . 'expandcontract/css/' 
@@ -246,9 +264,10 @@ function expand()
 function ec_validateOnOff($args = array(), $param = '', $default = '') {
 
     global $plugin_cf;
+    $ec_pcf = $plugin_cf['expandcontract'];
 
     if (!array_key_exists($param, $args)) {
-        return $plugin_cf['expandcontract'][$default];
+        return $ec_pcf[$default];
     }
     
     switch ($args[$param]) {
@@ -259,7 +278,7 @@ function ec_validateOnOff($args = array(), $param = '', $default = '') {
             return false;
 
         default:
-            return $plugin_cf['expandcontract'][$default];
+            return $ec_pcf[$default];
     }
 }
 
@@ -269,4 +288,37 @@ function ec_validateOnOff($args = array(), $param = '', $default = '') {
 function ec_cts($data = '') {
 
     return $data = preg_replace('/^\s+|\s+$/u', '', $data);
+}
+
+// Checks for valid CSS specifications, off or 0
+// $units => i.e. 'px|em|rem|\%|vh'
+// $data => string
+// $dec => if set, then numbers with dot separation are allowed
+function ec_validateCSS($units = '', $data = '', $dec = '') {
+
+    if ($dec == '') {
+        $filter = '([1-9]{1})([\d]{1,3})?';
+    } else {
+        $filter = '([\d]{1,4})(\.[\d]{1,4})?';
+    }
+
+    if (preg_match('#(^' . $filter . '(' . $units . ')$|^(off)$|^(0)$)#uim', $data)) {
+        return true;
+    } else {
+        return false;
+    }
+}
+
+// change to lowercase
+// $words => i.e. 'px|em|rem|vh|off'
+// $data => string
+function ec_lowercase($words = '', $data = '') {
+
+    //$words = trim($words);
+    $wordsArray = explode('|', $words);
+    foreach($wordsArray as $tmp) {
+        //$tmp = trim($tmp);
+        $data = str_ireplace($tmp, $tmp, $data);
+    }
+    return $data;
 }
