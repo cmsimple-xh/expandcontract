@@ -27,7 +27,8 @@ function expand()
     static $nested = false;
     $uniqueId = '_ec' . $count;
 
-    if ($s < 0 || $nested) return;
+    if ($nested) return XH_message('warning', 'Nested calls of ExpandContract are not possible!'); //i18n
+    if ($s < 0) return;
 
     $params = func_get_args();
 
@@ -166,7 +167,7 @@ function expand()
     if (count($pageNrArray) > 0) {
         $link = false;
     } else {
-        return XH_message('fail', 'No hidden pages found!');
+        return XH_message('fail', 'No hidden pages found!'); //i18n
     }
     
     $headlineArray = array('headlines');
