@@ -35,6 +35,7 @@ function expand()
         if (strpos($param, '=') !== false) {
             list ($pKey, $pValue) = explode('=', $param, 2);
             //$tmp_params[strtolower(trim($cKey))] = trim($cValue);
+            $pKey = str_replace('-', '', $pKey);
             $pKey = ec_cts($pKey);
             $pValue = ec_cts($pValue);
             if ($pKey != '' && $pValue != '') {
@@ -57,13 +58,13 @@ function expand()
         $linktext = false;
     }
 
-    if (array_key_exists('max-height', $tmp_params)) {
-        if (preg_match('#^(([0-9]{1,4}(\.[0-9]{1,4})?(px|em|rem|\%|vh))|off|0)$#i', $tmp_params['max-height'])) {
-            if ($tmp_params['max-height'] == 'off'
-            || $tmp_params['max-height'] == '0') {
+    if (array_key_exists('maxheight', $tmp_params)) {
+        if (preg_match('#^(([0-9]{1,4}(\.[0-9]{1,4})?(px|em|rem|\%|vh))|off|0)$#i', $tmp_params['maxheight'])) {
+            if ($tmp_params['maxheight'] == 'off'
+            || $tmp_params['maxheight'] == '0') {
                 $limitheight = false;
             } else {
-                $limitheight = $tmp_params['max-height'];
+                $limitheight = $tmp_params['maxheight'];
             }
         } else {
             $limitheight = $plugin_cf['expandcontract']['expand-content_max-height'];
@@ -73,15 +74,15 @@ function expand()
     }
 
     $contentpadding = 0;
-    if (array_key_exists('content-padding', $tmp_params)) {
-        $contentpadding = $tmp_params['content-padding'];
+    if (array_key_exists('contentpadding', $tmp_params)) {
+        $contentpadding = $tmp_params['contentpadding'];
     } elseif ($plugin_cf['expandcontract']['expand-content_padding'] != '') {
         $contentpadding = $plugin_cf['expandcontract']['expand-content_padding'];
     }
 
-    $closebutton = ec_validateOnOff($tmp_params, 'show-close', 'expand-content_show_close_button');
-    $autoclose = ec_validateOnOff($tmp_params, 'auto-close', 'expand-content_auto_close');
-    $usebuttons = ec_validateOnOff($tmp_params, 'show-inline', 'use_inline_buttons');
+    $closebutton = ec_validateOnOff($tmp_params, 'showclose', 'expand-content_show_close_button');
+    $autoclose = ec_validateOnOff($tmp_params, 'autoclose', 'expand-content_auto_close');
+    $usebuttons = ec_validateOnOff($tmp_params, 'showinline', 'use_inline_buttons');
     $firstopen = ec_validateOnOff($tmp_params, 'firstopen', 'expand-content_first_open');
     $targetid = 'ecId' . $count;
     
