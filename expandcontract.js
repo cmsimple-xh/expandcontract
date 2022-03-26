@@ -6,6 +6,7 @@ function expandcontract(expPage, fromHash = false) {
     const containerId = container.id;
 
     let contentPadding = container.dataset.contentpadding;
+    let heightOffset = container.dataset.heightoffset;
     let autoClose = container.dataset.autoclose;
     let firstOpen = container.dataset.firstopen;
 
@@ -27,7 +28,8 @@ function expandcontract(expPage, fromHash = false) {
     } else {
         deppHeight = 0;
     }
-    elMaxHeight = parseInt(elMaxHeight) + (parseInt(contentPadding) * 2) + targetHeight + deppHeight;
+    //elMaxHeight = parseInt(elMaxHeight) + (parseInt(contentPadding) * 2) + targetHeight + deppHeight;
+    elMaxHeight = parseInt(elMaxHeight) + parseInt(heightOffset) + targetHeight + deppHeight;
     if (el.style.getPropertyValue("max-height") !== "0px") {
         el.style.setProperty("max-height", "0px");
         el.style.setProperty("padding", "0px");
