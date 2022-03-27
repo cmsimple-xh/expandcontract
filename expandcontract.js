@@ -94,11 +94,12 @@ function ec_openFromHash() {
     var hash = window.location.hash;
     hash = hash.replace("#", "");
     if (hash.length && hash.substring(0, 5) === "popup" && document.getElementById(hash) !== null) {
-        expandcontract(hash, true);
+        window.onload = function () {
+            expandcontract(hash, true);
+        }
         //document.getElementById(hash).scrollIntoView({ block: "start",  behavior: "smooth" });
     }
 }
-
 ec_openFirst();
 ec_openFromHash();
 ec_showSearchResults();
