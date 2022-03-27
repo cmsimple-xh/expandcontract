@@ -115,7 +115,7 @@ function expand()
                 $paddings[] = $padding;
             } else {
                 $padding = ec_lowercase('px', $padding);
-                if (!strpos($padding, 'px')) {
+                if (!preg_match('/^[0-9]+(px)$/', $padding)) {
                     return XH_message('fail',
                             'There is an error in the definition of "Content-Padding"'); //i18n
                 }
@@ -125,10 +125,13 @@ function expand()
             }
         }
         //Kann das überhaupt vorkommen?
+        /*
         if (count($t) !== count($paddings)) {
             return XH_message('fail',
                     'There is an error in the definition of "Content-Padding"'); //i18n;
         }
+         */
+        assert(count($t) === count($paddings));
         $contentpadding = implode(' ', $paddings);
     }
     
