@@ -76,8 +76,86 @@ function expand()
     || $limitheight == 'off') {
         $limitheight = false;
     }
-
+/*
     $contentpadding = 0;
+    if (array_key_exists('contentpadding', $tmp_params)) {
+        $tmp_params['contentpadding'] = ec_lowercase('px|off', $tmp_params['contentpadding']);
+        if (ec_validateCSS('px', $tmp_params['contentpadding'])) {
+            $contentpadding = $tmp_params['contentpadding'];
+        }
+    }
+    if ($ec_pcf['expand-content_padding'] != ''
+    && $contentpadding === 0) {
+        var_dump($ec_pcf['expand-content_padding']);
+        $ec_pcf['expand-content_padding'] = ec_lowercase('px|off', $ec_pcf['expand-content_padding']);
+        var_dump($ec_pcf['expand-content_padding']);
+        if (ec_validateCSS('px', $ec_pcf['expand-content_padding'])) {
+            $contentpadding = $ec_pcf['expand-content_padding'];
+        }
+    }
+    if ($contentpadding == '0'
+    || strtolower($contentpadding) == 'off') {
+        $contentpadding = 0;
+    }
+ */
+    
+    $contentpadding = 0;
+    $temp = '';
+    if (array_key_exists('contentpadding', $tmp_params)) {
+        $temp = ec_cts($tmp_params['contentpadding']);
+    } elseif ($ec_pcf['expand-content_padding'] != '') {
+        $temp = ec_cts($ec_pcf['expand-content_padding']);
+    }
+    if ($temp !== '') {
+        $t = explode(' ', $temp);
+        $paddings = array();
+
+        foreach ($t as $padding) {
+            if ($padding == "0") {
+                $paddings[] = $padding;
+            } else {
+                $padding = ec_lowercase('px', $padding);
+                if (!preg_match('/^[0-9]+(px)$/', $padding)) {
+                    return XH_message('fail',
+                            'There is an error in the definition of "Content-Padding"'); //i18n
+                }
+                //Es sind jetzt nur noch Zahlenwerte 
+                //mit nachgestelltem "px", sowie "0" enthalten
+                $paddings[] = $padding;
+            }
+        }
+        //Kann das überhaupt vorkommen?
+        /*
+        if (count($t) !== count($paddings)) {
+            return XH_message('fail',
+                    'There is an error in the definition of "Content-Padding"'); //i18n;
+        }
+         */
+        assert(count($t) === count($paddings));
+        $contentpadding = implode(' ', $paddings);
+    }
+    
+    // Berechnung Höhen-Offset
+    $heightoffset = 0;
+    if (isset($paddings)) {
+        $elements = count($paddings);
+        switch ($elements) {
+            case 1:
+                $heightoffset = intval($paddings[0]) * 2;
+                break;
+            case 2:
+                $heightoffset = intval($paddings[0]) * 2;
+                break;
+            case 3:
+                $heightoffset = intval($paddings[0]) + intval($paddings[2]);
+                break;
+            case 4:
+                $heightoffset = intval($paddings[0]) + intval($paddings[2]);
+                break;
+        }
+    }
+
+    /*
     if (array_key_exists('contentpadding', $tmp_params)) {
         $tmp_params['contentpadding'] = ec_lowercase('px|off', $tmp_params['contentpadding']);
         if (ec_validateCSS('px', $tmp_params['contentpadding'])) {
@@ -95,7 +173,8 @@ function expand()
     || strtolower($contentpadding) == 'off') {
         $contentpadding = 0;
     }
-
+    */
+    
     $closebutton = ec_validateOnOff($tmp_params, 'showclose', 'expand-content_show_close_button');
     $autoclose = ec_validateOnOff($tmp_params, 'autoclose', 'expand-content_auto_close');
     $usebuttons = ec_validateOnOff($tmp_params, 'showinline', 'use_inline_buttons');
@@ -119,6 +198,7 @@ function expand()
     
     $options = 
             'data-contentpadding="' . $contentpadding . '" ' .
+            'data-heightoffset="' . $heightoffset . '" ' .
             'data-autoclose="' . $autoclose . '" ' .
             'data-firstopen="' . $firstopen . '"'
             ;
