@@ -305,7 +305,7 @@ function expand()
 <div id="popup'.$i.$uniqueId.'" class="expand_content" style="max-height: 0px;">';
         $linkU =  $_SERVER['REQUEST_URI'];
         $t .= '
-<div class="deepLink"><a href="' . $linkU . '#popup' . $i.$uniqueId . '" onclick="return false;">&#x1f517;</a></div>';
+<div class="deepLink"><a href="' . $linkU . '#popup' . $i.$uniqueId . '">&#x1f517;</a></div>';
         if ($limitheight) $t .= '
 <div style="height:'.$limitheight.';overflow-y:auto;padding-right:1em;">';
         $t .= $expContent;
