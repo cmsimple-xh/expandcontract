@@ -211,9 +211,11 @@ function expand()
 
     if ($link) {
         if (strpos($link, ',')) {
+            $link = str_replace('\,', '&#44;', $link);
             $linklist = explode(',', $link);
             foreach ($linklist as $singlelink) {
                 //$singlelink = trim($singlelink);
+                $singlelink = str_replace('&#44;', ',', $singlelink);
                 $singlelink = ec_cts($singlelink);
                 if ($singlelink != '') {
                     $pageNr = array_search($singlelink, $h);
@@ -253,8 +255,10 @@ function expand()
     $headlineArray = array('headlines');
     if ($linktext) {
         if (strpos($linktext, ',')) {
+            $linktext = str_replace('\,', '&#44;', $linktext);
             $linktextlist = explode(',', $linktext);
             foreach ($linktextlist as $singlelinktext) {
+                $singlelinktext = str_replace('&#44;', ',', $singlelinktext);
                 $singlelinktext = ec_cts($singlelinktext);
                 if ($singlelinktext != '') {
                     $headlineArray[] = $singlelinktext;
