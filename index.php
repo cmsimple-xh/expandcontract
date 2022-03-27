@@ -227,7 +227,12 @@ function expand()
             }
             //$link = false; // Fix Variante  #17
         } else {
-            $pageNrArray[] = array_search($link, $h);
+            $link = ec_cts($link);
+            $pageNr = array_search($link, $h);
+            if ($pageNr === false || $link == '' ) {
+                return XH_message('fail', 'Page "%s" not found!', $link); //i18n
+            }
+            $pageNrArray[] = $pageNr;
         }
     } else {
         $tl = $l[$s] + 1 + $cf['menu']['levelcatch'];
