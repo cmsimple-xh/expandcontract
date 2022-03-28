@@ -5,10 +5,10 @@ function expandcontract(expPage, fromHash = false) {
     const container = el.closest("div.expand_area");
     const containerId = container.id;
 
-    let contentPadding = container.dataset.contentpadding;
-    let heightOffset = container.dataset.heightoffset;
+    //let contentPadding = container.dataset.contentpadding;
+    //let heightOffset = container.dataset.heightoffset;
     let autoClose = container.dataset.autoclose;
-    let firstOpen = container.dataset.firstopen;
+    //let firstOpen = container.dataset.firstopen;
 
     if (fromHash === true && el.classList.contains("open")) {
         //Mach nichts, wenn der Container schon offen ist
@@ -29,10 +29,11 @@ function expandcontract(expPage, fromHash = false) {
         deppHeight = 0;
     }
     //elMaxHeight = parseInt(elMaxHeight) + (parseInt(contentPadding) * 2) + targetHeight + deppHeight;
-    elMaxHeight = parseInt(elMaxHeight) + parseInt(heightOffset) + targetHeight + deppHeight;
+    //elMaxHeight = parseInt(elMaxHeight) + parseInt(heightOffset) + targetHeight + deppHeight;
+    elMaxHeight = parseInt(elMaxHeight) + targetHeight + deppHeight;
     if (el.style.getPropertyValue("max-height") !== "0px") {
         el.style.setProperty("max-height", "0px");
-        el.style.setProperty("padding", "0px");
+        //el.style.setProperty("padding", "0px");
         el.classList.remove("open");
         deepL = expPage.replace("popup", "deeplink");
         document.getElementById(deepL).classList.remove("current");
@@ -42,7 +43,7 @@ function expandcontract(expPage, fromHash = false) {
             //var expandlist = document.getElementsByClassName("expand_content");
             for (index = 0; index < expandlist.length; ++index) {
                 expandlist[index].style.setProperty("max-height", "0px");
-                expandlist[index].style.setProperty("padding", "0px");
+                //expandlist[index].style.setProperty("padding", "0px");
                 expandlist[index].classList.remove("open");
             }
             var btnlist = document.getElementById(containerId).getElementsByClassName("current");
@@ -53,7 +54,7 @@ function expandcontract(expPage, fromHash = false) {
         }
 
         el.style.setProperty("max-height", elMaxHeight + "px");
-        el.style.setProperty("padding", contentPadding);
+        //el.style.setProperty("padding", contentPadding);
         el.classList.add("open");
         deepL = expPage.replace("popup", "deeplink");
         document.getElementById(deepL).classList.add("current");

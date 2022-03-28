@@ -150,6 +150,7 @@ function expand()
     }
     
     // Berechnung Höhen-Offset
+    /*
     $heightoffset = 0;
     if (isset($paddings)) {
         $elements = count($paddings);
@@ -168,6 +169,7 @@ function expand()
                 break;
         }
     }
+     */
 
     /*
     if (array_key_exists('contentpadding', $tmp_params)) {
@@ -211,8 +213,6 @@ function expand()
     */
     
     $options = 
-            'data-contentpadding="' . $contentpadding . '" ' .
-            'data-heightoffset="' . $heightoffset . '" ' .
             'data-autoclose="' . $autoclose . '" ' .
             'data-firstopen="' . $firstopen . '"'
             ;
@@ -316,7 +316,7 @@ function expand()
             if (!$link) $t .= '</p>';
         }
         $t .= '
-<div id="popup'.$i.$uniqueId.'" class="expand_content" style="max-height: 0px;">';
+<div id="popup'.$i.$uniqueId.'" class="expand_content" style="max-height: 0px;"><div class="expand_contentwrap" style = "padding: ' . $contentpadding . '">';
         $linkU =  $_SERVER['REQUEST_URI'];
         $t .= '
 <div class="deepLink"><a href="' . $linkU . '#popup' . $i.$uniqueId . '">&#x1f517;</a></div>';
@@ -333,7 +333,7 @@ function expand()
 </div>';
         }
         $t .= '
-</div>';
+</div></div>';
     $i++;
     }
     if ($usebuttons) {
