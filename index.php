@@ -105,7 +105,7 @@ function expand()
     } elseif ($ec_pcf['expand-content_padding'] != '') {
         //$temp = ec_cleanTinySpaces($ec_pcf['expand-content_padding']);    //in der config dürften nur normale Leerzeichen auftauchen, trim ist sicher performanter
         $temp = trim($ec_pcf['expand-content_padding']);
-        $temp = preg_replace('#\s+#u', ' ', $temp);                         // '10px    20px     30px    40px' aus der config korrigieren
+        //$temp = preg_replace('#\s+#u', ' ', $temp);                         // '10px    20px     30px    40px' aus der config korrigieren
     }
 
     if ($temp !== '') {
@@ -114,7 +114,8 @@ function expand()
         || $temp == 'off') {
             $paddings[] = '0';                                              // 0 und off möglich
         } else {
-            $t = explode(' ', $temp);
+            //$t = explode(' ', $temp);
+            $t = preg_split('#\s+#u', $temp, -1, PREG_SPLIT_NO_EMPTY);
             $paddings = array();
 
             $fe_count = 0;                                                  // Angaben wie '10px 20px 30px 40px 50px 60px' abfangen
@@ -123,7 +124,7 @@ function expand()
                 if ($fe_count === 5) {
                     break;
                 }
-                $padding = ec_cleanTinySpaces($padding);
+                //$padding = ec_cleanTinySpaces($padding);
                 if ($padding == '0') {
                     $paddings[] = $padding;
                 } else {
