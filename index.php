@@ -41,7 +41,7 @@ function expand()
             $pKey = ec_cleanTinySpaces($pKey);
             $pValue = ec_cleanTinySpaces($pValue);
             if ($pKey != '' && $pValue != '') {
-                $pValue = ec_lowercase('on|off',$pValue);
+                //$pValue = ec_lowercase('on|off',$pValue);
                 $tmp_params[strtolower($pKey)] = $pValue;
             }
         }
@@ -371,6 +371,8 @@ function ec_validateOnOff($args = array(), $param = '', $default = '') {
 
     if (!array_key_exists($param, $args)) {
         return $ec_pcf[$default];
+    } else {
+        $args[$param] = ec_lowercase('on|off',$args[$param]);
     }
     
     switch ($args[$param]) {
