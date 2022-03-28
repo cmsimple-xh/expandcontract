@@ -38,10 +38,10 @@ function expand()
             list ($pKey, $pValue) = explode('=', $param, 2);
             //$tmp_params[strtolower(trim($cKey))] = trim($cValue);
             $pKey = str_replace('-', '', $pKey);
-            $pKey = ec_cts($pKey);
-            $pValue = ec_cts($pValue);
+            $pKey = ec_cleanTinySpaces($pKey);
+            $pValue = ec_cleanTinySpaces($pValue);
             if ($pKey != '' && $pValue != '') {
-                $pValue = ec_lowercase('on|off',$pValue);
+                //$pValue = ec_lowercase('on|off',$pValue);
                 $tmp_params[strtolower($pKey)] = $pValue;
             }
         }
@@ -61,14 +61,14 @@ function expand()
     $limitheight = false;
     if (array_key_exists('maxheight', $tmp_params)) {
         $tmp_params['maxheight'] = ec_lowercase('px|em|rem|vh|off', $tmp_params['maxheight']);
-        if (ec_validateCSS('px|em|rem|\%|vh', $tmp_params['maxheight'], 'on')) {
+        if (ec_validateCSS('px|em|rem|\%|vh', $tmp_params['maxheight'], 'withPoint')) {
             $limitheight = $tmp_params['maxheight'];
         }
     }
     if ($ec_pcf['expand-content_max-height'] != ''
     && $limitheight === false) {
         $ec_pcf['expand-content_max-height'] = ec_lowercase('px|em|rem|vh|off', $ec_pcf['expand-content_max-height']);
-        if (ec_validateCSS('px|em|rem|\%|vh', $ec_pcf['expand-content_max-height'], 'on')) {
+        if (ec_validateCSS('px|em|rem|\%|vh', $ec_pcf['expand-content_max-height'], 'withPoint')) {
             $limitheight = $ec_pcf['expand-content_max-height'];
         }
     }
@@ -98,41 +98,55 @@ function expand()
         $contentpadding = 0;
     }
  */
-    
     $contentpadding = 0;
     $temp = '';
     if (array_key_exists('contentpadding', $tmp_params)) {
-        $temp = ec_cts($tmp_params['contentpadding']);
+        $temp = ec_cleanTinySpaces($tmp_params['contentpadding']);
     } elseif ($ec_pcf['expand-content_padding'] != '') {
-        $temp = ec_cts($ec_pcf['expand-content_padding']);
+        //$temp = ec_cleanTinySpaces($ec_pcf['expand-content_padding']);    //in der config dürften nur normale Leerzeichen auftauchen, trim ist sicher performanter
+        $temp = trim($ec_pcf['expand-content_padding']);
+        //$temp = preg_replace('#\s+#u', ' ', $temp);                         // '10px    20px     30px    40px' aus der config korrigieren
     }
-    if ($temp !== '') {
-        $t = explode(' ', $temp);
-        $paddings = array();
 
-        foreach ($t as $padding) {
-            if ($padding == "0") {
-                $paddings[] = $padding;
-            } else {
-                $padding = ec_lowercase('px', $padding);
-                if (!preg_match('/^[0-9]+(px)$/', $padding)) {
-                    return XH_message('fail',
-                            'There is an error in the definition of "Content-Padding"'); //i18n
+    if ($temp !== '') {
+        $temp = ec_lowercase('px|off', $temp);
+        if ($temp == '0'
+        || $temp == 'off') {
+            $paddings[] = '0';                                              // 0 und off möglich
+        } else {
+            //$t = explode(' ', $temp);
+            $t = preg_split('#\s+#u', $temp, -1, PREG_SPLIT_NO_EMPTY);
+            $paddings = array();
+
+            $fe_count = 0;                                                  // Angaben wie '10px 20px 30px 40px 50px 60px' abfangen
+            foreach ($t as $padding) {
+                $fe_count++;
+                if ($fe_count === 5) {
+                    break;
                 }
-                //Es sind jetzt nur noch Zahlenwerte 
-                //mit nachgestelltem "px", sowie "0" enthalten
-                $paddings[] = $padding;
+                //$padding = ec_cleanTinySpaces($padding);
+                if ($padding == '0') {
+                    $paddings[] = $padding;
+                } else {
+                    //$padding = ec_lowercase('px', $padding);              // ein Durchlauf im ganzen ist vielleicht performanter
+                    //if (!preg_match('/^[0-9]+(px)$/', $padding)) {
+                    if (!ec_validateCSS('px', $padding)) {
+                        return XH_message('fail',
+                                'There is an error in the definition of "Content-Padding"'); //i18n
+                    }
+                    //Es sind jetzt nur noch Zahlenwerte 
+                    //mit nachgestelltem "px", sowie "0" enthalten
+                    $paddings[] = $padding;
+                }
             }
+            //Kann das überhaupt vorkommen?                                 // jetzt ja -> $fe_count
+            if (count($t) !== count($paddings)) {
+                return XH_message('fail',
+                        'There is an error in the definition of "Content-Padding"'); //i18n;
+            }
+            //assert(count($t) === count($paddings));
+            $contentpadding = implode(' ', $paddings);
         }
-        //Kann das überhaupt vorkommen?
-        /*
-        if (count($t) !== count($paddings)) {
-            return XH_message('fail',
-                    'There is an error in the definition of "Content-Padding"'); //i18n;
-        }
-         */
-        assert(count($t) === count($paddings));
-        $contentpadding = implode(' ', $paddings);
     }
     
     // Berechnung Höhen-Offset
@@ -216,7 +230,7 @@ function expand()
             foreach ($linklist as $singlelink) {
                 //$singlelink = trim($singlelink);
                 $singlelink = str_replace('&#44;', ',', $singlelink);
-                $singlelink = ec_cts($singlelink);
+                $singlelink = ec_cleanTinySpaces($singlelink);
                 if ($singlelink != '') {
                     $pageNr = array_search($singlelink, $h);
                     if ($pageNr === false) {
@@ -227,7 +241,7 @@ function expand()
             }
             //$link = false; // Fix Variante  #17
         } else {
-            $link = ec_cts($link);
+            $link = ec_cleanTinySpaces($link);
             $pageNr = array_search($link, $h);
             if ($pageNr === false || $link == '' ) {
                 return XH_message('fail', 'Page "%s" not found!', $link); //i18n
@@ -264,7 +278,7 @@ function expand()
             $linktextlist = explode(',', $linktext);
             foreach ($linktextlist as $singlelinktext) {
                 $singlelinktext = str_replace('&#44;', ',', $singlelinktext);
-                $singlelinktext = ec_cts($singlelinktext);
+                $singlelinktext = ec_cleanTinySpaces($singlelinktext);
                 if ($singlelinktext != '') {
                     $headlineArray[] = $singlelinktext;
                 }
@@ -358,6 +372,8 @@ function ec_validateOnOff($args = array(), $param = '', $default = '') {
 
     if (!array_key_exists($param, $args)) {
         return $ec_pcf[$default];
+    } else {
+        $args[$param] = ec_lowercase('on|off',$args[$param]);
     }
     
     switch ($args[$param]) {
@@ -375,7 +391,7 @@ function ec_validateOnOff($args = array(), $param = '', $default = '') {
 // clean TinyMCE multible spaces
 // at the beginning and at the end from $data
 // from WYSIWYG-Mode
-function ec_cts($data = '') {
+function ec_cleanTinySpaces($data = '') {
 
     return $data = preg_replace('/^\s+|\s+$/u', '', $data);
 }
@@ -387,7 +403,8 @@ function ec_cts($data = '') {
 function ec_validateCSS($units = '', $data = '', $dec = '') {
 
     if ($dec == '') {
-        $filter = '([1-9]{1})([\d]{1,3})?';
+        //$filter = '([1-9]{1})([\d]{1,3})?';
+        $filter = '[0-9]+';
     } else {
         $filter = '([\d]{1,4})(\.[\d]{1,4})?';
     }
