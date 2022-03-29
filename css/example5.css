@@ -97,6 +97,7 @@ form.expand_button input {
 	text-overflow: ellipsis;
 	overflow: hidden;
 	max-width: 100%;
+    margin: 0 !important;
 }
 form.expand_button input:hover,
 form.expand_button input:focus {
