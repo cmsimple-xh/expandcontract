@@ -61,14 +61,14 @@ function expand()
     $limitheight = false;
     if (array_key_exists('maxheight', $tmp_params)) {
         $tmp_params['maxheight'] = ec_lowercase('px|em|rem|vh|off', $tmp_params['maxheight']);
-        if (ec_validateCSS('px|em|rem|\%|vh', $tmp_params['maxheight'], 'withPoint')) {
+        if (ec_validateCSS($tmp_params['maxheight'])) {
             $limitheight = $tmp_params['maxheight'];
         }
     }
     if ($ec_pcf['expand-content_max-height'] != ''
     && $limitheight === false) {
         $ec_pcf['expand-content_max-height'] = ec_lowercase('px|em|rem|vh|off', $ec_pcf['expand-content_max-height']);
-        if (ec_validateCSS('px|em|rem|\%|vh', $ec_pcf['expand-content_max-height'], 'withPoint')) {
+        if (ec_validateCSS($ec_pcf['expand-content_max-height'])) {
             $limitheight = $ec_pcf['expand-content_max-height'];
         }
     }
@@ -130,7 +130,7 @@ function expand()
                 } else {
                     //$padding = ec_lowercase('px', $padding);              // ein Durchlauf im ganzen ist vielleicht performanter
                     //if (!preg_match('/^[0-9]+(px)$/', $padding)) {
-                    if (!ec_validateCSS('px', $padding)) {
+                    if (!ec_validateCSS($padding)) {
                         return XH_message('fail',
                                 'There is an error in the definition of "Content-Padding"'); //i18n
                     }
@@ -397,17 +397,11 @@ function ec_cleanTinySpaces($data = '') {
 }
 
 // Checks for valid CSS specifications, off or 0
-// $units => i.e. 'px|em|rem|\%|vh'
 // $data => string
-// $dec => if set, then numbers with dot separation are allowed
-function ec_validateCSS($units = '', $data = '', $dec = '') {
+function ec_validateCSS($data = '') {
 
-    if ($dec == '') {
-        //$filter = '([1-9]{1})([\d]{1,3})?';
-        $filter = '[0-9]+';
-    } else {
-        $filter = '([\d]{1,4})(\.[\d]{1,4})?';
-    }
+    $filter = '([\d]{1,4})(\.[\d]{1,4})?';
+    $units = 'px|em|rem|\%|vh';
 
     if (preg_match('#(^' . $filter . '(' . $units . ')$|^(off)$|^(0)$)#uim', $data)) {
         return true;
