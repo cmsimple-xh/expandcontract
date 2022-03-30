@@ -141,7 +141,6 @@ function expand()
             $link = str_replace('\,', '&#44;', $link);
             $linklist = explode(',', $link);
             foreach ($linklist as $singlelink) {
-                //$singlelink = trim($singlelink);
                 $singlelink = str_replace('&#44;', ',', $singlelink);
                 $singlelink = ec_removeSpaces($singlelink);
                 if ($singlelink != '') {
@@ -330,10 +329,8 @@ function ec_validateCSS($data = '') {
 // $data => string
 function ec_lowercase($words = '', $data = '') {
 
-    //$words = trim($words);
     $wordsArray = explode('|', $words);
     foreach($wordsArray as $tmp) {
-        //$tmp = trim($tmp);
         $data = str_ireplace($tmp, $tmp, $data);
     }
     return $data;
