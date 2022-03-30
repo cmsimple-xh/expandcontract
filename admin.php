@@ -7,7 +7,7 @@
  * @author    svasti <svasti@svasti.de>
  * @copyright 2014-16 by svasti < http://svasti.de >
  * @copyright 2022 The CMSimple_XH Community < https://www.cmsimple-xh.org/ >
- *
+ * @version   1.0
  */
 
 define('EXPANDCONTRACT_VERSION','0.7');
@@ -28,10 +28,6 @@ if (function_exists('XH_wantsPluginAdministration')
         && XH_wantsPluginAdministration('expandcontract')
         || isset($expandcontract) && $expandcontract == 'true')
 {
-//    if(!isset($plugin_cf['expandcontract']['version'])
-//        || $plugin_cf['expandcontract']['version'] != EXPANDCONTRACT_VERSION) {
-//        if($o .= expandcontract_createConfig()) include $pth['folder']['plugins'] . 'expandcontract/config/config.php';
-//        }
     $o .= print_plugin_admin('on');
     if (!$admin || $admin == 'plugin_main') {
         $o .= '<h1>Expandcontract_XH</h1>'

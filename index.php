@@ -7,6 +7,7 @@
  * @author    svasti <svasti@svasti.de>
  * @copyright 2014-16 by svasti < http://svasti.de >
  * @copyright 2022 The CMSimple_XH Community < https://www.cmsimple-xh.org/ >
+ * @version   1.0
  */
 
 /**
@@ -17,8 +18,6 @@ if (!defined('CMSIMPLE_XH_VERSION')) {
     exit;
 }
 
-
-//function expand($link='',$linktext='',$closebutton='',$limitheight='',$usebuttons='',$firstopen='')
 function expand()
 {
     global $s, $cl, $l, $cf, $h, $hjs, $c, $u, $plugin_cf, $plugin_tx, $pth, $bjs;
@@ -36,12 +35,10 @@ function expand()
     foreach($params as $param) {
         if (strpos($param, '=') !== false) {
             list ($pKey, $pValue) = explode('=', $param, 2);
-            //$tmp_params[strtolower(trim($cKey))] = trim($cValue);
             $pKey = str_replace('-', '', $pKey);
-            $pKey = ec_cleanTinySpaces($pKey);
-            $pValue = ec_cleanTinySpaces($pValue);
+            $pKey = ec_removeSpaces($pKey);
+            $pValue = ec_removeSpaces($pValue);
             if ($pKey != '' && $pValue != '') {
-                //$pValue = ec_lowercase('on|off',$pValue);
                 $tmp_params[strtolower($pKey)] = $pValue;
             }
         }
@@ -60,14 +57,16 @@ function expand()
 
     $limitheight = false;
     if (array_key_exists('maxheight', $tmp_params)) {
-        $tmp_params['maxheight'] = ec_lowercase('px|em|rem|vh|off', $tmp_params['maxheight']);
+        $tmp_params['maxheight'] = ec_lowercase('px|em|rem|vh|off', 
+                $tmp_params['maxheight']);
         if (ec_validateCSS($tmp_params['maxheight'])) {
             $limitheight = $tmp_params['maxheight'];
         }
     }
-    if ($ec_pcf['expand-content_max-height'] != ''
-    && $limitheight === false) {
-        $ec_pcf['expand-content_max-height'] = ec_lowercase('px|em|rem|vh|off', $ec_pcf['expand-content_max-height']);
+    if ($ec_pcf['expand-content_max-height'] != '' 
+            && $limitheight === false) {
+        $ec_pcf['expand-content_max-height'] = ec_lowercase('px|em|rem|vh|off', 
+                $ec_pcf['expand-content_max-height']);
         if (ec_validateCSS($ec_pcf['expand-content_max-height'])) {
             $limitheight = $ec_pcf['expand-content_max-height'];
         }
@@ -76,121 +75,48 @@ function expand()
     || $limitheight == 'off') {
         $limitheight = false;
     }
-/*
-    $contentpadding = 0;
-    if (array_key_exists('contentpadding', $tmp_params)) {
-        $tmp_params['contentpadding'] = ec_lowercase('px|off', $tmp_params['contentpadding']);
-        if (ec_validateCSS('px', $tmp_params['contentpadding'])) {
-            $contentpadding = $tmp_params['contentpadding'];
-        }
-    }
-    if ($ec_pcf['expand-content_padding'] != ''
-    && $contentpadding === 0) {
-        var_dump($ec_pcf['expand-content_padding']);
-        $ec_pcf['expand-content_padding'] = ec_lowercase('px|off', $ec_pcf['expand-content_padding']);
-        var_dump($ec_pcf['expand-content_padding']);
-        if (ec_validateCSS('px', $ec_pcf['expand-content_padding'])) {
-            $contentpadding = $ec_pcf['expand-content_padding'];
-        }
-    }
-    if ($contentpadding == '0'
-    || strtolower($contentpadding) == 'off') {
-        $contentpadding = 0;
-    }
- */
+
     $contentpadding = 0;
     $temp = '';
     if (array_key_exists('contentpadding', $tmp_params)) {
-        $temp = ec_cleanTinySpaces($tmp_params['contentpadding']);
+        $temp = ec_removeSpaces($tmp_params['contentpadding']);
     } elseif ($ec_pcf['expand-content_padding'] != '') {
-        //$temp = ec_cleanTinySpaces($ec_pcf['expand-content_padding']);    //in der config dürften nur normale Leerzeichen auftauchen, trim ist sicher performanter
         $temp = trim($ec_pcf['expand-content_padding']);
-        //$temp = preg_replace('#\s+#u', ' ', $temp);                         // '10px    20px     30px    40px' aus der config korrigieren
     }
 
     if ($temp !== '') {
         $temp = ec_lowercase('px|off', $temp);
         if ($temp == '0'
         || $temp == 'off') {
-            $paddings[] = '0';                                              // 0 und off möglich
+            $paddings[] = '0';
         } else {
-            //$t = explode(' ', $temp);
             $t = preg_split('#\s+#u', $temp, -1, PREG_SPLIT_NO_EMPTY);
             $paddings = array();
 
-            $fe_count = 0;                                                  // Angaben wie '10px 20px 30px 40px 50px 60px' abfangen
+            $fe_count = 0;
             foreach ($t as $padding) {
                 $fe_count++;
                 if ($fe_count === 5) {
                     break;
                 }
-                //$padding = ec_cleanTinySpaces($padding);
                 if ($padding == '0') {
                     $paddings[] = $padding;
                 } else {
-                    //$padding = ec_lowercase('px', $padding);              // ein Durchlauf im ganzen ist vielleicht performanter
-                    //if (!preg_match('/^[0-9]+(px)$/', $padding)) {
                     if (!ec_validateCSS($padding)) {
                         return XH_message('fail',
                                 'There is an error in the definition of "Content-Padding"'); //i18n
                     }
-                    //Es sind jetzt nur noch Zahlenwerte 
-                    //mit nachgestelltem "px", sowie "0" enthalten
                     $paddings[] = $padding;
                 }
             }
-            //Kann das überhaupt vorkommen?                                 // jetzt ja -> $fe_count
             if (count($t) !== count($paddings)) {
                 return XH_message('fail',
                         'There is an error in the definition of "Content-Padding"'); //i18n;
             }
-            //assert(count($t) === count($paddings));
             $contentpadding = implode(' ', $paddings);
         }
     }
-    
-    // Berechnung Höhen-Offset
-    /*
-    $heightoffset = 0;
-    if (isset($paddings)) {
-        $elements = count($paddings);
-        switch ($elements) {
-            case 1:
-                $heightoffset = intval($paddings[0]) * 2;
-                break;
-            case 2:
-                $heightoffset = intval($paddings[0]) * 2;
-                break;
-            case 3:
-                $heightoffset = intval($paddings[0]) + intval($paddings[2]);
-                break;
-            case 4:
-                $heightoffset = intval($paddings[0]) + intval($paddings[2]);
-                break;
-        }
-    }
-     */
 
-    /*
-    if (array_key_exists('contentpadding', $tmp_params)) {
-        $tmp_params['contentpadding'] = ec_lowercase('px|off', $tmp_params['contentpadding']);
-        if (ec_validateCSS('px', $tmp_params['contentpadding'])) {
-            $contentpadding = $tmp_params['contentpadding'];
-        }
-    }
-    if ($ec_pcf['expand-content_padding'] != ''
-    && $contentpadding === 0) {
-        $ec_pcf['expand-content_padding'] = ec_lowercase('px|off', $ec_pcf['expand-content_padding']);
-        if (ec_validateCSS('px', $ec_pcf['expand-content_padding'])) {
-            $contentpadding = $ec_pcf['expand-content_padding'];
-        }
-    }
-    if ($contentpadding == '0'
-    || strtolower($contentpadding) == 'off') {
-        $contentpadding = 0;
-    }
-    */
-    
     $closebutton = ec_validateOnOff($tmp_params, 'showclose', 'expand-content_show_close_button');
     $autoclose = ec_validateOnOff($tmp_params, 'autoclose', 'expand-content_auto_close');
     $usebuttons = ec_validateOnOff($tmp_params, 'showinline', 'use_inline_buttons');
@@ -201,16 +127,6 @@ function expand()
     if (isset($_GET['search'])) {
         $firstopen = $autoclose = false;
     }
-
-    /*
-    $options = array(
-        'containerId' => $targetid,
-        'contentPadding' => $contentpadding,
-        'autoClose' => (bool) $autoclose,
-        'firstOpen' => (bool) $firstopen
-        );
-    $options = json_encode($options);
-    */
     
     $options = 
             'data-autoclose="' . $autoclose . '" ' .
@@ -220,9 +136,6 @@ function expand()
     $o = $t = '';
     $pageNrArray = array();
 
-    // $unikId only to demonstrate different settings on the same page
-    //$unikId = $closebutton . $limitheight . $usebuttons;
-
     if ($link) {
         if (strpos($link, ',')) {
             $link = str_replace('\,', '&#44;', $link);
@@ -230,7 +143,7 @@ function expand()
             foreach ($linklist as $singlelink) {
                 //$singlelink = trim($singlelink);
                 $singlelink = str_replace('&#44;', ',', $singlelink);
-                $singlelink = ec_cleanTinySpaces($singlelink);
+                $singlelink = ec_removeSpaces($singlelink);
                 if ($singlelink != '') {
                     $pageNr = array_search($singlelink, $h);
                     if ($pageNr === false) {
@@ -239,9 +152,8 @@ function expand()
                     $pageNrArray[] = $pageNr;
                 }
             }
-            //$link = false; // Fix Variante  #17
         } else {
-            $link = ec_cleanTinySpaces($link);
+            $link = ec_removeSpaces($link);
             $pageNr = array_search($link, $h);
             if ($pageNr === false || $link == '' ) {
                 return XH_message('fail', 'Page "%s" not found!', $link); //i18n
@@ -264,7 +176,6 @@ function expand()
             }
         }
     }
-    //Fix "Variante 3" #17
     if (count($pageNrArray) > 0) {
         $link = false;
     } else {
@@ -278,7 +189,7 @@ function expand()
             $linktextlist = explode(',', $linktext);
             foreach ($linktextlist as $singlelinktext) {
                 $singlelinktext = str_replace('&#44;', ',', $singlelinktext);
-                $singlelinktext = ec_cleanTinySpaces($singlelinktext);
+                $singlelinktext = ec_removeSpaces($singlelinktext);
                 if ($singlelinktext != '') {
                     $headlineArray[] = $singlelinktext;
                 }
@@ -288,57 +199,62 @@ function expand()
         }
     }
 
-    if (!$link) $o .= '
-<div class="expand_area" id="' . $targetid . '" '. $options .'>';
+    if (!$link) {
+        $o .= '<div class="expand_area" id="' . $targetid . '" '. $options .'>';
+    }
     if ($usebuttons) {
-        $o .= '
-<div class="expand_linkArea">';
-}
+        $o .= '<div class="expand_linkArea">';
+    }
     $i = 1;
     foreach ($pageNrArray as $value) {
-        
-        $js = '" class="linkBtn" id="deeplink'.$i.$uniqueId.'" onclick="expandcontract(\'popup'.$i.$uniqueId.'\'); return false;';
+        $js = '" class="linkBtn" id="deeplink'.$i.$uniqueId
+                .'" onclick="expandcontract(\'popup'
+                .$i.$uniqueId.'\'); return false;';
         $expContent = str_replace('#CMSimple hide#', '', $c[$value]);
-
         if ($usebuttons) { 
-            $o .= '
-<form method="post" class="expand_button" action="?' . $u[$value] . $js . '">
-<input type="submit" value="';
+            $o .= '<form method="post" class="expand_button" action="?' 
+                    . $u[$value] . $js . '"><input type="submit" value="';
             $o .= !empty($headlineArray[$i]) ? $headlineArray[$i] : $h[$value];
-            $o .=  '">
-</form>';
+            $o .=  '"></form>';
         } else {
-            if (!$link) $t .= '
-<p class="expand_link">';
+            if (!$link) {
+                $t .= '<p class="expand_link">';
+            }
             $t .= a($value,$js);
             $t .= !empty($headlineArray[$i]) ? $headlineArray[$i] : $h[$value];
             $t .= '</a>';
-            if (!$link) $t .= '</p>';
+            if (!$link) {
+                $t .= '</p>';
+            }
         }
-        $t .= '
-<div id="popup'.$i.$uniqueId.'" class="expand_content" style="max-height: 0px;"><div class="expand_contentwrap" style = "padding: ' . $contentpadding . '">';
+        $t .= '<div id="popup'.$i.$uniqueId.'" class="expand_content"' 
+                . 'style="max-height: 0px;"><div class="expand_contentwrap"' 
+                . ' style = "padding: ' . $contentpadding . '">';
         $linkU =  $_SERVER['REQUEST_URI'];
-        $t .= '
-<div class="deepLink"><a href="' . $linkU . '#popup' . $i.$uniqueId . '">&#x1f517;</a></div>';
-        if ($limitheight) $t .= '
-<div style="height:'.$limitheight.';overflow-y:auto;padding-right:1em;">';
+        $t .= '<div class="deepLink"><a href="' . $linkU . '#popup' 
+                . $i.$uniqueId . '">&#x1f517;</a></div>';
+        if ($limitheight) {
+            $t .= '<div style="height:' . $limitheight 
+                    . ';overflow-y:auto;padding-right:1em;">';
+        }
         $t .= $expContent;
         $t .= '<div style="clear:both"></div>';
-        if ($limitheight) $t .= '
-</div>';
-        if ($closebutton) {
-            $t .= '
-<div class="ecClose">
-<button class="ecCloseButton" type="button" onclick="expandcontract(\'popup' . $i.$uniqueId . '\'); return false;">' . $plugin_tx['expandcontract']['close'] . '</button>
-</div>';
+        if ($limitheight) {
+            $t .= '</div>';
         }
-        $t .= '
-</div></div>';
+        if ($closebutton) {
+            $t .= '<div class="ecClose">'
+                    . '<button class="ecCloseButton" type="button" '
+                    . 'onclick="expandcontract(\'popup' . $i.$uniqueId . '\'); '
+                    . 'return false;">' . $plugin_tx['expandcontract']['close'] 
+                    . '</button>'
+                    . '</div>';
+        }
+    $t .= '</div></div>';
     $i++;
     }
     if ($usebuttons) {
-        $o .= '
-</div>';
+        $o .= '</div>';
     }
 
     if ($s >= 0) {
@@ -346,8 +262,7 @@ function expand()
         $o .= evaluate_scripting($t);
         $nested = false;
     }
-    if (!$link) $o .= '
-</div>';
+    if (!$link) $o .= '</div>';
 
     // JS & CSS nur einmal laden
     if ($count === 1) {
@@ -388,10 +303,10 @@ function ec_validateOnOff($args = array(), $param = '', $default = '') {
     }
 }
 
-// clean TinyMCE multible spaces
-// at the beginning and at the end from $data
+// clean spaces at the beginning 
+// and at the end from $data
 // from WYSIWYG-Mode
-function ec_cleanTinySpaces($data = '') {
+function ec_removeSpaces($data = '') {
 
     return $data = preg_replace('/^\s+|\s+$/u', '', $data);
 }
