@@ -1,89 +1,247 @@
 <!DOCTYPE HTML>
-
-<html>
+<html lang="en">
 <head>
-<meta http-equiv="content-type" content="text/html; charset=UTF-8">
-<title>Expandcontract_XH</title>
-<style type="text/css">
-body {background: #eaf4fb; font: normal normal normal 12pt/1.6 'trebuchet MS',sans-serif}
-.notice {margin-left:3em; font-style:italic; color:#050; font-size:92%;}
-.new {margin:0 0 0 3em;font-size:92%; color:#400}
-code {font-family: consolas, 'courier new', monospace; font-weight:bold; font-size: 90%; color:#900;}
-body div.main {width: 940px; margin: 3em auto; background: #eee; border: 1px solid #5ab; padding: 0;box-shadow: 0em 0em 2em 0em #bbd;border-radius: 4.5em;}
-body div.main div.main2 {width: 760px; margin: 30px auto; background: #fff; border: 2px solid #8de; padding: 0 56px 3em;border-radius: 3em;}
-p {margin:0 0 1em 0;}
-em, b, strong {font-weight: bold; color:#008;letter-spacing:1px;}
-.red {color:red;font-weight:bold;}
-h2, h3, h4, h5, h6 {font-family: Georgia; color: #099;margin:1.8em 0 .7em;}
-h4 {margin-bottom:0;}
-h4+ul{margin-top:0}
-h4+ul>li{font-size:.9em;line-height:1.2;color:#050;}
-h5 {margin:0 0 2em;}
-h1 {font: normal normal 30pt Georgia, 'Times new roman', serif;margin:1em 0 0;color: #068; }
-.indent {margin-left:5em;opacity:.8;}
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Expandcontract_XH – Manual</title>
+<style>
+:root {
+	scroll-behavior: smooth;
+}
+* {
+	margin: 0;
+	padding: 0;
+	box-sizing: border-box;
+}
+body {
+	background-color: #e2e2e2;
+	font: 16px/1.5em sans-serif;
+	color: #333;
+}
+#wrapper {
+	padding: 0;
+	width: 980px;
+	margin: 0 auto;
+	max-width: 100%;
+}
+article.main {
+	background: #fff;
+	padding: 2em;
+	float: left;
+	width: 75%;
+	margin: 0;
+	position: relative;
+}
+nav {
+	display: inline-block;
+	position: fixed;
+	padding: 0 1em;
+	max-height: 100vh;
+	overflow: auto;
+	max-width: 25%;
+	top: 2em;
+}
+nav ul {
+	list-style: none;
+	padding-left: 0;
+	text-align: left;
+}
+nav ul ul {
+	font-size: small;
+	padding-left: 1em;
+}
+nav a {
+	color: #000;
+	display: block;
+	padding: .25em 0;
+	margin: 0 0 .1em;
+	text-decoration: none;
+}
+.additional {
+	font-size: .9em;
+	color: #666;
+}
+p.code {
+	font-family: monospace;
+	border: 1px solid #ccc;
+	background: #efefef;
+	padding: 0.1em 0.25em;
+	word-wrap: break-word;
+	margin: .5em 0;
+}
+span.code {
+	font-family: monospace;
+	background: #efefef;
+	padding:.1em .25em;
+}
+hr {
+	border: none;
+	border-top: 1px dotted #666;
+	color: transparent;
+	background-color: transparent;
+	height: 1px;
+	margin: .5em 0;
+}
+p {
+	margin: 0;
+}
+ul,
+ol {
+	padding: 0 0 0 2em;
+}
+h1,
+h2,
+h3 {
+	font-weight: normal;
+	margin: 1em 0 .25em 0;
+	line-height: 1.25em;
+	color: #000;
+}
+h1 {
+	font-size: 2.2em;
+	margin-top: 0;
+}
+h2 {
+	font-size: 1.4em;
+}
+h3 {
+	font-size: 1.2em;
+}
+div.logo {
+	height: 4em;
+	width: 4em;
+	float: right;
+	margin: 0 0 1em 1em;
+}
+div.logo img {
+	height: 100%;
+	width: 100%;
+}
+a {
+	color: #666;
+}
+img a {
+	text-decoration: none !important;
+}
+@media screen and (max-width: 640px) {
+body {
+	font-size: 12px;
+}
+nav {
+	display: inline-block;
+	position: relative;
+	width: auto;
+	overflow: hidden;
+	height: auto;
+}
+article.main {
+	width: 100%;
+	max-width: 100%;
+	float: none;
+}
+}
+hr {
+	margin-top: 1em;
+	margin-bottom: 1em;
+}
+.borderFrame {
+	border: 3px double #333;
+	padding: 0.5em;
+}
 </style>
-
-
 </head>
+
 <body>
-<div class="main">
-<div class="main2">
-
-<h1>Expandcontract_XH 0.7</h1>
-
-<p>For CMSimple_XH from 1.6.4 or higher</p>
-
-<p>This plugin creates links, which on click
-expand the content of the linked page. Another click will contract this content again.
-Without java script the links act a standard links.</p>
-
-<h4>New in 0.7</h4>
+<div id="wrapper">
+<article class="main">
+<div class="logo"><img src="expandcontract-logo.svg" alt="Expandcontract Logo"></div>
+<h1 id="start">expandcontract_XH</h1>
+<p><strong>A plugin to expand and contract for CMSimple_XH</strong></p>
+<hr>
+<p>Expandcontract_XH allows to display other CMSimple_XH pages within a page. The display can be expanded (<em>expand</em>) and closed again (<em>contract</em>). Multiple calls within one page are possible. By means of parameters each plugin call can be designed differently from the plugin configuration.</p>
+<h2 id="voraussetzungen">Requirements</h2>
+<p><em>expandcontract_XH</em> requires CMSimple_XH ≥ 1.6.3 and PHP ≥ 7.0 </p>
+<h2 id="installation">Installation</h2>
+<p>The installation is the same as for many other CMSimple_XH plugins.</p>
+<ol>
+<li>First, the data on the server should be backed up.</li>
+<li>The downloaded ZIP file must be unpacked on your own computer.</li>
+<li>The included <span class="code">expandcontract/</span> directory must now be completely uploaded to the server in the <span class="code">plugins/</span> directory of CMSimple_XH.</li>
+<li>If necessary, write permissions must be granted for the <span class="code">config/</span>, <span class="code">css/</span> and <span class="code">languages/</span> subdirectories and all files therein.</li>
+</ol>
+<h2 id="config">Settings</h2>
+<p class="code">Plugins → Expandcontract → Config</p>
+<p>Here you can make the basic settings for the plugin.</p>
+<p>&nbsp;</p>
+<p><span class="code">Use → Inline buttons</span> <em>Checkbox</em> (default: <em>off</em>)</p>
+<p>Normally <em>(off)</em>, the expand links are displayed one below the other and the expanding content unfolds directly below the respective link.</p>
+<p>Alternatively <em>(on)</em>, the links can be displayed in a row next to each other as buttons. The unfolding content then unfolds below the row of buttons.</p>
+<p><strong>»</strong> This setting can be changed with the <span class="code">show-inline</span> parameter when the plugin is called.</p>
+<p>&nbsp;</p>
+<p><span class="code">Use →  Stylesheet</span> <em>Selection field</em> (default: <em>example1.css</em>)</p>
+<p>The plugin comes with some sample CSS files for the design of the links, the buttons and the expand areas. With the selection field the desired CSS file can be chosen. If the selection field remains empty, then only basic styles needed for functionality will be active &#8211; all other things (links, buttons, etc.) are influenced exclusively by the CMS template</p>
+<p> It is also possible to use your own CSS files. These only need to be placed in the plugin CSS directory so that they appear in the selection list.</p>
+<p><strong>»</strong> This setting applies to all plugin calls used on the entire website &#8211; it cannot be changed using parameters.</p>
+<p>&nbsp;</p>
+<p><span class="code">Expand-content →   Padding</span> <em>Input field</em> (default: <em>empty</em>)</p>
+<p>If you want to provide the expanded area with a background or a border, for example, it is advisable to enter a padding here. All valid CSS values are allowed.</p>
+<p><strong>»</strong> This setting can be changed with the <span class="code">content-padding</span> parameter when the plugin is called.</p>
+<p>&nbsp;</p>
+<p><span class="code">Expand-content →   First open</span> <em>Checkbox</em> (default: <em>off</em>)</p>
+<p>When a page is called up, the first expandable area can be opened automatically.</p>
+<p><strong>on</strong> = the first found expand area will be opened</p>
+<p><strong>off</strong> =  everything is closed</p>
+<p><strong>»</strong> This setting can be changed with the <span class="code">first-open</span> parameter when the plugin is called.</p>
+<p>&nbsp;</p>
+<p><span class="code">Expand-content →   Auto close</span> <em>Checkbox</em> (default: <em>on</em>)</p>
+<p>Determines whether multiple expand areas can remain open or not.</p>
+<p><strong>on</strong> =   if one area is opened, all others are closed automatically</p>
+<p><strong>off</strong> =   any number of areas can be opened</p>
+<p><strong>»</strong>This setting can be changed with the <span class="code">auto-close</span> parameter when the plugin is called.</p>
+<p>&nbsp;</p>
+<p><span class="code">Expand-content →   Show close button</span> <em>Checkbox</em> (default: <em>on</em>)</p>
+<p>A close button can be displayed below the expanded content.</p>
+<p><strong>on</strong> =   the close button is displayed</p>
+<p><strong>off</strong> =   the close button is suppressed</p>
+<p><strong>»</strong>This setting can be changed with the <span class="code">show-close</span> parameter when the plugin is called.</p>
+<p>&nbsp;</p>
+<p><span class="code">Expand-content →   Max-height</span><em>Input field</em> (default: <em>empty</em>)</p>
+<p>The height of the expand area can be limited to a fixed value. If this content is higher, then the content becomes scrollable. A valid CSS height specification is allowed as value.</p>
+<p><strong>»</strong>This setting can be changed with the <span class="code">max-height</span> parameter when the plugin is called.</p>
+<h2 id="verwendung">Usage</h2>
+<p>There are two types of plugin call: <strong>without</strong> parameters and <strong>with</strong> parameters.</p>
+<p>&nbsp;</p>
+<p><strong>Simple plugin call without parameters:</strong></p>
+<p class="code">{{{expand}}}</p>
+<p>This is the simplest way of calling the plugin. <strong>All hidden subpages</strong> of the calling page are displayed. All settings are taken from the plugin configuration.</p>
+<p>&nbsp;</p>
+<p><strong> Plugin call with parameters:</strong></p>
+<p class="code">{{{expand 'option1 = value(s)','option2 = value(s)', &#8230; }}}</p>
+<p>When calling a plugin with parameters, the default settings of the plugin configuration can be overwritten. The parameters can be passed in any order, separated by commas, but always in 'single quotes'. All parameters are optional &#8211; so they can be omitted.</p>
+<p>The individual parameters always consist of an identifier (option) plus an equal sign (=) plus one value or several values. If there are several values, these must also be separated by commas.</p>
+<p>&nbsp;</p>
+<div class="borderFrame">
+<p>The use of the individual parameters is explained in detail on the demo page of the plugin. The included CSS examples are also presented there:</p>
+<p>&nbsp;</p>
+<p><strong><a href="https://expandcontract.cmsimple-xh.org" target="_blank">https://expandcontract.cmsimple-xh.org</a></strong></p>
+</div>
+<p>&nbsp;</p>
+<hr>
+<h2 id="lizenz">Copyright and License</h2>
+<p>© 2014-16 <a href="http://svasti.de/" target="_blank">svasti</a><br>
+© 2022 <a href="https://www.cmsimple-xh.org/" target="_blank">The CMSimple_XH Community</a> . <br>
+Lizenz: <a href="https://www.gnu.org/licenses/gpl-3.0.en.html" target="_blank">GPLv3</a></p>
+</article>
+<nav id="nav">
 <ul>
-    <li>Expand-links can be inline buttons instead of standard links. These buttons align next to each other even if one of them is clicked.</li>
-    <li>A comma separated list of links can be gives as 1st argument</li>
+<li><a href="#">↑ to top ↑</a></li>
+<li><a href="#voraussetzungen">Requirements</a></li>
+<li><a href="#installation">Installation</a></li>
+<li><a href="#config">Settings</a></li>
+<li><a href="#verwendung">Usage</a></li>
+<li><a href="#lizenz">License</a></li>
 </ul>
-
-<h3>The pages linked via Expandcontract are either</h3>
-<ul>
-        <li><p>all hidden subpages under the page where the plugin is called (default setting), e.g.:<br>
-        <code>{{{expand}}}</code><br>
-        The plugin either creates a button line or &lt;p&gt;-paragraphs for every created link.</p></li>
-        <li>the page(s) given as 1st parameter<br>
-        <code>{{{expand 'page name'}}}</code><br>
-        <code>{{{expand 'page1,page2,page3,etc...');}}}</code><br>
-        <li>a single page with special link text, e.g.<br>
-        <code>{{{expand('page name','link text');}}}</code><br>
-        In linking a single page the plugin will <b>not create a new paragraph</b>.
-        Thus the plugincall can be entered into normal text.</p>
-        <p><b>Please note:</b> The content of the linked page is hidden in a &lt;div&gt;
-        after the plugin call. In a &lt;p&gt; paragraph divs
-        are not allowed and the browser will generate a new paragraph after the div
-        plus a small html error, because or the remaining
-        &lt;/p&gt;. All this is prevented by formatting the paragraph as &lt;div&gt;
-        and not as &lt;p&gt;.</p></li>
-       </ul>
-
-<h3>Plugin config</h3>
-<p>Set in plugin config</p>
-<ul>
-<li>whether link style or buttons should be used,</li>
- <li>whether the expanded content should show its heading or not,</li>
- <li>whether at the bottom of the expanded content a "Close" button should be put or not.</li>
- <li>whether the height of the expanded area is limited and gets a vertical scroll bar.</li>
-</ul>
-<p>In the plugin call config settings can be overwritten (use 1 and 0 without quotation marks or text with quotation marks). There are 6 optional parameters:
-<br><code>{{{expand 'pagename(s)', 'link text', 'headings-on/off', 'Close-button-on/off',
-'max-height', 'button-style-on/off'}}}</code></p>
-
-<h4>Examples</h4>
-<p><code>{{{expand('Terms and Conditions','click here for our Terms and Conditions', 1, 1, '300px');}}}</code><br>
-The words <b>click here for our Terms and Conditions</b> are shown as link. A click will expand the content of the page
-<b>Terms and Conditions</b>
-with heading, "close" button and limited height of 399 px (regardless of config settings in the plugin backend).</p>
-<p><code>{{{expand('Workshop Timetable','click here for more details');}}}</code><br>
-The words <b>click here for more details</b>  are shown as link. A click will expand the content of the page
-<b>Workshop Timetable</b>
-with heading, "close" button and height limit as set in the plugin backend.</p>
-
-<h3>Installation and update</h3>
-<p>Unzip, copy the plugin in your plugin folder or overwrite existing plugin and go to the backend. This will trigger the creation or update of the config values.</p>
+</nav>
+</div>
+</body>
+</html>

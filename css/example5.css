@@ -1,0 +1,143 @@
+:root {
+	--linkBackgroundColor1: #fff;
+	--linkBackgroundColor2: #f3f3f3;
+	--linkTextColor1: #333;
+	--linkTextColor2: #333;
+	--linkBackgroundColor: #fff;
+	--linkCurrentBackgroundColor: #e3e3e3;
+	--linkArrowUrl: url(arrow-expl5.svg);
+	--linkArrowBackgroundColor: #333;
+	--closeBtnBackgroundColor1: #f3f3f3;
+	--closeBtnBackgroundColor2: #e3e3e3;
+	--closeBtnTextColor1: #333;
+	--closeBtnTextColor2: #333;
+}
+p.expand_link {
+	margin: 5px 0 0 0 !important;
+}
+a.linkBtn {
+	text-decoration: none !important;
+	display: block !important;
+	background: var(--linkBackgroundColor) !important;
+	padding: .5em 1em .5em 3em !important;
+	border: 1px solid var(--linkTextColor1) !important;
+	border-radius: 0 !important;
+	color: var(--linkTextColor1) !important;
+	margin: 0 !important;
+	transition: all .3s;
+	font: inherit !important;
+	position: relative;
+}
+a.linkBtn:hover {
+	background: var(--linkBackgroundColor2) !important;
+	border: 1px solid var(--linkTextColor2) !important;
+	color: var(--linkTextColor2) !important;
+}
+.expand_link a::before {
+	position: absolute;
+	top: 50%;
+	transform: translateY(-50%);
+	left: 0.5em;
+	content: var(--linkArrowUrl);
+	width: 1.75em;
+	height: 1.75em;
+	background-color: var(--linkArrowBackgroundColor);
+	color: inherit;
+	display: inline-flex;
+	justify-content: center;
+	align-items: center;
+	flex-shrink: 0;
+	transition: transform .3s linear;
+	-webkit-transition: -webkit-transform .3s linear;
+	border-radius: 50%;
+	opacity: .75;
+}
+.expand_link a.current::before {
+	-webkit-transform: rotate(180deg);
+	transform: rotate(180deg) translateY(50%);
+}
+a.linkBtn.current {
+	background: var(--linkCurrentBackgroundColor) !important;
+}
+.expand_linkArea {
+	display: flex;
+	flex-wrap: wrap;
+	justify-content: center;
+}
+form.expand_button {
+	background: var(--linkBackgroundColor1) !important;
+	margin: 0 1px 1px 0;
+	cursor: pointer;
+	display: block;
+	border: 0 !important;
+	color: var(--linkTextColor1) !important;
+	transition: all .3s;
+	font: inherit !important;
+	overflow: hidden;
+}
+form.expand_button:hover {
+	background: var(--linkBackgroundColor2) !important;
+	color: var(--linkTextColor2) !important;
+}
+form.expand_button.current {
+	background: var(--linkCurrentBackgroundColor) !important;
+}
+form.expand_button input {
+	-webkit-appearance: none;
+	-moz-appearance: none;
+	appearance: none;
+	cursor: pointer;
+	padding: .5em !important;
+	font: inherit!important;
+	color: var(--linkTextColor1) !important;
+	background: transparent !important;
+	border: 1px solid var(--linkTextColor1) !important;
+	border-radius: 0 !important;
+	color: var(--linkTextColor1) !important;
+	text-overflow: ellipsis;
+	overflow: hidden;
+	max-width: 100%;
+    margin: 0 !important;
+}
+form.expand_button input:hover,
+form.expand_button input:focus {
+	background: transparent;
+	color: var(--linkTextColor2) !important;
+}
+.expand_content {
+}
+.expand_content.open {
+	border: 1px solid var(--linkTextColor1) !important;
+	border-top: 0 !important;
+}
+.expand_area {
+	overflow: auto;
+}
+.expand_linkArea ~ .expand_content.open {
+	border: 1px solid var(--linkTextColor1) !important;
+}
+div.ecClose button {
+	-webkit-appearance: none;
+	-moz-appearance: none;
+	appearance: none;
+	display: inline-block;
+	background: var(--closeBtnBackgroundColor1) !important;
+	color: var(--closeBtnTextColor1) !important;
+	margin: 5px 0;
+	padding: 2px 5px;
+	border: 1px solid var(--linkTextColor1) !important;
+	font: inherit !important;
+	font-size: .9em !important;
+	border-radius: 3px !important;
+	cursor: pointer;
+}
+div.ecClose button:hover {
+	background: var(--closeBtnBackgroundColor2) !important;
+	color: var(--closeBtnTextColor2) !important;
+	border: 1px solid var(--closeBtnTextColor2) !important;
+}
+
+.deepLink a {
+	border: 0 !important;
+	text-decoration: none;
+}

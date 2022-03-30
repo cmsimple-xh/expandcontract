@@ -1,0 +1,124 @@
+:root {
+	--linkBackgroundColor1: #666;
+	--linkBackgroundColor2: #999;
+	--linkTextColor1: #fff;
+	--linkTextColor2: #fff;
+	--linkCurrentBackgroundColor: #333;
+	--closeBtnBackgroundColor1: #eee;
+	--closeBtnBackgroundColor2: #fff;
+	--closeBtnTextColor1: #666;
+	--closeBtnTextColor2: #666;
+	--contentBackgroundColor1: rgba(0,0,0,.05);
+}
+p.expand_link {
+	margin: 0 !important;
+}
+a.linkBtn {
+	text-decoration: none !important;
+	display: block !important;
+	background: var(--linkBackgroundColor1) !important;
+	padding: .5em !important;
+	border: 0 !important;
+	border-radius: 0 !important;
+	color: var(--linkTextColor1) !important;
+	margin-bottom: 1px;
+	transition: all .3s;
+	font: inherit !important;
+	overflow: auto;
+}
+a.linkBtn:hover {
+	background: var(--linkBackgroundColor2) !important;
+	color: var(--linkTextColor2) !important;
+}
+.expand_linkArea {
+	display: flex;
+	flex-wrap: wrap;
+	justify-content: center;
+}
+form.expand_button {
+	background: var(--linkBackgroundColor1) !important;
+	margin: 0 1px 1px 0;
+	cursor: pointer;
+	display: block;
+	border: 0 !important;
+	color: var(--linkTextColor1) !important;
+	transition: all .3s;
+	font: inherit !important;
+	overflow: hidden;
+}
+form.expand_button:hover {
+	background: var(--linkBackgroundColor2) !important;
+	color: var(--linkTextColor2) !important;
+}
+form.expand_button.current {
+	background: var(--linkCurrentBackgroundColor) !important;
+}
+form.expand_button input {
+	-webkit-appearance: none;
+	-moz-appearance: none;
+	appearance: none;
+	cursor: pointer;
+	padding: .5em !important;
+	font: inherit!important;
+	color: var(--linkTextColor1) !important;
+	background: transparent !important;
+	border: 0 !important;
+	border-radius: 0 !important;
+	text-overflow: ellipsis;
+	overflow: hidden;
+	max-width: 100%;
+}
+form.expand_button input:hover,
+form.expand_button input:focus {
+	background: transparent;
+	color: var(--linkTextColor2) !important;
+}
+.expand_content {
+	background: var(--contentBackgroundColor1) !important;
+}
+.expand_content.open {
+}
+.expand_area {
+	overflow: auto;
+}
+div.ecClose button {
+	-webkit-appearance: none;
+	-moz-appearance: none;
+	appearance: none;
+	display: inline-block;
+	background: var(--closeBtnBackgroundColor1) !important;
+	color: var(--closeBtnTextColor1) !important;
+	margin: 5px 0;
+	padding: 2px 5px;
+	border: 1px solid var(--closeBtnTextColor1) !important;
+	font: inherit !important;
+	font-size: .9em !important;
+	border-radius: 3px !important;
+	cursor: pointer;
+}
+div.ecClose button:hover {
+	background: var(--closeBtnBackgroundColor2) !important;
+	color: var(--closeBtnTextColor2) !important;
+	border: 1px solid var(--closeBtnTextColor2) !important;
+}
+.expand_link a::after {
+	content: "+";
+	position: relative;
+	top: 1px;
+	display: inline-block;
+	font: bold 18px/1 monospace;
+	-webkit-font-smoothing: antialiased;
+	-moz-osx-font-smoothing: grayscale;
+	float: right;
+	transition: transform .3s linear;
+	-webkit-transition: -webkit-transform .3s linear;
+}
+.expand_link a.current::after {
+	content: "-";
+	-webkit-transform: rotate(180deg);
+	transform: rotate(180deg);
+}
+.deepLink a {
+	border: 0 !important;
+	text-decoration: none;
+}
