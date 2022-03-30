@@ -31,7 +31,7 @@ if (function_exists('XH_wantsPluginAdministration')
     $o .= print_plugin_admin('on');
     if (!$admin || $admin == 'plugin_main') {
         $o .= '<h1>Expandcontract_XH</h1>'
-            . '<p>Version '. $plugin_cf['expandcontract']['version']
+            . '<p>Version 1.0'
             . '<br>&copy; 2014-16 <a href="http://svasti.de" target="_blank">svasti</a>'
             . '<br>&copy; 2022 <a href="https://www.cmsimple-xh.org/" target="_blank">The CMSimple_XH Community</a>
             . <br>Licence: <a target="_blank" href="https://www.gnu.org/licenses/gpl-3.0.en.html">GPLv3</a></p>'

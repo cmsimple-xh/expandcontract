@@ -7,4 +7,3 @@ $plugin_cf['expandcontract']['expand-content_first_open']="";
 $plugin_cf['expandcontract']['expand-content_auto_close']="true";
 $plugin_cf['expandcontract']['expand-content_show_close_button']="true";
 $plugin_cf['expandcontract']['expand-content_max-height']="";
-$plugin_cf['expandcontract']['version']="0.8";
