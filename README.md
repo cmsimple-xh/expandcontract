@@ -1,11 +1,9 @@
-Expandcontract Plugin for CMSimple_XH
-=====================================
+# Expandcontract_XH #
+**A plugin for CMSimple_XH**
 
-Due to lack of time [svasti](http://svasti.de/) is currently unable to maintain
-the Expandcontract plugin. As *provisional* *solution* it has therefore been decided
-to put the plugin here, so that the CMSimple_XH developers are able to do the
-necessary maintenance (at least do some odd fixes), and release new versions
-from time to time.
+Expandcontract_XH allows to display other CMSimple_XH pages within a page. The display can be expanded (expanded) and closed again (contracted). If JavaScript is not available in the browser, the links act like normal links.
 
+The plugin was originally developed by [Frank Ziesing (svasti)](https://svasti.de/). Since 2022 the CMSimple_XH community ([forum](https://cmsimpleforum.com/viewtopic.php?f=16&t=18315#p82951)) takes care of the further development of the plugin.
 
-For further information see help/help.htm.
+Demo website:
+https://expandcontact.cmsimple-xh.org/
