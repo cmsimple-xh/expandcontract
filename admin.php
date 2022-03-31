@@ -7,10 +7,8 @@
  * @author    svasti <svasti@svasti.de>
  * @copyright 2014-16 by svasti < http://svasti.de >
  * @copyright 2022 The CMSimple_XH Community < https://www.cmsimple-xh.org/ >
- * @version   1.0
+ * @version   1.0 - 2022.03.31
  */
-
-define('EXPANDCONTRACT_VERSION','0.7');
 
 if (!defined('CMSIMPLE_XH_VERSION')) {
     header('HTTP/1.0 403 Forbidden');
@@ -31,7 +29,7 @@ if (function_exists('XH_wantsPluginAdministration')
     $o .= print_plugin_admin('on');
     if (!$admin || $admin == 'plugin_main') {
         $o .= '<h1>Expandcontract_XH</h1>'
-            . '<p>Version 1.0'
+            . '<p>Version 1.0 - 2022.03.31'
             . '<br>&copy; 2014-16 <a href="http://svasti.de" target="_blank">svasti</a>'
             . '<br>&copy; 2022 <a href="https://www.cmsimple-xh.org/" target="_blank">The CMSimple_XH Community</a>
             . <br>Licence: <a target="_blank" href="https://www.gnu.org/licenses/gpl-3.0.en.html">GPLv3</a></p>'
