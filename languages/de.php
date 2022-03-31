@@ -1,15 +1,16 @@
 <?php
 
-$plugin_tx['expandcontract']['close']="Schließen";
+$plugin_tx['expandcontract']['close']="schließen";
 $plugin_tx['expandcontract']['menu_main']="Über";
-$plugin_tx['expandcontract']['plugin_call']="Pluginaufruf";
-$plugin_tx['expandcontract']['link_hidden_subpages']="Erzeugt Expand-Links zu allen verstecken Unterseiten. <br>Entweder (entprechend der Konfig) als mehrere Buttons nebeneinander in einer Zeile oder als Links in jeweils eigenem Absatz untereinander.";
-$plugin_tx['expandcontract']['link_single_page']="Erzeugt einen Expand-Link mit angegebenem \"Linktext\" zur Seite \"page X\". <br>Kann innerhalb einer Zeile stehen in einem als &lt;div>-definierten Absatz oder als letztes Wort in einem Absatz.";
-$plugin_tx['expandcontract']['link_multiple_pages']="Erzeugt Expand-Links zu den Seiten \"page1\", \"page2\", \"page3\", \"page4\" .";
-$plugin_tx['expandcontract']['cf_show_headings']="Ob die Überschrift der verlinkten Seiten im expandierten Bereich erscheint oder nicht.<br />(Alternativ als dritten Parameter eingeben.)";
-$plugin_tx['expandcontract']['cf_show_close_button']="Ob eine 'Schließen'-Schaltfläche am Ende des expandierten Berechs erscheint. <br />(Alternativ als vierten Parameter eingeben.)";
-$plugin_tx['expandcontract']['cf_max_height']="Um die Höhe des expandierten Bereichs zu begrenzen, hier die Maximalhöhe eintragen, z.B. 15em.<br />(Alternativ als fünften Parameter eingeben.)";
-$plugin_tx['expandcontract']['cf_auto-close']="Nach Ankreuzen: Wenn man ein Expandcontract öffnet, werden andere automatisch geschlossen";
-$plugin_tx['expandcontract']['text_update_successful']="Expandcontract wurde erfolgreich auf Version %s aktualisiert.";
-$plugin_tx['expandcontract']['cf_use_inline_buttons']="Wenn angeklickt, werden Buttons verwandt, die sich in einer Zeile anordnen, wenn nicht angeklickt, sehen Expand-Links wie normale Links aus, die sich untereinander anordnen. <br />(Alternativ als sechsten Parameter eingeben.)";
-?>
+$plugin_tx['expandcontract']['plugin_explanation']="Expandcontract_XH ermöglicht die Anzeige anderer CMSimple_XH-Seiten innerhalb einer Seite. Die Anzeige kann aufgeklappt (<em>expand</em>) und wieder geschlossen (<em>contract</em>) werden.";
+$plugin_tx['expandcontract']['plugin_call']="Pluginaufrufe";
+$plugin_tx['expandcontract']['link_hidden_subpages']="<code>{{{expand}}}</code><br><i>Erzeugt Expand-Links zu allen verstecken Unterseiten einer Seite.<br>Die Links werden (abhängig von der Konfiguration) entweder als mehrere Buttons nebeneinander in einer Zeile angezeigt oder als Text-Links untereinander in jeweils einem eigenen Absatz.</i>";
+$plugin_tx['expandcontract']['link_single_page']="<code>{{{expand 'Seite X','Linktext'}}}</code><br><i>Erzeugt einen Expand-Link mit angegebenem \"Linktext\" zur Seite \"Seite X\".</i>";
+$plugin_tx['expandcontract']['link_multiple_pages']="<code>{{{expand 'Seite 1,Seite 2,Seite 3,Seite 4'}}}</code><br><i>Erzeugt Expand-Links zu den Seiten \"Seite 1\", \"Seite 2\", \"Seite 3\", \"Seite 4\".</i>";
+$plugin_tx['expandcontract']['cf_use_inline_buttons']="EIN: Es werden Buttons als Expand-Links verwendet die sich in einer Zeile nebeneinander anordnen.<br>AUS: Die Expand-Links sehen wie normale Links aus, die sich untereinander anordnen.";
+$plugin_tx['expandcontract']['cf_use_stylesheet']="LEER =<br>Es wird nur die stylesheet.css des Plugins verwendet die nur grundlegende Regeln enthält.<br>\"example1.css\" =<br>Zusätzlich wird die angegebene Stylesheet-Datei eingebunden, mit der das Aussehen insgesamt individuell gestaltet werden kann.<br>\"example1.css\" ist eine mitgelieferte Beispiel-Datei. Es kann hier eine beliebige eigene Datei verwendet werden, die im Plugin-CSS-Ordner liegen muss.";
+$plugin_tx['expandcontract']['cf_expand-content_padding']="Will man den expandierten Bereich z.B. mit einem Hintergrund oder einem Rahmen versehen, empfiehlt es sich, hier einen Randabstand <i>(padding)</i> einzutragen. Erlaubt sind alle validen CSS-Werte.";
+$plugin_tx['expandcontract']['cf_expand-content_first_open']="EIN: Der erste Expand-Content einer Expand-Gruppe wird beim Seitenaufruf geöffnet.";
+$plugin_tx['expandcontract']['cf_expand-content_auto_close']="EIN: Wenn man einen Expand-Content öffnet, werden andere automatisch geschlossen.";
+$plugin_tx['expandcontract']['cf_expand-content_show_close_button']="EIN: Am Ende eines Expand-Inhaltes erscheint ein Schließen-Button.";
+$plugin_tx['expandcontract']['cf_expand-content_max-height']="Um die Höhe des expandierten Bereichs zu begrenzen, hier die gewünschte Maximalhöhe eintragen, z.B. <i>15em</i>, <i>200px</i> oder <i>0</i> (Null) oder <i>off</i>.";

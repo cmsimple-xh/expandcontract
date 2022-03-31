@@ -1,11 +1,51 @@
+.expand_linkArea {
+	display: flex;
+	flex-wrap: wrap;
+}
 .expand_link {
-    font-size:90%;
-    margin:.5em 5em;
+}
+.expand_link a {
 }
 .expand_content {
-    border-top:.5em solid #ddd;
-    border-bottom:.5em solid #ddd;
+	box-sizing: content-box;
+	max-height: 0;
+	overflow: hidden;
+	transition: all .5s ease-out;
+}
+.expand_content.open {
+}
+.expand_content div:nth-of-type(2) {
+	scrollbar-width: thin;
+}
+.expand_content div:nth-of-type(2)::-webkit-scrollbar {
+	width: 5px;
+	height: 8px;
+	background-color: #aaa;
+}
+.expand_content div:nth-of-type(2)::-webkit-scrollbar-thumb {
+	background: #000;
+}
+.expand_area {
 }
 .expand_button {
-    display:inline-block;
+	cursor: pointer;
+	display: inline-block;
+	overflow: hidden;
+	margin: 0 1px 1px 0;
+}
+form.expand_button input {
+	max-width: 100%;
+	overflow: hidden;
+	text-overflow: ellipsis;
+}
+.ecClose {
+	text-align: right;
+}
+.ecClose button {
+	cursor: pointer;
+}
+.deepLink {
+	text-align: right;
+}
+.deepLink a {
 }

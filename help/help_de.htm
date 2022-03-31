@@ -1,78 +1,247 @@
 <!DOCTYPE HTML>
-
-<html>
+<html lang="de">
 <head>
-<meta http-equiv="content-type" content="text/html; charset=UTF-8">
-<title>Expandcontract_XH</title>
-<style type="text/css">
-body {background: #eaf4fb; font: normal normal normal 12pt/1.6 'trebuchet MS',sans-serif}
-.notice {margin-left:3em; font-style:italic; color:#050; font-size:92%;}
-.new {margin:0 0 0 3em;font-size:92%; color:#400}
-code {font-family: consolas, 'courier new', monospace; font-weight:bold; font-size: 90%; color:#900;}
-body div.main {width: 940px; margin: 3em auto; background: #eee; border: 1px solid #5ab; padding: 0;box-shadow: 0em 0em 2em 0em #bbd;border-radius: 4.5em;}
-body div.main div.main2 {width: 760px; margin: 30px auto; background: #fff; border: 2px solid #8de; padding: 0 56px 3em;border-radius: 3em;}
-p {margin:0 0 1em 0;}
-em, b, strong {font-weight: bold; color:#008;letter-spacing:1px;}
-.red {color:red;font-weight:bold;}
-h2, h3, h4, h5, h6 {font-family: Georgia; color: #099;margin:1.8em 0 .7em;}
-h4 {margin-bottom:0;}
-h4+ul{margin-top:0}
-h4+ul>li{font-size:.9em;line-height:1.2;color:#050;}
-h5 {margin:0 0 2em;}
-h1 {font: normal normal 30pt Georgia, 'Times new roman', serif;margin:1em 0 0;color: #068; }
-.indent {margin-left:5em;opacity:.8;}
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Expandcontract_XH – Handbuch</title>
+<style>
+:root {
+	scroll-behavior: smooth;
+}
+* {
+	margin: 0;
+	padding: 0;
+	box-sizing: border-box;
+}
+body {
+	background-color: #e2e2e2;
+	font: 16px/1.5em sans-serif;
+	color: #333;
+}
+#wrapper {
+	padding: 0;
+	width: 980px;
+	margin: 0 auto;
+	max-width: 100%;
+}
+article.main {
+	background: #fff;
+	padding: 2em;
+	float: left;
+	width: 75%;
+	margin: 0;
+	position: relative;
+}
+nav {
+	display: inline-block;
+	position: fixed;
+	padding: 0 1em;
+	max-height: 100vh;
+	overflow: auto;
+	max-width: 25%;
+	top: 2em;
+}
+nav ul {
+	list-style: none;
+	padding-left: 0;
+	text-align: left;
+}
+nav ul ul {
+	font-size: small;
+	padding-left: 1em;
+}
+nav a {
+	color: #000;
+	display: block;
+	padding: .25em 0;
+	margin: 0 0 .1em;
+	text-decoration: none;
+}
+.additional {
+	font-size: .9em;
+	color: #666;
+}
+p.code {
+	font-family: monospace;
+	border: 1px solid #ccc;
+	background: #efefef;
+	padding: 0.1em 0.25em;
+	word-wrap: break-word;
+	margin: .5em 0;
+}
+span.code {
+	font-family: monospace;
+	background: #efefef;
+	padding:.1em .25em;
+}
+hr {
+	border: none;
+	border-top: 1px dotted #666;
+	color: transparent;
+	background-color: transparent;
+	height: 1px;
+	margin: .5em 0;
+}
+p {
+	margin: 0;
+}
+ul,
+ol {
+	padding: 0 0 0 2em;
+}
+h1,
+h2,
+h3 {
+	font-weight: normal;
+	margin: 1em 0 .25em 0;
+	line-height: 1.25em;
+	color: #000;
+}
+h1 {
+	font-size: 2.2em;
+	margin-top: 0;
+}
+h2 {
+	font-size: 1.4em;
+}
+h3 {
+	font-size: 1.2em;
+}
+div.logo {
+	height: 4em;
+	width: 4em;
+	float: right;
+	margin: 0 0 1em 1em;
+}
+div.logo img {
+	height: 100%;
+	width: 100%;
+}
+a {
+	color: #666;
+}
+img a {
+	text-decoration: none !important;
+}
+@media screen and (max-width: 640px) {
+body {
+	font-size: 12px;
+}
+nav {
+	display: inline-block;
+	position: relative;
+	width: auto;
+	overflow: hidden;
+	height: auto;
+}
+article.main {
+	width: 100%;
+	max-width: 100%;
+	float: none;
+}
+}
+hr {
+	margin-top: 1em;
+	margin-bottom: 1em;
+}
+.borderFrame {
+	border: 3px double #333;
+	padding: 0.5em;
+}
 </style>
-
-
 </head>
+
 <body>
-<div class="main">
-<div class="main2">
-<h1>Expandcontract_XH 0.7</h1>
-<p>für mit CMSimple_XH ab 1.6.4</p>
-<p>Dieses Plugin erzeugt Links. die beim Anklicken den Inhalt der verlinkten Seite auf der aufrufenden Seite öffnen (expandieren) und bei erneuten Anklicken wieder schließen (kontrahieren). Hat der Online-Besucher Javascript ausgeschaltet, wirken die Links wie normale Links.</p>
-
-<h4>Neu in 0.7</h4>
-<ul>    <li>Links können statt als normale Links auch als Buttons dargestellt werden. Die Buttons ordnen sich in einer Linie an und bleiben beim Anklicken in der Linie.</li>
-    <li>Man kann mehrere Links in einem Aufruf als kommagetrennte Liste eingeben</li>
-
-</ul>
-
-
-
-<h3>Die per Expandcontract aufgerufenen Seiten sind entweder</h3>
+<div id="wrapper">
+<article class="main">
+<div class="logo"><img src="expandcontract-logo.svg" alt="Expandcontract Logo"></div>
+<h1 id="start">expandcontract_XH</h1>
+<p><strong>Ein Plugin zum Expandieren und Kontrahieren für CMSimple_XH</strong></p>
+<hr>
+<p>Expandcontract_XH ermöglicht die Anzeige anderer CMSimple_XH-Seiten innerhalb einer Seite. Die Anzeige kann aufgeklappt <em>(expand)</em> und wieder geschlossen <em>(contract)</em> werden. Mehrere Aufrufe innerhalb einer Seite sind möglich. Mittels Parametern kann jeder Plugin-Aufruf abweichend von der Plugin-Konfiguration gestaltet werden.</p>
+<h2 id="voraussetzungen">Voraussetzungen</h2>
+<p><em>expandcontract_XH</em> erfodert CMSimple_XH ≥ 1.6.3 und PHP ≥ 7.0 </p>
+<h2 id="installation">Installation</h2>
+<p>Die Installation erfolgt ebenso wie bei vielen anderen CMSimple_XH-Plugins.</p>
+<ol>
+<li>Zunächst sollten die Daten auf dem Server gesichert werden.</li>
+<li>Die heruntergeladene ZIP-Datei wird auf dem eigenen Computer entpackt.</li>
+<li>Das enthaltene Verzeichnis <span class="code">expandcontract/</span> wird jetzt komplett auf den Server in das <span class="code">plugins/</span>-Verzeichnis von CMSimple_XH hochgeladen.</li>
+<li>Falls nötig, müssen Schreibrechte für die Unterverzeichnisse <span class="code">config/</span>, <span class="code">css/</span> und <span class="code">languages/</span> und alle darin vorhandenen Dateien vergeben werden.</li>
+</ol>
+<h2 id="config">Einstellungen</h2>
+<p class="code">Plugins → Expandcontract → Konfiguration</p>
+<p>Hier können die Grundeinstellungen für das Plugin vorgenommen werden.</p>
+<p>&nbsp;</p>
+<p><span class="code">Use → Inline buttons</span> <em>Checkbox</em> (default: <em>aus</em>)</p>
+<p>Normalerweise (<em>aus</em>) werden die Links zum Aufklappen untereinander dargestellt und die aufklappenden Inhalte entfalten sich direkt unter dem jeweiligen Link.</p>
+<p>Alternativ (<em>ein</em>) können die Links in einer Reihe nebeneinander als Buttons dargestellt werden. Die aufklappenden Inhalte entfalten sich dann unterhalb der Button-Reihe.</p>
+<p><strong>»</strong> Diese Einstellung kann beim Pluginaufruf mit dem Parameter <span class="code">show-inline</span> verändert werden.</p>
+<p>&nbsp;</p>
+<p><span class="code">Use →  Stylesheet</span> <em>Auswahlfeld</em> (default: <em>example1.css</em>)</p>
+<p>Das Plugin wird mit einigen Besipiel-CSS-Dateien für die Gestaltung der Links, der Buttons und der Expand-Bereiche ausgeliefert. Mit dem Auswahlfeld kann die gewünschte CSS-Datei  gewählt werden. Bleibt das Auswahlfeld leer, dann werden nur grundlegende für die Funktionalität benötigte Styles aktiv &#8211; alle anderen Dinge (Links, Buttons usw.) werden ausschließlich über das CMS-Template beeinflusst.</p>
+<p>Es ist auch möglich, eigene CSS-Dateien zu verwenden. Diese müssen lediglich im Plugin-CSS-Verzeichnis abgelegt werden, damit sie in der Auswahlliste erscheinen.</p>
+<p><strong>»</strong> Diese Einstellung gilt für alle auf der gesamten Website verwendeten Pluginaufrufe &#8211; sie kann nicht mittels Parameter verändert werden.</p>
+<p>&nbsp;</p>
+<p><span class="code">Expand-content →   Padding</span> <em>Eingabefeld</em> (default: <em>leer</em>)</p>
+<p>Will man den expandierten Bereich z.B. mit einem Hintergrund oder einem Rahmen versehen, empfiehlt es sich, hier einen Randabstand <i>(padding)</i> einzutragen. Erlaubt sind alle validen CSS-Werte.</p>
+<p><strong>»</strong> Diese Einstellung kann beim Pluginaufruf mit dem Parameter <span class="code">content-padding</span> verändert werden.</p>
+<p>&nbsp;</p>
+<p><span class="code">Expand-content →   First open</span> <em>Checkbox</em> (default: <em>aus</em>)</p>
+<p>Beim Aufruf einer Seite kann der erste Aufklapp-Bereich automatisch geöffnet werden.</p>
+<p><strong>an</strong> = der  erste vorgefundener Aufklapp-Bereich wird geöffnet</p>
+<p><strong>aus</strong> =  alles ist geschlossen</p>
+<p><strong>»</strong> Diese Einstellung kann beim Pluginaufruf mit dem Parameter <span class="code">first-open</span> verändert werden.</p>
+<p>&nbsp;</p>
+<p><span class="code">Expand-content →   Auto close</span> <em>Checkbox</em> (default: <em>an</em>)</p>
+<p>Bestimmt, ob mehrere Aufklapp-Bereiche geöffnet bleiben können oder nicht.</p>
+<p><strong>an</strong> =   wird ein Bereich geöffnet, werden alle anderen automatisch geschlossen</p>
+<p><strong>aus</strong> =   es können beliebig viele Bereiche geöffnet werden</p>
+<p><strong>»</strong> Diese Einstellung kann beim Pluginaufruf mit dem Parameter <span class="code">auto-close</span> verändert werden.</p>
+<p>&nbsp;</p>
+<p><span class="code">Expand-content →   Show close button</span> <em>Checkbox</em> (default: <em>an</em>)</p>
+<p>Unterhalb des aufgeklappten Inhaltes kann ein Schließen-Button angezeigt werden.</p>
+<p><strong>an</strong> =   der Schließen-Button wird angezeigt</p>
+<p><strong>aus</strong> =   der Schließen-Button wird unterdrückt</p>
+<p><strong>»</strong> Diese Einstellung kann beim Pluginaufruf mit dem Parameter <span class="code">show-close</span> verändert werden.</p>
+<p>&nbsp;</p>
+<p><span class="code">Expand-content →   Max-height</span> <em>Eingabefeld</em> (default: <em>leer</em>)</p>
+<p>Die Höhe des aufklappenden Inhalts kann auf einen festen Wert begrenzt werden. Ist dieser Inhalt höher, dann wird der Inhalt scrollbar. Als Wert ist eine valide CSS-Höhenangabe erlaubt.</p>
+<p><strong>»</strong> Diese Einstellung kann beim Pluginaufruf mit dem Parameter <span class="code">max-height</span> verändert werden.</p>
+<h2 id="verwendung">Verwendung</h2>
+<p>Es gibt zwei Arten des Plugin-Aufrufes: <strong>ohne</strong> und <strong>mit</strong> Parametern.</p>
+<p>&nbsp;</p>
+<p><strong>Einfacher Plugin-Aufruf ohne Parameter:</strong></p>
+<p class="code">{{{expand}}}</p>
+<p>Das ist die einfachste Art des Pluginaufrufes. Dabei werden <strong>alle verborgenen Unterseiten</strong> der aufrufenden Seite angezeigt. Alle Einstellungen werden aus der Plugin-Konfiguration übernommen.</p>
+<p>&nbsp;</p>
+<p><strong> Plugin-Aufruf mit Parametern:</strong></p>
+<p class="code">{{{expand 'Option1 = Wert(e)','Option2 = Wert(e)', &#8230; }}}</p>
+<p>Bei einem Plugin-Aufruf mit Parametern, können die Standard-Einstellungen der Plugin-Konfiguration überschrieben werden. Die Parameter können in beliebiger Reihenfolge, getrennt durch Komma, aber immer in 'einfachen Anführungszeichen' übergeben werden. Alle Parameter sind optional – können also auch weggelassen werden.</p>
+<p>Die einzelnen Parameter bestehen immer aus einem Bezeichner (Option) plus einem Gleichheitszeichen (=) plus einem Wert oder mehreren Werten. Bei mehreren Werten müssen diese ebenfalls durch Komma getrennt werden.</p>
+<p>&nbsp;</p>
+<div class="borderFrame">
+<p>Die Verwendung der einzelnen Parameter wird ausführlich auf der Demo-Seite des Plugins erklärt. Dort werden auch die mitgelieferten CSS-Beispiele vorgestellt:</p>
+<p>&nbsp;</p>
+<p><strong><a href="https://expandcontract.cmsimple-xh.org" target="_blank">https://expandcontract.cmsimple-xh.org</a></strong></p>
+</div>
+<p>&nbsp;</p>
+<hr>
+<h2 id="lizenz">Copyright und Lizenz</h2>
+<p>© 2014-16 <a href="http://svasti.de/" target="_blank">svasti</a><br>
+© 2022 <a href="https://www.cmsimple-xh.org/" target="_blank">The CMSimple_XH Community</a> . <br>
+Lizenz: <a href="https://www.gnu.org/licenses/gpl-3.0.en.html" target="_blank">GPLv3</a></p>
+</article>
+<nav id="nav">
 <ul>
-        <li><p>Alle versteckte Unterseiten der aufrufenden Seite:<br><code>{{{expand}}}</code><br>
-        Das Plugin erzeugt einen Inline-Button oder einen neuen &lt;p&gt;-Fließtextabsatz für jeden automatisch generierten Link.</p></li>
-        <li><p>Die im ersten Parameter genannte(n) Seite(n):<br>
-        <code>{{{expand 'Name der verlinkten Seite'}}}</code><br>
-        <code>{{{expand 'Seite1,Seite2,Seite3,usw'}}}</code></li>
-<li><p>Eine einzelen Seite mit extra eingegebenem Linktext:<br>
-        <code>{{{expand 'Name der verlinkten Seite','Linktext');}}}</code><br>
-        Eine einzelne verlinkte Seite erzeugt in diesem Fall <b>keinen</b> neuen Absatz. Sie kann in eine Fließtextzeile geschrieben und ein beliebiger Linktext kann eingeben werden.</p>
-        <p><b>Hinweis:</b> Da der expandierbare Inhalt in einem versteckten &lt;div&gt;-Bereicht nach dem Pluginaufruf folgt, ruft dies in einem &lt;p&gt;-Fließtext anschließend einen Absatzumbruch sowie einen kleinen Html-Fehler hervor (durch das verwaiste &lt;/p&gt;). Das kann man verhindern, indem man den Absatz nicht als &lt;p&gt; sondern als  &lt;div&gt; im Editor anlegt.</p></li>
-       </ul>
-
-
-<h3>Plugineinstellungen</h3>
-<ul>
- <li>ob am Ende der gezeigten Inhalte eine "Schließen"-Schaltfläche erscheint oder nicht</li>
- <li>ob die Überschrift der jeweiligen Inhalte beim Öffnen gezeigt wird oder nicht</li>
- <li>ob die Höhe des gezeigten Inhalts begrenzt wird und bei mehr Inhalt eine vertikale Scroll-Leiste gezeigt wird.</li>
+<li><a href="#">↑ nach oben ↑</a></li>
+<li><a href="#voraussetzungen">Voraussetzungen</a></li>
+<li><a href="#installation">Installation</a></li>
+<li><a href="#config">Einstellungen</a></li>
+<li><a href="#verwendung">Verwendung</a></li>
+<li><a href="#lizenz">Lizenz</a></li>
 </ul>
-<p>Beim Pluginaufruf kann man die Konfigurationseinstellungen durch Eingabe von 0, 1 (ohne Anführungsstriche) oder Text (in Anführungsstrichen) überschreiben. Es gibt 6 optionale Parameter:
-<br><code>{{{expand 'Seitenname(n)','Linktext','Überschrift-an/aus','Schließen-Button-an/aus','Höhenbegrenzung-an/aus','Buttonstil-an/aus'}}}</code></p>
-
-<h4>Beispiele</h4>
-<p><code>{{{expand('AGB','hier klicken um unsere AGB einzusehen', 1, 1, '300px');}}}</code><br>
-Die Worte <b>hier klicken um unsere AGB einzusehen</b> werden als Link dargestellt. Ein Klick darauf öffnet den Inhalt der Seite <b>AGB</b>
-und zwar egal was in der Pluginkonfiguration eingestellt ist, mit Überschrift und "Schließen"-Knopf, sowie einer Größenbegrenzung von 300px
-(z.B. damit die AGB nicht die ganze Seite für sich einnehmen).</p>
-<p><code>{{{expand('Seminarplan','hier für klicken für Details');}}}</code><br>
-Die Worte <b>hier klicken für Details</b> werden als Link dargestellt. Ein Klick darauf öffnet de Inhalt der Seite <b>Seminarplan</b>,
-ob mit Überschrift und "Schließen"-Knopf, sowie Größenbegrenzung richtet sich nach der Einstellung in der Pluginkonfiguration.</p>
-
-<h3>Installation und Update:</h3>
-
-<p>Entpacken, in den Plugin-Ordner kopieren oder alte Installation überschreiben und ins Backend gehen. Dadurch wird die Konfigurationsdatei erstellt oder upgedated.</p>
-
+</nav>
+</div>
+</body>
+</html>
