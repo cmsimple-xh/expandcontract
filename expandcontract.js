@@ -6,7 +6,7 @@
  * @author    svasti <svasti@svasti.de>
  * @copyright 2014-16 by svasti < http://svasti.de >
  * @copyright 2022 The CMSimple_XH Community < https://www.cmsimple-xh.org/ >
- * @version   1.0
+ * @version   1.0 - 2022.03.31
  */
 
 function expandcontract(expPage, fromHash = false) {
