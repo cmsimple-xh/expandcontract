@@ -3,7 +3,7 @@ Expandcontract_XH
 1.0 2022.03.31
     - First release developed by "the CMSimple_XH Community"
       with a lot of improvements and new features.
-      For further information visit https://expandcontact.cmsimple-xh.org/
+      For further information visit https://expandcontract.cmsimple-xh.org/
 
 Copyright 2014-2016 by svasti
 
