@@ -9,4 +9,4 @@ Expandcontract_XH allows to display other CMSimple_XH pages within a page. The d
 The plugin was originally developed by [Frank Ziesing (svasti)](https://svasti.de/). Since 2022 the CMSimple_XH community ([forum](https://cmsimpleforum.com/viewtopic.php?f=16&t=18315#p82951)) takes care of the further development of the plugin.
 
 Demo website:
-https://expandcontact.cmsimple-xh.org/
+https://expandcontract.cmsimple-xh.org/
