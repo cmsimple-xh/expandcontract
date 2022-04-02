@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+
+<!DOCTYPE teplad [
+    <!ELEMENT teplad (xml_url,name,date_update,version,date_version,coder,tags,url,compatibility,php_ver,license,descriptions,screenshots,logo) >
+        <!ELEMENT url (download_url,coder_url,demo_url) >
+        <!ELEMENT descriptions (description+) >
+        <!ELEMENT screenshots (screenshot*) >
+        
+        <!ELEMENT xml_url            (#PCDATA) >
+        <!ELEMENT name                (#PCDATA) >
+        <!ELEMENT date_update        (#PCDATA) >
+        <!ELEMENT version            (#PCDATA) >
+        <!ELEMENT date_version        (#PCDATA) >
+        <!ELEMENT coder                (#PCDATA) >
+        <!ELEMENT tags                (#PCDATA) >
+        <!ELEMENT compatibility        (#PCDATA) >
+        <!ELEMENT php_ver            (#PCDATA) >
+        <!ELEMENT license            (#PCDATA) >
+        <!ELEMENT logo                (#PCDATA) >
+        
+        <!ELEMENT download_url        (#PCDATA) >
+        <!ELEMENT coder_url            (#PCDATA) >
+        <!ELEMENT demo_url            (#PCDATA) >
+        <!ELEMENT description        (#PCDATA|br|ol|ul|li|i|b)* >
+        <!ELEMENT br                    EMPTY >
+        <!ELEMENT ol                    (li+) >
+        <!ELEMENT ul                    (li+) >
+        <!ELEMENT li                (#PCDATA) >
+        <!ELEMENT i                    (#PCDATA) >
+        <!ELEMENT b                    (#PCDATA) >
+        <!ELEMENT screenshot        (#PCDATA) >
+        
+        <!ATTLIST teplad version CDATA    #REQUIRED >
+        <!ATTLIST name type    (plugin|template|addon) #REQUIRED >
+        <!ATTLIST description lang NMTOKEN    #REQUIRED >
+        <!ATTLIST screenshot view CDATA        #REQUIRED >
+]>
+
+<teplad version="1.1"><xml_url>https://raw.githubusercontent.com/cmsimple-xh/expandcontract/master/repo/plugin_expandcontract_xh.xml</xml_url><name type="plugin">Expandcontract_XH</name><date_update>2022-04-01</date_update><version>1.0</version><date_version>2022-03-31</date_version><coder>The CMSimple_XH Community</coder><tags>accordion</tags><url><download_url>https://github.com/cmsimple-xh/expandcontract/releases</download_url><coder_url>https://www.cmsimple-xh.org/</coder_url><demo_url>https://expandcontract.cmsimple-xh.org/</demo_url></url><compatibility>&#x2265; 1.7.0</compatibility><php_ver>7.0</php_ver><license>GPLv3</license><descriptions><description lang="en">Expandcontract_XH allows to display other CMSimple_XH pages within a page. The display can be expanded (&lt;i&gt;expand&lt;/i&gt;) and closed again (&lt;i&gt;contract&lt;/i&gt;).&#xD;
+ Multiple calls within one page are possible. By means of parameters &#xD;
+each plugin call can be designed differently from the plugin &#xD;
+configuration.</description><description lang="de">Expandcontract_XH erm&#xF6;glicht die Anzeige anderer CMSimple_XH-Seiten innerhalb einer Seite. Die Anzeige kann aufgeklappt (&lt;i&gt;expand&lt;/i&gt;) und wieder geschlossen (&lt;i&gt;contract&lt;/i&gt;)&#xD;
+ werden. Mehrere Aufrufe innerhalb einer Seite sind m&#xF6;glich. Mittels &#xD;
+Parametern kann jeder Plugin-Aufruf abweichend von der &#xD;
+Plugin-Konfiguration gestaltet werden.</description></descriptions><screenshots><screenshot view="Screenshot">https://raw.githubusercontent.com/cmsimple-xh/expandcontract/master/repo/screenshots.png</screenshot></screenshots><logo>https://raw.githubusercontent.com/cmsimple-xh/expandcontract/master/repo/expandcontract-logo.svg</logo></teplad>
