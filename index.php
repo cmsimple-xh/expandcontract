@@ -23,6 +23,7 @@ function expand()
     global $s, $cl, $l, $cf, $h, $hjs, $c, $u, $plugin_cf, $plugin_tx, $pth, $bjs;
     $ec_pcf = $plugin_cf['expandcontract'];
     static $count = 1;
+    static $count2 = 1;
     static $nested = false;
     $uniqueId = '_ec' . $count;
 
@@ -198,12 +199,24 @@ function expand()
         }
     }
 
+    // CSS nur einmal laden
+    if ($count === 1) {
+        $expandcontractStyles = $ec_pcf['use_stylesheet'];
+        if ($expandcontractStyles != '') {            
+            $o = '<link rel="stylesheet preload" href="' . $pth['folder']['plugins'] 
+                    . 'expandcontract/css/' 
+                    . $expandcontractStyles . '" type="text/css">';
+        }
+    }
+    $count++;
+
     if (!$link) {
         $o .= '<div class="expand_area" id="' . $targetid . '" '. $options .'>';
     }
     if ($usebuttons) {
         $o .= '<div class="expand_linkArea">';
     }
+
     $i = 1;
     foreach ($pageNrArray as $value) {
         $js = '" class="linkBtn" id="deeplink'.$i.$uniqueId
@@ -263,19 +276,13 @@ function expand()
     }
     if (!$link) $o .= '</div>';
 
-    // JS & CSS nur einmal laden
-    if ($count === 1) {
-        $expandcontractStyles = $ec_pcf['use_stylesheet'];
-        if ($expandcontractStyles != '') {
-            $hjs .= '<link rel="stylesheet" href="' . $pth['folder']['plugins'] 
-                    . 'expandcontract/css/' 
-                    . $expandcontractStyles . '" type="text/css">';
-        }
+    // JS nur einmal laden
+    if ($count2 === 1) {
         $jsFile = $pth['folder']['plugins'] . 'expandcontract/expandcontract.js';
         $bjs .= '<script src="' . $jsFile . '"></script>';
         
     }
-    $count++;
+    $count2++;
     return $o;
 }
 
