@@ -128,6 +128,11 @@ function expand()
         $firstopen = $autoclose = false;
     }
     
+    // Fuer die Druckansicht
+    if (isset($_GET['print'])) {
+        $autoclose = false;
+    }
+    
     $options = 
             'data-autoclose="' . $autoclose . '" ' .
             'data-firstopen="' . $firstopen . '"'
