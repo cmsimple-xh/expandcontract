@@ -22,13 +22,15 @@ function expandcontract(expPage, fromHash = false) {
     }
     
     let elMaxHeight = el.scrollHeight;
-    target = el.getElementsByClassName("ecCloseButton")[0];
+    let targetHeight;
+    const target = el.getElementsByClassName("ecCloseButton")[0];
     if (typeof target !== "undefined") {
         targetHeight = target.offsetHeight;
     } else {
         targetHeight = 0;
     }
-    depp = el.getElementsByClassName("deepLink")[0];
+    let deppHeight;
+    const depp = el.getElementsByClassName("deepLink")[0];
     if (typeof depp !== "undefined") {
         deppHeight = depp.offsetHeight;
     } else {
@@ -39,26 +41,26 @@ function expandcontract(expPage, fromHash = false) {
     if (el.style.getPropertyValue("max-height") !== "0px") {
         el.style.setProperty("max-height", "0px");
         el.classList.remove("open");
-        deepL = expPage.replace("popup", "deeplink");
+        const deepL = expPage.replace("popup", "deeplink");
         document.getElementById(deepL).classList.remove("current");
     } else {
         if (autoClose) {
             var expandlist = document.getElementById(containerId)
                     .getElementsByClassName("expand_content");
-            for (index = 0; index < expandlist.length; ++index) {
+            for (let index = 0; index < expandlist.length; ++index) {
                 expandlist[index].style.setProperty("max-height", "0px");
                 expandlist[index].classList.remove("open");
             }
             var btnlist = document.getElementById(containerId)
                     .getElementsByClassName("current");
-            for (index = 0; index < btnlist.length; ++index) {
+            for (let index = 0; index < btnlist.length; ++index) {
                 btnlist[index].classList.remove("current");
             }
         }
 
         el.style.setProperty("max-height", elMaxHeight + "px");
         el.classList.add("open");
-        deepL = expPage.replace("popup", "deeplink");
+        const deepL = expPage.replace("popup", "deeplink");
         document.getElementById(deepL).classList.add("current");
         //el.scrollIntoView({block: "center", behavior: "smooth"});
     }
@@ -67,7 +69,7 @@ function expandcontract(expPage, fromHash = false) {
 // CMS-Suche
 function ec_showSearchResults() {
     let containers = document.getElementsByClassName("expand_content");
-    for (index = 0; index < containers.length; ++index) {
+    for (let index = 0; index < containers.length; ++index) {
         if (containers[index].getElementsByClassName("xh_find").length) {
             if (!containers[index].classList.contains("open")) {
                 expandcontract(containers[index].id);
@@ -79,10 +81,10 @@ function ec_showSearchResults() {
 // Firstopen 
 function ec_openFirst() {
     let containers = document.getElementsByClassName("expand_area");
-    for (index = 0; index < containers.length; ++index) {
-        itemId = containers[index].id;
+    for (let index = 0; index < containers.length; ++index) {
+        const itemId = containers[index].id;
         if (document.getElementById(itemId).dataset.firstopen) {
-            first = document.getElementById(itemId).
+            const first = document.getElementById(itemId).
                     getElementsByClassName("expand_content")[0];
             if (!first.classList.contains("open")) {
                 expandcontract(first.id);
