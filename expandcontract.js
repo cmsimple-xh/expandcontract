@@ -108,6 +108,10 @@ ec_openFirst();
 ec_openFromHash();
 ec_showSearchResults();
 
+document.querySelectorAll(".linkBtn").forEach(function (a) {
+    a.href = "#";
+});
+
 document.querySelectorAll(".expand_link").forEach(function (el) {
     var popupId = el.dataset.popupId;
     var closeBtn = document.querySelector("#" + popupId + " .ecCloseButton");
