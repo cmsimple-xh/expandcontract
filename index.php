@@ -227,8 +227,7 @@ function expand()
         $t .= '<div id="popup'.$i.$uniqueId.'" class="expand_content"' 
                 . 'style="max-height: 0px;"><div class="expand_contentwrap"' 
                 . ' style = "padding: ' . $contentpadding . '">';
-        $linkU =  $_SERVER['REQUEST_URI'];
-        $t .= '<div class="deepLink"><a href="' . $linkU . '#popup' 
+        $t .= '<div class="deepLink"><a href="#popup' 
                 . $i.$uniqueId . '">&#x1f517;</a></div>';
         if ($limitheight) {
             $t .= '<div style="height:' . $limitheight 
