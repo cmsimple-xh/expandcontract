@@ -206,9 +206,7 @@ function expand()
     }
     $i = 1;
     foreach ($pageNrArray as $value) {
-        $js = '" class="linkBtn" id="deeplink'.$i.$uniqueId
-                .'" onclick="expandcontract(\'popup'
-                .$i.$uniqueId.'\'); return false;';
+        $js = '" class="linkBtn" id="deeplink'.$i.$uniqueId.'" ';
         $expContent = str_replace('#CMSimple hide#', '', $c[$value]);
         if ($usebuttons) { 
             $o .= '<form method="post" class="expand_button" action="?' 
@@ -217,7 +215,7 @@ function expand()
             $o .=  '"></form>';
         } else {
             if (!$link) {
-                $t .= '<p class="expand_link">';
+                $t .= '<p class="expand_link" data-popup-id="popup'.$i.$uniqueId.'">';
             }
             $t .= a($value,$js);
             $t .= !empty($headlineArray[$i]) ? $headlineArray[$i] : $h[$value];
@@ -243,9 +241,8 @@ function expand()
         }
         if ($closebutton) {
             $t .= '<div class="ecClose">'
-                    . '<button class="ecCloseButton" type="button" '
-                    . 'onclick="expandcontract(\'popup' . $i.$uniqueId . '\'); '
-                    . 'return false;">' . $plugin_tx['expandcontract']['close'] 
+                    . '<button class="ecCloseButton" type="button">'
+                    . $plugin_tx['expandcontract']['close'] 
                     . '</button>'
                     . '</div>';
         }

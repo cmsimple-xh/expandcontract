@@ -105,3 +105,12 @@ function ec_openFromHash() {
 ec_openFirst();
 ec_openFromHash();
 ec_showSearchResults();
+
+document.querySelectorAll(".expand_link").forEach(function (el) {
+    var popupId = el.dataset.popupId;
+    var closeBtn = document.querySelector("#" + popupId + " .ecCloseButton");
+    el.querySelector(".linkBtn").onclick = closeBtn.onclick = function () {
+        expandcontract(popupId);
+        return false;
+    };
+});
