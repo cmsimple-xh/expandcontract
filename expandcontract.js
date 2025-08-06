@@ -99,9 +99,9 @@ function ec_openFromHash() {
     hash = hash.replace("#", "");
     if (hash.length && hash.substring(0, 5) === "popup" 
             && document.getElementById(hash) !== null) {
-        window.onload = function () {
+        window.addEventListener("load", function () {
             expandcontract(hash, true);
-        }
+        });
     }
 }
 ec_openFirst();
