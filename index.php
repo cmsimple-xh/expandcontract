@@ -204,37 +204,49 @@ function expand()
     if ($usebuttons) {
         $o .= '<div class="expand_linkArea">';
     }
+    $nonce = '';
+    if (function_exists('sh_cspHeaderNonce')) {
+        $nonce = ' nonce="' . sh_cspHeaderNonce() . '"';
+    }
+    $headStyleContent = '.expand_clear {clear: both;}'
+                      . "\n";
     $i = 1;
     foreach ($pageNrArray as $value) {
-        $js = '" class="linkBtn" id="deeplink'.$i.$uniqueId.'" ';
+        $js = '" class="linkBtn" id="deeplink' . $i . $uniqueId . '" ';
         $expContent = str_replace('#CMSimple hide#', '', $c[$value]);
         if ($usebuttons) { 
-            $o .= '<form method="post" class="expand_button" action="?' 
+            $o .= '<form method="post" class="expand_button" action="?'
                     . $u[$value] . $js . '"><input type="submit" value="';
             $o .= !empty($headlineArray[$i]) ? $headlineArray[$i] : $h[$value];
             $o .=  '"></form>';
         } else {
             if (!$link) {
-                $t .= '<p class="expand_link" data-popup-id="popup'.$i.$uniqueId.'">';
+                $t .= '<p class="expand_link" data-popup-id="popup' . $i . $uniqueId . '">';
             }
-            $t .= a($value,$js);
+            $t .= a($value, $js);
             $t .= !empty($headlineArray[$i]) ? $headlineArray[$i] : $h[$value];
             $t .= '</a>';
             if (!$link) {
                 $t .= '</p>';
             }
         }
-        $t .= '<div id="popup'.$i.$uniqueId.'" class="expand_content"' 
-                . 'style="max-height: 0px;"><div class="expand_contentwrap"' 
-                . ' style = "padding: ' . $contentpadding . '">';
+        $t .= '<div id="popup' . $i . $uniqueId . '" class="expand_content">'
+            . '<div id="popup' . $i . $uniqueId . '_div_1" class="expand_contentwrap">';
+        $headStyleContent .= '#popup' . $i . $uniqueId
+                           . ' {max-height: 0px;}' . "\n";
+        $headStyleContent .= '#popup' . $i . $uniqueId . '_div_1'
+                           . ' {padding: ' . $contentpadding . '}' . "\n";
         $t .= '<div class="deepLink"><a href="#popup' 
-                . $i.$uniqueId . '">&#x1f517;</a></div>';
+            . $i . $uniqueId . '">&#x1f517;</a></div>';
         if ($limitheight) {
-            $t .= '<div style="height:' . $limitheight 
-                    . ';overflow-y:auto;padding-right:1em;">';
+            $t .= '<div id="popup' . $i . $uniqueId . '_div_3">';
+            $headStyleContent .= '#popup' . $i . $uniqueId . '_div_3'
+                           . ' {height:' . $limitheight
+                           . '; overflow-y: auto; padding-right: 1em;}'
+                           . "\n";
         }
         $t .= $expContent;
-        $t .= '<div style="clear:both"></div>';
+        $t .= '<div class="expand_clear"></div>';
         if ($limitheight) {
             $t .= '</div>';
         }
@@ -259,6 +271,10 @@ function expand()
     }
     if (!$link) $o .= '</div>';
 
+    // Style in den head
+    $hjs .= '<style' . $nonce . '>' . "\n"
+          . $headStyleContent
+          . '</style>' . "\n";
     // JS & CSS nur einmal laden
     if ($count === 1) {
         $expandcontractStyles = $ec_pcf['use_stylesheet'];

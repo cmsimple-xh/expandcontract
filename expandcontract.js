@@ -38,7 +38,7 @@ function expandcontract(expPage, fromHash = false) {
     }
 
     elMaxHeight = parseInt(elMaxHeight) + targetHeight + deppHeight;
-    if (el.style.getPropertyValue("max-height") !== "0px") {
+    if (getComputedStyle(el).getPropertyValue("max-height") !== "0px") {
         el.style.setProperty("max-height", "0px");
         el.classList.remove("open");
         const deepL = expPage.replace("popup", "deeplink");
