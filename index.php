@@ -20,7 +20,7 @@ if (!defined('CMSIMPLE_XH_VERSION')) {
 
 function expand()
 {
-    global $s, $cl, $l, $cf, $h, $hjs, $c, $u, $plugin_cf, $plugin_tx, $pth, $bjs;
+    global $s, $cl, $l, $cf, $h, $hjs, $c, $u, $plugin_cf, $plugin_tx, $pth, $bjs, $xh_publisher;
     $ec_pcf = $plugin_cf['expandcontract'];
     static $count = 1;
     static $nested = false;
@@ -166,7 +166,7 @@ function expand()
                 break;
             }
             if ($l[$i] <= $tl) {
-                if (hide($i)) {
+                if ($xh_publisher->isHidden($i) && $xh_publisher->isPublished($i)) {
                     $pageNrArray[] = $i;
                 }
             }
