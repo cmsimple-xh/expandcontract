@@ -22,11 +22,12 @@ function expand()
 {
     global $s, $cl, $l, $cf, $h, $hjs, $c, $u, $plugin_cf, $plugin_tx, $pth, $bjs, $xh_publisher;
     $ec_pcf = $plugin_cf['expandcontract'];
+    $ptx = $plugin_tx['expandcontract'];
     static $count = 1;
     static $nested = false;
     $uniqueId = '_ec' . $count;
 
-    if ($nested) return XH_message('warning', 'Nested calls of ExpandContract are not possible!'); //i18n
+    if ($nested) return XH_message('warning', $ptx['error_nested']); //i18n
     if ($s < 0) return;
 
     $params = func_get_args();
@@ -103,15 +104,13 @@ function expand()
                     $paddings[] = $padding;
                 } else {
                     if (!ec_validateCSS($padding)) {
-                        return XH_message('fail',
-                                'There is an error in the definition of "Content-Padding"'); //i18n
+                        return XH_message('fail', $ptx['error_content-padding']); //i18n
                     }
                     $paddings[] = $padding;
                 }
             }
             if (count($t) !== count($paddings)) {
-                return XH_message('fail',
-                        'There is an error in the definition of "Content-Padding"'); //i18n;
+                return XH_message('fail', $ptx['error_content-padding']); //i18n
             }
             $contentpadding = implode(' ', $paddings);
         }
@@ -150,7 +149,7 @@ function expand()
                 if ($singlelink != '') {
                     $pageNr = array_search($singlelink, $h);
                     if ($pageNr === false) {
-                        return XH_message('fail', 'Page "%s" not found!', $singlelink); //i18n
+                        return XH_message('fail', $ptx['error_page-not-found'], $singlelink); //i18n
                     }
                     $pageNrArray[] = $pageNr;
                 }
@@ -159,7 +158,7 @@ function expand()
             $link = ec_removeSpaces($link);
             $pageNr = array_search($link, $h);
             if ($pageNr === false || $link == '' ) {
-                return XH_message('fail', 'Page "%s" not found!', $link); //i18n
+                return XH_message('fail', $ptx['error_page-not-found'], $link); //i18n
             }
             $pageNrArray[] = $pageNr;
         }
@@ -182,7 +181,7 @@ function expand()
     if (count($pageNrArray) > 0) {
         $link = false;
     } else {
-        return XH_message('fail', 'No hidden pages found!'); //i18n
+        return XH_message('fail', $ptx['error_no-hidden-pages']); //i18n
     }
     
     $headlineArray = array('headlines');
