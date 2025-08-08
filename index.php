@@ -127,7 +127,11 @@ function expand()
     if (isset($_GET['search'])) {
         $firstopen = $autoclose = false;
     }
-    
+    // Fuer die Druckausgabe
+    if (isset($_GET['print'])) {
+        $autoclose = false;
+    }
+
     $options = 
             'data-autoclose="' . $autoclose . '" ' .
             'data-firstopen="' . $firstopen . '"'
