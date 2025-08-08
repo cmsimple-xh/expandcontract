@@ -1,3 +1,11 @@
+ /* Pluginstartseite im Adminbereich, Info */
+.ec_admin_logo {
+    float: left !important;
+    margin: 1em 2em 1em 0 !important;
+    height: 128px !important;
+    width: 128px !important;
+}
+
 .expand_linkArea {
 	display: flex;
 	flex-wrap: wrap;
